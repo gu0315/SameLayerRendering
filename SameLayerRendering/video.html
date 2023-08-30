@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+        <title>同层渲染</title>
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+            }
+            
+            body {
+                background-color: #EEEEEE;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+                user-select: none;
+            }
+            
+            .container {
+                margin: 30px auto;
+                font-size: 25px;
+                background-color: #00FF00;
+                /* insert WKChildView in WKWebView */
+                overflow: scroll;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .btn {
+                margin: 30px auto;
+                font-size: 25px;
+                background-color: #00FF00;
+                height: 44px;
+            }
+        </style>
+        
+    </head>
+    <body>
+        <div id="cid_video" class="container cid_video" data-component-type="input" style="width: 300px; height: 168.75px">
+            <div style="width: 101%; height: 101%">&nbsp; 我是H5</div>
+        </div>
+        <button class="btn" type="button" onclick="transformClick()">显示</button>
+    </body>
+    
+    <script defer>
+        var isHidden = false
+        //  https://developers.weixin.qq.com/community/develop/article/doc/000c4e433707c072c1793e56f5c813
+        //  如果在基础库创建同层节点时，节点发生了 WXSS 变化从而引起 WebKit 内核重排，此时可能会出现同层失败的现象。解决方法：应尽量避免在原生组件上频繁修改节点的 WXSS 属性，尤其要尽量避免修改节点的 position 属性。如需对原生组件进行变换，强烈推荐使用 transform 而非修改节点的 position 属性。
+        function btnClick() {
+            var e = document.getElementsByClassName("cid_video")[0];
+            isHidden = !isHidden
+            // display,visibility 会影响 Native WKChildScrollView的展示
+            //e.style.display = isHidden ? "block" : "none";
+            e.style.visibility = isHidden ? "" : "hidden"
+            if (isHidden) {
+                /*setTimeout(()=>{
+                    nativeInvoke("1111", isHidden)
+                }, 100)*/
+                nativeInvoke("1111", isHidden)
+            }
+            var btn = document.getElementsByClassName("btn")[0];
+            btn.innerHTML = isHidden ? "关闭" : "显示";
+        }
+        
+        function transformClick() {
+            var e = document.getElementsByClassName("cid_video")[0];
+            isHidden = !isHidden
+            //e.style.opacity = isHidden ? "1": "0"
+            e.style.transform = isHidden ?  "scale(1)" : "scale(0)";
+            if (isHidden) {
+                /*setTimeout(()=>{
+                    nativeInvoke("1111", isHidden)
+                }, 100)*/
+                nativeInvoke("1111", isHidden)
+            }
+            var btn = document.getElementsByClassName("btn")[0];
+            btn.innerHTML = isHidden ? "关闭" : "显示";
+        }
+        
+        function insertNativeComponents() {
+            
+        }
+        // 通知客户端查找该DOM节点替换成Native组件
+        function nativeInvoke(api, args) {
+            let u = navigator.userAgent;
+            let isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+            if (isIOS) {
+                window.webkit.messageHandlers.messageHandler.postMessage({
+                    "api": api,
+                    "args": args
+                });
+            }
+        }
+    </script>
+    
+</html>
