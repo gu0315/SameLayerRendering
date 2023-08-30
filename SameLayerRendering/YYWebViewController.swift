@@ -65,19 +65,29 @@ class YYWebViewController: UIViewController, UIScrollViewDelegate, WKNavigationD
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         print("WebView message", message.body)
-        
+        guard let dict = message.body as? [String: Any], let event = dict["api"] as? String else {
+            return
+        }
         if let childScrollView = webView.findWKChildScrollViewById("cid_video", rootView: self.webView) {
-            let view = ContainerHookView.init(frame: childScrollView.frame)
-            view.isUserInteractionEnabled = true
-            let ges = UITapGestureRecognizer(target: self, action: #selector(self.test))
-            view.addGestureRecognizer(ges)
-            
-            let lab = UILabel.init(frame: view.frame)
-            lab.text = "同层渲染，我是原声组件"
-            lab.textAlignment = .center
-            lab.center = view.center
-            view.addSubview(lab)
-            childScrollView.addSubview(view)
+            if (event == "add") {
+                let view = ContainerHookView.init(frame: childScrollView.frame)
+                view.isUserInteractionEnabled = true
+                let ges = UITapGestureRecognizer(target: self, action: #selector(self.test))
+                view.addGestureRecognizer(ges)
+                let lab = UILabel.init(frame: view.frame)
+                lab.text = "同层渲染，我是原声组件"
+                lab.textAlignment = .center
+                lab.center = view.center
+                view.addSubview(lab)
+                childScrollView.addSubview(view)
+            } else {
+                for sub in childScrollView.subviews {
+                    if (sub.isKind(of: ContainerHookView.self)) {
+                        sub.removeFromSuperview()
+                        break
+                    }
+                }
+            }
         }
     }
     

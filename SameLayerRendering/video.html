@@ -20,7 +20,6 @@
                 margin: 30px auto;
                 font-size: 25px;
                 background-color: #00FF00;
-                /* insert WKChildView in WKWebView */
                 overflow: scroll;
                 -webkit-overflow-scrolling: touch;
             }
@@ -55,7 +54,9 @@
                 /*setTimeout(()=>{
                     nativeInvoke("1111", isHidden)
                 }, 100)*/
-                nativeInvoke("1111", isHidden)
+                nativeInvoke("add", "add")
+            } else {
+                nativeInvoke("remove", "remove")
             }
             var btn = document.getElementsByClassName("btn")[0];
             btn.innerHTML = isHidden ? "关闭" : "显示";
@@ -70,7 +71,9 @@
                 /*setTimeout(()=>{
                     nativeInvoke("1111", isHidden)
                 }, 100)*/
-                nativeInvoke("1111", isHidden)
+                nativeInvoke("add", "add")
+            } else {
+                nativeInvoke("remove", "remove")
             }
             var btn = document.getElementsByClassName("btn")[0];
             btn.innerHTML = isHidden ? "关闭" : "显示";
@@ -90,6 +93,11 @@
                 });
             }
         }
+        
+        /*window.onload = function () {
+            transformClick()
+        }*/
+       
     </script>
     
 </html>
