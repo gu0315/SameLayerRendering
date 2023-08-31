@@ -10,7 +10,9 @@ import WebKit
 
 class YYWebViewController: UIViewController, UIScrollViewDelegate, WKNavigationDelegate, WKScriptMessageHandler {
     
-    var webView: YYWebView!
+    @objc dynamic var webView: YYWebView!
+    
+    var nativeViews: Dictionary<String, UIView> = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +20,34 @@ class YYWebViewController: UIViewController, UIScrollViewDelegate, WKNavigationD
         self.title = "同层渲染"
         self.edgesForExtendedLayout = []
         initWebView()
+        NotificationCenter.default.addObserver(self, selector: #selector(notificationAction(notification:)), name: NSNotification.Name(rawValue: "WKChildScrollView-DidMoveToWindow"), object: nil)
     }
+    
+    @objc func notificationAction(notification: Notification) {
+        guard let object = notification.object, let userInfo = notification.userInfo as? Dictionary<String, String> else {
+            return
+        }
+        let str = userInfo["id"] ?? ""
+        do {
+            let pattern = "applets-id-.*?-end"
+            let regex = try NSRegularExpression(pattern: pattern, options: [])
+            // 在字符串中搜索匹配项
+            let range = NSRange(location: 0, length: str.utf16.count)
+            if let match = regex.firstMatch(in: str, options: [], range: range), let view = object as? UIView {
+                let matchRange = Range(match.range, in: str)!
+                let matchedSubstring = str[matchRange]
+                assert(!nativeViews.keys.contains(matchedSubstring.description), "存在相同的Key")
+                nativeViews[matchedSubstring.description] = view
+            } else {
+                //
+            }
+        } catch {
+            print("正则: \(error.localizedDescription)")
+        }
+
+        print("-----------------------------------------didMoveToWindow", object, userInfo)
+    }
+   
     
     func initWebView() {
         let configuration = WKWebViewConfiguration.init()
@@ -27,6 +56,7 @@ class YYWebViewController: UIViewController, UIScrollViewDelegate, WKNavigationD
         configuration.userContentController = userConfiguration
         webView = YYWebView.init(frame: self.view.bounds, configuration: configuration)
         webView.navigationDelegate = self
+        webView.uiDelegate = self
         self.view.addSubview(webView)
         self.webView.loadFileURL(Bundle.main.url(forResource: "video", withExtension: "html")!, allowingReadAccessTo: Bundle.main.resourceURL!)
     }
@@ -48,15 +78,6 @@ class YYWebViewController: UIViewController, UIScrollViewDelegate, WKNavigationD
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         print("WebView did finish loading local file.")
         // 注入 JavaScript 监听器
-        let js = """
-               var observer = new MutationObserver(function(mutationsList, observer) {
-                   // 通过与原生代码通信发送变化信息
-                   window.webkit.messageHandlers.messageHandler.postMessage("DOM变化了");
-               });
-               
-               observer.observe(document, { attributes: true, childList: true, subtree: true });
-               """
-        webView.evaluateJavaScript(js, completionHandler: nil)
     }
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
@@ -65,11 +86,13 @@ class YYWebViewController: UIViewController, UIScrollViewDelegate, WKNavigationD
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         print("WebView message", message.body)
-        guard let dict = message.body as? [String: Any], let event = dict["api"] as? String else {
+        guard let dict = message.body as? [String: Any],
+              let type = dict["type"] as? String,
+              let contentId = dict["contentId"] as? String else {
             return
         }
-        if let childScrollView = webView.findWKChildScrollViewById("cid_video", rootView: self.webView) {
-            if (event == "add") {
+        if let childScrollView = nativeViews[contentId] {
+            if (type == "insert") {
                 let view = ContainerHookView.init(frame: childScrollView.frame)
                 view.isUserInteractionEnabled = true
                 let ges = UITapGestureRecognizer(target: self, action: #selector(self.test))
@@ -80,15 +103,16 @@ class YYWebViewController: UIViewController, UIScrollViewDelegate, WKNavigationD
                 lab.center = view.center
                 view.addSubview(lab)
                 childScrollView.addSubview(view)
-            } else {
-                for sub in childScrollView.subviews {
-                    if (sub.isKind(of: ContainerHookView.self)) {
-                        sub.removeFromSuperview()
-                        break
-                    }
-                }
-            }
+            } 
+        } else {
+            // 没有查找到WKChildScrollView，H5同步通知Native, WebView还没有生成WKChildScrollView，可能查找查找失败，这里做一下兜底
+            
         }
+    }
+    
+    // 前端可以通过调用insertContainer向Native传递参数，插入原生组件
+    @objc func insertContainer(dic: Dictionary<String, Any>) {
+        
     }
     
     @objc func test() {
@@ -96,7 +120,20 @@ class YYWebViewController: UIViewController, UIScrollViewDelegate, WKNavigationD
     }
     
     deinit {
-        let container = self.webView.configuration.userContentController
-        container.removeScriptMessageHandler(forName: "messageHandler")
+        let userContentController = webView.configuration.userContentController
+        userContentController.removeScriptMessageHandler(forName: "messageHandler")
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("NotificationCenter.default"), object: nil)
+    }
+}
+
+extension YYWebViewController: WKUIDelegate {
+    private func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKContextMenuElementInfo) -> Bool {
+        return false
+    }
+}
+
+extension YYWebViewController: SameLayerProtocol {
+    static func didMoveToWindow(view: UIView) {
+        //
     }
 }

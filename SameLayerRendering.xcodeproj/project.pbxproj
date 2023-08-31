@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E6BC8E4F2AA06FB7005427B6 /* UIView+WindowObserving.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BC8E4E2AA06FB7005427B6 /* UIView+WindowObserving.swift */; };
+		E6BC8E512AA07173005427B6 /* SameLayerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BC8E502AA07173005427B6 /* SameLayerProtocol.swift */; };
 		E6E9DA042A9C92DE00CC2A3D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA032A9C92DE00CC2A3D /* AppDelegate.swift */; };
 		E6E9DA062A9C92DE00CC2A3D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA052A9C92DE00CC2A3D /* SceneDelegate.swift */; };
 		E6E9DA082A9C92DE00CC2A3D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA072A9C92DE00CC2A3D /* ViewController.swift */; };
@@ -20,6 +22,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E6BC8E4E2AA06FB7005427B6 /* UIView+WindowObserving.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+WindowObserving.swift"; sourceTree = "<group>"; };
+		E6BC8E502AA07173005427B6 /* SameLayerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SameLayerProtocol.swift; sourceTree = "<group>"; };
 		E6E9DA002A9C92DE00CC2A3D /* SameLayerRendering.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SameLayerRendering.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6E9DA032A9C92DE00CC2A3D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E6E9DA052A9C92DE00CC2A3D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -75,6 +79,8 @@
 				E6E9DA1C2A9CEB7000CC2A3D /* ContainerHookView.swift */,
 				E6E9DA192A9CD15300CC2A3D /* video.html */,
 				E6E9DA1A2A9CD34700CC2A3D /* YYWebViewController.swift */,
+				E6BC8E4E2AA06FB7005427B6 /* UIView+WindowObserving.swift */,
+				E6BC8E502AA07173005427B6 /* SameLayerProtocol.swift */,
 			);
 			path = SameLayerRendering;
 			sourceTree = "<group>";
@@ -156,7 +162,9 @@
 				E6E9DA1D2A9CEB7000CC2A3D /* ContainerHookView.swift in Sources */,
 				E6E9DA182A9C963500CC2A3D /* YYWebView.swift in Sources */,
 				E6E9DA042A9C92DE00CC2A3D /* AppDelegate.swift in Sources */,
+				E6BC8E4F2AA06FB7005427B6 /* UIView+WindowObserving.swift in Sources */,
 				E6E9DA062A9C92DE00CC2A3D /* SceneDelegate.swift in Sources */,
+				E6BC8E512AA07173005427B6 /* SameLayerProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

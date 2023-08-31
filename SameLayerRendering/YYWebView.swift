@@ -12,6 +12,14 @@ class YYWebView: WKWebView {
     
     private var didHandleWKContentGestrues = false
     
+    override init(frame: CGRect, configuration: WKWebViewConfiguration) {
+        super.init(frame: frame, configuration: configuration)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         let hitView = super.hitTest(point, with: event)
         if !didHandleWKContentGestrues {
@@ -59,7 +67,7 @@ class YYWebView: WKWebView {
 
 extension WKWebView {
     
-    func findWKChildScrollViewById(_ id: String, rootView: UIView) -> UIView? {
+    func isScrollViewFoundById(_ id: String, rootView: UIView) -> UIView? {
         let cls: AnyClass = NSClassFromString("WKCompositingView")!
         if rootView.isKind(of: cls) && rootView.description.contains(id) {
             let cls: AnyClass = NSClassFromString("WKChildScrollView")!
@@ -72,11 +80,36 @@ extension WKWebView {
             return childScrollView
         }
         for subview in rootView.subviews {
-            if let hit = findWKChildScrollViewById(id, rootView: subview)  {
+            if let hit = isScrollViewFoundById(id, rootView: subview)  {
                 return hit
             }
         }
         return nil
     }
-    
 }
+
+
+extension UIScrollView {
+    // TODO 待优化，会影响全局
+    // https://patent-image.qichacha.com/pdf/7a81ca75aa22d5688a8d0c152e905b03.pdf
+    override open func didMoveToWindow() {
+        super.didMoveToWindow()
+        // ⚠️，此处要异步 🐷异步闭包在当前runloop完成之后排队等待运行🐷
+        DispatchQueue.main.async {
+            let cls: AnyClass = NSClassFromString("WKChildScrollView")!
+            if self.isKind(of: cls) {
+                // 从父视图的layer(层)的name(名称)中解析containerID(容器标识) eg: applets-container-id
+                if let id = self.superview?.description, id.contains("applets-id") {
+                    // 同层渲染场景
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "WKChildScrollView-DidMoveToWindow"), object: self, userInfo: ["id": id])
+                } else {
+
+                }
+            }
+        }
+    }
+}
+
+
+
+
