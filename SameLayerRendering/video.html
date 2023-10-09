@@ -1,75 +1,343 @@
 <!DOCTYPE html>
-<html>
+<html lang="" style="font-size: 325%;">
 <head>
-    <meta charset="utf-8" name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-    <title>同层渲染</title>
-    <style>
-        * {
-            padding: 0;
-            margin: 0;
+    <meta charset="utf-8" name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14"></script>
+    <title>同层渲染测试</title>
+    <style scoped>
+        .item {
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            display: block;
+            margin-top: .36rem;
+            text-decoration: none
         }
 
-        body {
-            background-color: #EEEEEE;
-            -moz-user-select: none;
-            -webkit-user-select: none;
-            user-select: none;
+        .item-info {
+            display: flex;
+            padding: 0 .24rem
         }
 
-        .container {
-            margin: 30px auto;
-            font-size: 25px;
-            background-color: #00FF00;
+        .item-info-avatar {
+            border-radius: 50%;
+            flex-grow: 0;
+            flex-shrink: 0;
+            height: .72rem;
+            margin-right: .16rem;
+            width: .72rem
+        }
+
+        .item-info-user-name {
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            color: #73767a;
+            font-family: PingFang SC;
+            font-size: .24rem;
+            font-weight: 400;
+            line-height: .32rem;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .item-info-title {
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            color: #0c0d0f;
+            font-size: .3rem;
+            line-height: .42rem;
+            margin-top: .08rem;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .item-video-tag {
+            align-items: center;
+            bottom: .12rem;
+            display: flex;
+            justify-content: flex-end;
+            position: absolute;
+            right: .16rem;
+            z-index: 1
+        }
+
+        .item-video-tag-item {
+            color: #fff;
+            font-family: PingFang SC;
+            font-size: .24rem;
+            font-weight: 500;
+            line-height: .24rem;
+            text-shadow: 0 0 .02rem rgba(0, 0, 0, .54)
+        }
+
+        .item-video-tag-item:not(:last-child) {
+            margin-right: .18rem;
+            position: relative
+        }
+
+        .item-video-tag-item:not(:last-child):after {
+            background-color: hsla(0, 0%, 100%, .38);
+            border-radius: .16rem;
+            content: "";
+            height: .12rem;
+            position: absolute;
+            right: -.1rem;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+            width: .03rem
+        }
+
+        .item:not(:last-of-type) .item-divider {
+            background: #f5f5f5;
+            height: .16rem
+        }
+
+        .video{
+            background-color: #000;
+            height: 4.2rem;
+            margin-top: .16rem;
+            position: relative;
             overflow: scroll;
             -webkit-overflow-scrolling: touch;
         }
 
-        .btn {
-            margin: 30px auto;
-            font-size: 25px;
-            background-color: #00FF00;
-            height: 44px;
-        }
-    </style>
 
+        .video-poster, video-poster-tc {
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            width: 100%;
+            //top: -0.5%;
+        }
+        .video-poster-tc {
+            height: 100.1%;
+            width: 100%;
+        }
+
+        .video-play-btn {
+            background-image: url(http://souche.oss-cn-hangzhou.aliyuncs.com/20231008/png/d2b3176161d7742bfde4b003ae5d88f2.png);
+            background-position: 50%;
+            background-size: cover;
+            height: .8rem;
+            left: 50%;
+            position: absolute;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            width: .8rem
+        }
+
+        .webp .video-play-btn {
+            background-image: url(http://souche.oss-cn-hangzhou.aliyuncs.com/20231008/webp/ca3140285d8c378e462d55d4ae1ec9d8.webp)
+        }
+
+        .xigua-feedlist {
+            padding-bottom: .44rem;
+            overflow: hidden;
+        }
+
+    </style>
 </head>
+
+
 <body>
-<div id="cid_video" class="container applets-id-video-end" data-component-type="input" style="width: 300px; height: 168.75px">
-    <div style="width: 101%; height: 101%">&nbsp; 我是H5</div>
+<script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+<script>
+    // VConsole will be exported to `window.VConsole` by default.
+    var vConsole = new window.VConsole();
+</script>
+<div id="app">
+    <template>
+        <div class="xigua-feedlist">
+            <div v-for="(item, index) in videos" :key="item.data.key" class="item">
+                <div class="item-info">
+                    <img class="item-info-avatar"
+                         :src="item.data.user_info.avatar_url"
+                         alt="">
+                    <div class="item-info-container">
+                        <div class="item-info-user-name">{{item.data.user_info.name}}</div>
+                        <div class="item-info-title">
+                            {{item.data.title}}
+                        </div>
+                    </div>
+                </div>
+                <!-- 同层渲染部分 __tongceng_cid_ --> <!-- TODO -->
+                <div v-if="currentIndex === index" :class="[`__tongceng_cid_${index}`, 'video']">
+                    <video v-if="currentIndex === index"
+                           controls
+                           class="video-poster-tc">
+                        <source src="http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400" type="video/mp4">
+                    </video>
+                </div>
+                <div class="video" v-else>
+                    <img :src="item.data.cover_image_url" class="video-poster"/>
+                    <div class="video-play-btn" @click="playVideo(index)"></div>
+                    <div class="item-video-tag"><span
+                        class="item-video-tag-item">{{item.data.play_count}}次观看</span><span
+                        class="item-video-tag-item">{{item.data.duration}}</span></div>
+                </div>
+                <div class="item-divider"></div>
+            </div>
+        </div>
+    </template>
 </div>
 </body>
 
-<script defer>
-    //  https://developers.weixin.qq.com/community/develop/article/doc/000c4e433707c072c1793e56f5c813
-    //  如果在基础库创建同层节点时，节点发生了 WXSS 变化从而引起 WebKit 内核重排，此时可能会出现同层失败的现象。解决方法：应尽量避免在原生组件上频繁修改节点的 WXSS 属性，尤其要尽量避免修改节点的 position 属性。如需对原生组件进行变换，强烈推荐使用 transform 而非修改节点的 position 属性。
-    function insertNativeComponents() {
-
-    }
-
-    // 通知客户端查找该DOM节点替换成Native组件
-    function nativeInvoke(type, contentId, args) {
-        let u = navigator.userAgent;
-        let isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-        if (isIOS) {
-            window.webkit.messageHandlers.messageHandler.postMessage({
-                "type": type,
-                "contentId": contentId,
-                "args": args
-            });
+<script>
+    'use strict';
+    new Vue({
+        el: "#app",
+        data: {
+            videos: [
+                {
+                    "key": "7276378185482207799",
+                    "cell_type": 303,
+                    "max_time": "1694705289",
+                    "data": {
+                        "log_pb": "{\"author_id\":\"54908952807\",\"category_name\":\"xg_video_m_feed\",\"enter_from\":\"\",\"group_id\":\"7276378185482207799\",\"group_source\":\"2\",\"impr_id\":\"202309142328096BA55A9EFE01EE8CC65E\",\"impr_source\":\"\",\"impr_type\":\"channel\",\"is_following\":\"0\",\"is_revisit\":\"0\",\"item_type\":\"1\",\"list_type\":\"1\",\"recommend_type\":\"recommend\"}",
+                        "behot_time": "1694705289",
+                        "group_id": "7276378185482207799",
+                        "video_id": "v02004g10000cjttf6bc77u9kfbokadg",
+                        "title": "72小时索命游戏，高智商罪犯在警察眼皮子下逃脱，这才是港片巅峰",
+                        "video_tag": "video_movie",
+                        "tag": {
+                            "is_original": "true"
+                        },
+                        "play_count": 10449,
+                        "comment_count": 8,
+                        "duration": 787,
+                        "publish_time": 1694163816,
+                        "user_info": {
+                            "avatar_url": "https://p26-passport.byteacctimg.com/img/user-avatar/b6b67e3a8db336bb86c49f4af1e1dc8f~300x300.image",
+                            "name": "木卫四talk",
+                            "user_id": "54908952807",
+                            "user_auth_info": "{\"auth_info\":\"优质影视领域创作者\",\"auth_type\":\"0\",\"other_auth\":{\"interest\":\"优质影视领域创作者\"}}",
+                            "author_desc": "镜头中的世界，电影里的人生。我是木卫四，和你聊聊电影的一切。",
+                            "user_is_verified": true
+                        },
+                        "cover_image_url": "https://p26-sign.bdxiguaimg.com/tos-cn-i-0004/ootYcOzjEfAFItCfSAhCA4AAAPX6tRt6kCsDgN~tplv-pk90l89vgd-crop-center:864:486.jpeg?appId=3586\u0026channelId=94349555027\u0026customType=custom%2Fnone\u0026from=103_large_image_list\u0026imageType=video1609\u0026isImmersiveScene=0\u0026is_stream=1\u0026logId=202309142328096BA55A9EFE01EE8CC65E\u0026requestFrom=103\u0026x-expires=1726241289\u0026x-signature=VdAVLZDsFjqDZrglvyc6OpzcYcQ%3D"
+                    }
+                },
+                {
+                    "key": "7276039122513297980",
+                    "cell_type": 303,
+                    "max_time": "1694705236",
+                    "data": {
+                        "log_pb": "{\"author_id\":\"5743591977\",\"category_name\":\"xg_video_m_feed\",\"enter_from\":\"\",\"group_id\":\"7276039122513297980\",\"group_source\":\"2\",\"impr_id\":\"202309142328096BA55A9EFE01EE8CC65E\",\"impr_source\":\"\",\"impr_type\":\"channel\",\"is_following\":\"0\",\"is_revisit\":\"0\",\"item_type\":\"1\",\"list_type\":\"1\",\"recommend_type\":\"recommend\"}",
+                        "behot_time": "1694705236",
+                        "group_id": "7276039122513297980",
+                        "video_id": "v02004g10000cjsqmgrc77u4gch90bk0",
+                        "title": "“你没有父母吗”保洁阿姨被年轻同事当众辱骂，路人看不下去了",
+                        "video_tag": "news",
+                        "tag": {
+                            "is_original": "true"
+                        },
+                        "play_count": 20278,
+                        "comment_count": 77,
+                        "duration": 368,
+                        "publish_time": 1694143680,
+                        "user_info": {
+                            "avatar_url": "https://p6-passport.byteacctimg.com/img/mosaic-legacy/4e7b00019b3a1a5a8cbf~300x300.image",
+                            "name": "大树君",
+                            "user_id": "5743591977",
+                            "user_auth_info": "{\"auth_info\":\"知名社会实验和街头恶搞节目\",\"auth_type\":\"0\",\"other_auth\":{\"interest\":\"\"}}",
+                            "author_desc": "记录平凡人的不平凡！",
+                            "user_is_verified": true
+                        },
+                        "cover_image_url": "https://p26-sign.bdxiguaimg.com/tos-cn-i-0004/osEvAreezeDAMAaAEJDnWqbdIAUWA6CvBE5l1j~tplv-pk90l89vgd-crop-center:864:486.jpeg?appId=3586\u0026channelId=94349555027\u0026customType=custom%2Fnone\u0026from=103_large_image_list\u0026imageType=video1609\u0026isImmersiveScene=0\u0026is_stream=1\u0026logId=202309142328096BA55A9EFE01EE8CC65E\u0026requestFrom=103\u0026x-expires=1726241289\u0026x-signature=UEWheAmmIcaLniIQPUtJYFok1%2BE%3D"
+                    }
+                },
+                {
+                    "key": "7268971118059815485",
+                    "cell_type": 303,
+                    "max_time": "1694705184",
+                    "data": {
+                        "log_pb": "{\"author_id\":\"82385616767\",\"category_name\":\"xg_video_m_feed\",\"enter_from\":\"\",\"group_id\":\"7268971118059815485\",\"group_source\":\"2\",\"impr_id\":\"202309142328096BA55A9EFE01EE8CC65E\",\"impr_source\":\"\",\"impr_type\":\"channel\",\"is_following\":\"0\",\"is_revisit\":\"0\",\"item_type\":\"1\",\"list_type\":\"1\",\"recommend_type\":\"recommend\"}",
+                        "behot_time": "1694705184",
+                        "group_id": "7268971118059815485",
+                        "video_id": "v02004g10000cjgu50fog65nfejc16l0",
+                        "title": "43岁，年营收3个亿，却“放下”尊严，直播间跳舞卖衣服！#程前",
+                        "video_tag": "news",
+                        "tag": {
+                            "is_original": "true"
+                        },
+                        "play_count": 33674,
+                        "comment_count": 40,
+                        "duration": 901,
+                        "publish_time": 1692439224,
+                        "user_info": {
+                            "avatar_url": "https://p26-passport.byteacctimg.com/img/user-avatar/77d12244b2f645fde1ac26cdfaabdc82~300x300.image",
+                            "name": "程前朋友圈",
+                            "user_id": "82385616767",
+                            "user_auth_info": "{\"auth_info\":\"优质生活领域创作者\",\"auth_type\":\"0\",\"other_auth\":{\"interest\":\"优质生活领域创作者\"}}",
+                            "author_desc": "抖音商业创业类知识博主\n和更多创业者链接\n正在做一个影响创业者的创业者\n✈️专注商业采访",
+                            "user_is_verified": true
+                        },
+                        "cover_image_url": "https://p26-sign.bdxiguaimg.com/tos-cn-i-dy/c04d02a1d0504defa54d12f6f0c316e8~tplv-pk90l89vgd-crop-center:864:486.jpeg?appId=3586\u0026channelId=94349555027\u0026customType=custom%2Fnone\u0026from=103_large_image_list\u0026imageType=video1609\u0026isImmersiveScene=0\u0026is_stream=1\u0026logId=202309142328096BA55A9EFE01EE8CC65E\u0026requestFrom=103\u0026x-expires=1726241289\u0026x-signature=PlB5rrPobApZc2YPKLiN95ppo%2Fc%3D"
+                    }
+                },
+                {
+                    "key": "7277827895966302735",
+                    "cell_type": 303,
+                    "max_time": "1694705132",
+                    "data": {
+                        "log_pb": "{\"author_id\":\"6825122220\",\"category_name\":\"xg_video_m_feed\",\"enter_from\":\"\",\"group_id\":\"7277827895966302735\",\"group_source\":\"2\",\"impr_id\":\"202309142328096BA55A9EFE01EE8CC65E\",\"impr_source\":\"\",\"impr_type\":\"channel\",\"is_following\":\"0\",\"is_revisit\":\"0\",\"item_type\":\"1\",\"list_type\":\"1\",\"recommend_type\":\"recommend\"}",
+                        "behot_time": "1694705132",
+                        "group_id": "7277827895966302735",
+                        "video_id": "v03004g10000ck005njc77uc29hiaaa0",
+                        "title": "日本津山事件，少年杀光村中30人，原因你绝对猜不到",
+                        "video_tag": "",
+                        "tag": {
+                            "is_original": "true"
+                        },
+                        "play_count": 6954,
+                        "comment_count": 4,
+                        "duration": 1033,
+                        "publish_time": 1694501353,
+                        "user_info": {
+                            "avatar_url": "https://p3-passport.byteacctimg.com/img/user-avatar/694fdffed4d495d19626079c48ee2aae~300x300.image",
+                            "name": "宋宋Talking",
+                            "user_id": "6825122220",
+                            "user_auth_info": "",
+                            "author_desc": "历史/奇闻/人物，内容原创，请勿转载",
+                            "user_is_verified": false
+                        },
+                        "cover_image_url": "https://p6-sign.bdxiguaimg.com/tos-cn-i-0004/oIhIQBIAIAilAxzjBQNEfjABAKEIXAI5AAgyBA~tplv-pk90l89vgd-crop-center:864:486.jpeg?appId=3586\u0026channelId=94349555027\u0026customType=custom%2Fnone\u0026from=103_large_image_list\u0026imageType=video1609\u0026isImmersiveScene=0\u0026is_stream=1\u0026logId=202309142328096BA55A9EFE01EE8CC65E\u0026requestFrom=103\u0026x-expires=1726241289\u0026x-signature=kI4lPSee6OfuD6VCugSH2iuYhWw%3D"
+                    }
+                }
+            ],
+            currentIndex: 0, // 当前播放的视频索引
+        },
+        methods: {
+            playVideo(index) {
+                console.log("播放")
+                this.currentIndex = index;
+                this.$nextTick(() => {
+                    // const eleVideo = document.querySelector(".video-poster-tc");
+                    // eleVideo && eleVideo.play();
+                });
+            },
+            attach(cid) {
+                // 前端接收到cid, 通知Native同层渲染，调用insertContainer方法，传入滚动视图参数和容器标识
+                let message = {
+                    cid: cid,
+                    eventType: 'insertContainer',
+                    info: {
+                        type: 'video',
+                        url: 'http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400'
+                    }
+                };
+                window.webkit.messageHandlers.bridge.postMessage(JSON.stringify(message))
+                // TODO
+                return true
+            }
+        },
+        created() {
+            window.attach = this.attach;
+        },
+        mounted() {
+            //
         }
-    }
-
-    window.onload = function () {
-        setTimeout(()=>{
-            nativeInvoke("insert", "applets-id-video-end", {})
-        }, 100)
-
-        setTimeout(() => {
-            // let e = document.getElementById("cid_video")
-            // e.style.display = "none"
-        }, 300)
-    }
-
+    },);
 </script>
-
 </html>

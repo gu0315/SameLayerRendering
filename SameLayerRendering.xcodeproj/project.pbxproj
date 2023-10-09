@@ -7,23 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E6BC8E4F2AA06FB7005427B6 /* UIView+WindowObserving.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BC8E4E2AA06FB7005427B6 /* UIView+WindowObserving.swift */; };
-		E6BC8E512AA07173005427B6 /* SameLayerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BC8E502AA07173005427B6 /* SameLayerProtocol.swift */; };
+		E66E64F42AAF041900FDEC58 /* JSBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66E64F32AAF041900FDEC58 /* JSBridge.swift */; };
+		E66E64F62AB039C500FDEC58 /* DispatchQueue+Once.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66E64F52AB039C500FDEC58 /* DispatchQueue+Once.swift */; };
+		E6BC8E512AA07173005427B6 /* SameLayerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BC8E502AA07173005427B6 /* SameLayerDelegate.swift */; };
 		E6E9DA042A9C92DE00CC2A3D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA032A9C92DE00CC2A3D /* AppDelegate.swift */; };
 		E6E9DA062A9C92DE00CC2A3D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA052A9C92DE00CC2A3D /* SceneDelegate.swift */; };
 		E6E9DA082A9C92DE00CC2A3D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA072A9C92DE00CC2A3D /* ViewController.swift */; };
 		E6E9DA0B2A9C92DE00CC2A3D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6E9DA092A9C92DE00CC2A3D /* Main.storyboard */; };
 		E6E9DA0D2A9C92E000CC2A3D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E6E9DA0C2A9C92E000CC2A3D /* Assets.xcassets */; };
 		E6E9DA102A9C92E000CC2A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6E9DA0E2A9C92E000CC2A3D /* LaunchScreen.storyboard */; };
-		E6E9DA182A9C963500CC2A3D /* YYWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA172A9C963500CC2A3D /* YYWebView.swift */; };
-		E6E9DA1B2A9CD34700CC2A3D /* YYWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA1A2A9CD34700CC2A3D /* YYWebViewController.swift */; };
+		E6E9DA182A9C963500CC2A3D /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA172A9C963500CC2A3D /* WebView.swift */; };
+		E6E9DA1B2A9CD34700CC2A3D /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA1A2A9CD34700CC2A3D /* WebViewController.swift */; };
 		E6E9DA1D2A9CEB7000CC2A3D /* ContainerHookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA1C2A9CEB7000CC2A3D /* ContainerHookView.swift */; };
 		E6E9DA1E2A9CF48100CC2A3D /* video.html in Resources */ = {isa = PBXBuildFile; fileRef = E6E9DA192A9CD15300CC2A3D /* video.html */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		E6BC8E4E2AA06FB7005427B6 /* UIView+WindowObserving.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+WindowObserving.swift"; sourceTree = "<group>"; };
-		E6BC8E502AA07173005427B6 /* SameLayerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SameLayerProtocol.swift; sourceTree = "<group>"; };
+		E66E64F32AAF041900FDEC58 /* JSBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSBridge.swift; sourceTree = "<group>"; };
+		E66E64F52AB039C500FDEC58 /* DispatchQueue+Once.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Once.swift"; sourceTree = "<group>"; };
+		E6BC8E502AA07173005427B6 /* SameLayerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SameLayerDelegate.swift; sourceTree = "<group>"; };
 		E6E9DA002A9C92DE00CC2A3D /* SameLayerRendering.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SameLayerRendering.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6E9DA032A9C92DE00CC2A3D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E6E9DA052A9C92DE00CC2A3D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -32,9 +34,9 @@
 		E6E9DA0C2A9C92E000CC2A3D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E6E9DA0F2A9C92E000CC2A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E6E9DA112A9C92E000CC2A3D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E6E9DA172A9C963500CC2A3D /* YYWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YYWebView.swift; sourceTree = "<group>"; };
+		E6E9DA172A9C963500CC2A3D /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		E6E9DA192A9CD15300CC2A3D /* video.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = video.html; sourceTree = "<group>"; };
-		E6E9DA1A2A9CD34700CC2A3D /* YYWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YYWebViewController.swift; sourceTree = "<group>"; };
+		E6E9DA1A2A9CD34700CC2A3D /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		E6E9DA1C2A9CEB7000CC2A3D /* ContainerHookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerHookView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -75,12 +77,13 @@
 				E6E9DA0C2A9C92E000CC2A3D /* Assets.xcassets */,
 				E6E9DA0E2A9C92E000CC2A3D /* LaunchScreen.storyboard */,
 				E6E9DA112A9C92E000CC2A3D /* Info.plist */,
-				E6E9DA172A9C963500CC2A3D /* YYWebView.swift */,
-				E6E9DA1C2A9CEB7000CC2A3D /* ContainerHookView.swift */,
 				E6E9DA192A9CD15300CC2A3D /* video.html */,
-				E6E9DA1A2A9CD34700CC2A3D /* YYWebViewController.swift */,
-				E6BC8E4E2AA06FB7005427B6 /* UIView+WindowObserving.swift */,
-				E6BC8E502AA07173005427B6 /* SameLayerProtocol.swift */,
+				E66E64F32AAF041900FDEC58 /* JSBridge.swift */,
+				E6E9DA172A9C963500CC2A3D /* WebView.swift */,
+				E6E9DA1A2A9CD34700CC2A3D /* WebViewController.swift */,
+				E6E9DA1C2A9CEB7000CC2A3D /* ContainerHookView.swift */,
+				E6BC8E502AA07173005427B6 /* SameLayerDelegate.swift */,
+				E66E64F52AB039C500FDEC58 /* DispatchQueue+Once.swift */,
 			);
 			path = SameLayerRendering;
 			sourceTree = "<group>";
@@ -158,13 +161,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6E9DA082A9C92DE00CC2A3D /* ViewController.swift in Sources */,
-				E6E9DA1B2A9CD34700CC2A3D /* YYWebViewController.swift in Sources */,
+				E66E64F42AAF041900FDEC58 /* JSBridge.swift in Sources */,
+				E6E9DA1B2A9CD34700CC2A3D /* WebViewController.swift in Sources */,
 				E6E9DA1D2A9CEB7000CC2A3D /* ContainerHookView.swift in Sources */,
-				E6E9DA182A9C963500CC2A3D /* YYWebView.swift in Sources */,
+				E6E9DA182A9C963500CC2A3D /* WebView.swift in Sources */,
+				E66E64F62AB039C500FDEC58 /* DispatchQueue+Once.swift in Sources */,
 				E6E9DA042A9C92DE00CC2A3D /* AppDelegate.swift in Sources */,
-				E6BC8E4F2AA06FB7005427B6 /* UIView+WindowObserving.swift in Sources */,
 				E6E9DA062A9C92DE00CC2A3D /* SceneDelegate.swift in Sources */,
-				E6BC8E512AA07173005427B6 /* SameLayerProtocol.swift in Sources */,
+				E6BC8E512AA07173005427B6 /* SameLayerDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

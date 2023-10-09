@@ -30,7 +30,7 @@ class ViewController: UIViewController {
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = YYWebViewController()
+        let vc = WebViewController()
         self.navigationController?.pushViewController(vc, animated: false)
     }
     
