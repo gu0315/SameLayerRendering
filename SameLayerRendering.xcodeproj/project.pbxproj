@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		E66E64F42AAF041900FDEC58 /* JSBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66E64F32AAF041900FDEC58 /* JSBridge.swift */; };
 		E66E64F62AB039C500FDEC58 /* DispatchQueue+Once.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66E64F52AB039C500FDEC58 /* DispatchQueue+Once.swift */; };
+		E69242972AD3DA41006D6DCD /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69242962AD3DA41006D6DCD /* VideoPlayer.swift */; };
+		E69242A32AD40477006D6DCD /* FullscreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69242A22AD40477006D6DCD /* FullscreenViewController.swift */; };
 		E6BC8E512AA07173005427B6 /* SameLayerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BC8E502AA07173005427B6 /* SameLayerDelegate.swift */; };
 		E6E9DA042A9C92DE00CC2A3D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA032A9C92DE00CC2A3D /* AppDelegate.swift */; };
 		E6E9DA062A9C92DE00CC2A3D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA052A9C92DE00CC2A3D /* SceneDelegate.swift */; };
@@ -25,6 +27,9 @@
 /* Begin PBXFileReference section */
 		E66E64F32AAF041900FDEC58 /* JSBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSBridge.swift; sourceTree = "<group>"; };
 		E66E64F52AB039C500FDEC58 /* DispatchQueue+Once.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Once.swift"; sourceTree = "<group>"; };
+		E69242962AD3DA41006D6DCD /* VideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayer.swift; sourceTree = "<group>"; };
+		E69242982AD40313006D6DCD /* SameLayerRendering-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SameLayerRendering-Bridging-Header.h"; sourceTree = "<group>"; };
+		E69242A22AD40477006D6DCD /* FullscreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullscreenViewController.swift; sourceTree = "<group>"; };
 		E6BC8E502AA07173005427B6 /* SameLayerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SameLayerDelegate.swift; sourceTree = "<group>"; };
 		E6E9DA002A9C92DE00CC2A3D /* SameLayerRendering.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SameLayerRendering.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6E9DA032A9C92DE00CC2A3D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -84,6 +89,9 @@
 				E6E9DA1C2A9CEB7000CC2A3D /* ContainerHookView.swift */,
 				E6BC8E502AA07173005427B6 /* SameLayerDelegate.swift */,
 				E66E64F52AB039C500FDEC58 /* DispatchQueue+Once.swift */,
+				E69242962AD3DA41006D6DCD /* VideoPlayer.swift */,
+				E69242982AD40313006D6DCD /* SameLayerRendering-Bridging-Header.h */,
+				E69242A22AD40477006D6DCD /* FullscreenViewController.swift */,
 			);
 			path = SameLayerRendering;
 			sourceTree = "<group>";
@@ -120,6 +128,7 @@
 				TargetAttributes = {
 					E6E9D9FF2A9C92DE00CC2A3D = {
 						CreatedOnToolsVersion = 14.1;
+						LastSwiftMigration = 1410;
 					};
 				};
 			};
@@ -165,7 +174,9 @@
 				E6E9DA1B2A9CD34700CC2A3D /* WebViewController.swift in Sources */,
 				E6E9DA1D2A9CEB7000CC2A3D /* ContainerHookView.swift in Sources */,
 				E6E9DA182A9C963500CC2A3D /* WebView.swift in Sources */,
+				E69242A32AD40477006D6DCD /* FullscreenViewController.swift in Sources */,
 				E66E64F62AB039C500FDEC58 /* DispatchQueue+Once.swift in Sources */,
+				E69242972AD3DA41006D6DCD /* VideoPlayer.swift in Sources */,
 				E6E9DA042A9C92DE00CC2A3D /* AppDelegate.swift in Sources */,
 				E6E9DA062A9C92DE00CC2A3D /* SceneDelegate.swift in Sources */,
 				E6BC8E512AA07173005427B6 /* SameLayerDelegate.swift in Sources */,
@@ -313,6 +324,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2NK6B734A5;
@@ -332,6 +344,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.dongxie.layout.SameLayerRendering;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "SameLayerRendering/SameLayerRendering-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -342,6 +356,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2NK6B734A5;
@@ -361,6 +376,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.dongxie.layout.SameLayerRendering;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "SameLayerRendering/SameLayerRendering-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

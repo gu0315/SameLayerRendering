@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-public final class ContainerHookView: UIView {
+public class ContainerHookView: UIView {
     // 详看 WebKit中 - (UIView *)_web_findDescendantViewAtPoint:(CGPoint)point withEvent:(UIEvent *)event {} 
     public override func conforms(to aProtocol: Protocol) -> Bool {
         if NSStringFromProtocol(aProtocol) == "WKNativelyInteractible" {

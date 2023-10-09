@@ -164,7 +164,6 @@
                 <!-- 同层渲染部分 __tongceng_cid_ --> <!-- TODO -->
                 <div v-if="currentIndex === index" :class="[`__tongceng_cid_${index}`, 'video']">
                     <video v-if="currentIndex === index"
-                           controls
                            class="video-poster-tc">
                         <source src="http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400" type="video/mp4">
                     </video>
@@ -312,10 +311,13 @@
             playVideo(index) {
                 console.log("播放")
                 this.currentIndex = index;
-                this.$nextTick(() => {
-                    // const eleVideo = document.querySelector(".video-poster-tc");
-                    // eleVideo && eleVideo.play();
-                });
+                // Native播放
+
+                // H5播放
+                // this.$nextTick(() => {
+                //     const eleVideo = document.querySelector(".video-poster-tc");
+                //     eleVideo && eleVideo.play();
+                // });
             },
             attach(cid) {
                 // 前端接收到cid, 通知Native同层渲染，调用insertContainer方法，传入滚动视图参数和容器标识
@@ -328,7 +330,6 @@
                     }
                 };
                 window.webkit.messageHandlers.bridge.postMessage(JSON.stringify(message))
-                // TODO
                 return true
             }
         },

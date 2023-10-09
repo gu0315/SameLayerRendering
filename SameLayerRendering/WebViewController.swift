@@ -100,7 +100,6 @@ extension WebViewController: SameLayerDelegate {
         if childScrollView.window != nil {
             // 视图已经被添加到窗口中
             // 向H5发送attach事件，告诉H5,Native已经查找到WKChildScrollView，用于添加Native元素
-            print("tongcengId", tongcengId)
             let attach = "attach('\(tongcengId)');"
             self.jsBridge?.triggerEvent(attach, completionHandler: { result, error in
                 if (error == nil && (result as? Bool) == true) {

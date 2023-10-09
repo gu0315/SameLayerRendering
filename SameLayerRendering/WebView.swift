@@ -30,7 +30,6 @@ class WebView: WKWebView {
             handleWKContentGestures()
             didHandleWKContentGestrues = true
         }
-    
         let cls: AnyClass = NSClassFromString("WKChildScrollView")!
         if let childScrollView = hitView, childScrollView.isKind(of: cls) {
             var hitView: UIView?
@@ -157,13 +156,11 @@ extension WKWebView {
                 }
                 if (webView.sameLayerDelegate != nil) {
                     guard let tongcengId = self.getTongcengCidWithRenderName(renderName) else { return }
-                    // TODO 是否校验tongcengId
                     // assert(!webView.tongcengNativeViews.keys.contains(tongcengId), "存在相同的tongcengId\(tongcengId)")
                     // 把WKChildScrollView缓存起来，方便下次查找
                     webView.tongcengContainers[tongcengId] = self
                     webView.sameLayerDelegate?.wKChildScrollViewdidMoveToWindow(childScrollView: self, tongcengId: tongcengId)
                 }
-                print(renderName)
             } else {
                 // 非同层渲染场景
             }
@@ -196,16 +193,17 @@ extension WebView  {
         if (container == nil) {
             container = isScrollViewFoundById(containerId, rootView: self.scrollView)
         }
-        // TODO 插入视频组件
-        let lab = UILabel.init(frame: container!.bounds)
-        lab.text = "TODO待插入组件"
-        lab.backgroundColor = .red
-        container!.addSubview(lab)
+        if let url: String = info["url"], info["type"] == "video" {
+            let playerView = AVPlayerView(frame: container!.bounds)
+            playerView.setVideoURL(url)
+            container!.addSubview(playerView)
+        }
     }
     
     
     ///  回流更新
     /// - Parameter containerId: 容器ID
     func updateContainer(containerId: String, info: [String: String]) {
+        //
     }
 }
