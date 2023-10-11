@@ -14,6 +14,8 @@ class WebView: WKWebView {
     
     public var tongcengContainers: Dictionary<String, UIView> = [:]
     
+    public var tongcengViews: Dictionary<String, UIView> = [:]
+    
     public weak var sameLayerDelegate: SameLayerDelegate?
     
     override init(frame: CGRect, configuration: WKWebViewConfiguration) {
@@ -136,7 +138,7 @@ extension WKWebView {
         }
     }
     
-    /// WKChildScrollView ------>  didMoveToSuperview
+    /// WKChildScrollView ------>  hookDidMoveToWindow
     @objc func hookDidMoveToWindow() {
         self.hookDidMoveToWindow()
         // TODO ⚠️ id/class 过长会取不全显示...，暂时没有找到方法
@@ -193,10 +195,21 @@ extension WebView  {
         if (container == nil) {
             container = isScrollViewFoundById(containerId, rootView: self.scrollView)
         }
-        if let url: String = info["url"], info["type"] == "video" {
-            let playerView = AVPlayerView(frame: container!.bounds)
-            playerView.setVideoURL(url)
-            container!.addSubview(playerView)
+        if let url: String = info["video_url"], info["type"] == "video" {
+            guard let vid: String = info["id"] else {
+                return
+            }
+            if (tongcengViews[vid] != nil)  {
+                guard let playerView: AVPlayerView = tongcengViews[vid] as? AVPlayerView else { return }
+                playerView.setVideoURL(url)
+                container!.addSubview(playerView)
+                tongcengViews[vid] = playerView
+            } else {
+                let playerView: AVPlayerView =  AVPlayerView.init(frame: container!.bounds)
+                playerView.setVideoURL(url)
+                container!.addSubview(playerView)
+                tongcengViews[vid] = playerView
+            }
         }
     }
     

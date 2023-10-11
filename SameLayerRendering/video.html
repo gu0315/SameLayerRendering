@@ -149,15 +149,15 @@
 <div id="app">
     <template>
         <div class="xigua-feedlist">
-            <div v-for="(item, index) in videos" :key="item.data.key" class="item">
+            <div v-for="(item, index) in videos" :key="item.key" class="item">
                 <div class="item-info">
                     <img class="item-info-avatar"
-                         :src="item.data.user_info.avatar_url"
+                         :src="item.avatar_url"
                          alt="">
                     <div class="item-info-container">
-                        <div class="item-info-user-name">{{item.data.user_info.name}}</div>
+                        <div class="item-info-user-name">{{item.title}}</div>
                         <div class="item-info-title">
-                            {{item.data.title}}
+                            标题
                         </div>
                     </div>
                 </div>
@@ -165,15 +165,15 @@
                 <div v-if="currentIndex === index" :class="[`__tongceng_cid_${index}`, 'video']">
                     <video v-if="currentIndex === index"
                            class="video-poster-tc">
-                        <source src="http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400" type="video/mp4">
+                        <source :src="item.url" type="video/mp4">
                     </video>
                 </div>
                 <div class="video" v-else>
-                    <img :src="item.data.cover_image_url" class="video-poster"/>
+                    <img :src="item.thumbnail_url" class="video-poster"/>
                     <div class="video-play-btn" @click="playVideo(index)"></div>
                     <div class="item-video-tag"><span
-                        class="item-video-tag-item">{{item.data.play_count}}次观看</span><span
-                        class="item-video-tag-item">{{item.data.duration}}</span></div>
+                        class="item-video-tag-item">次观看</span><span
+                        class="item-video-tag-item">--------</span></div>
                 </div>
                 <div class="item-divider"></div>
             </div>
@@ -187,122 +187,25 @@
     new Vue({
         el: "#app",
         data: {
-            videos: [
+            videos:[
                 {
-                    "key": "7276378185482207799",
-                    "cell_type": 303,
-                    "max_time": "1694705289",
-                    "data": {
-                        "log_pb": "{\"author_id\":\"54908952807\",\"category_name\":\"xg_video_m_feed\",\"enter_from\":\"\",\"group_id\":\"7276378185482207799\",\"group_source\":\"2\",\"impr_id\":\"202309142328096BA55A9EFE01EE8CC65E\",\"impr_source\":\"\",\"impr_type\":\"channel\",\"is_following\":\"0\",\"is_revisit\":\"0\",\"item_type\":\"1\",\"list_type\":\"1\",\"recommend_type\":\"recommend\"}",
-                        "behot_time": "1694705289",
-                        "group_id": "7276378185482207799",
-                        "video_id": "v02004g10000cjttf6bc77u9kfbokadg",
-                        "title": "72小时索命游戏，高智商罪犯在警察眼皮子下逃脱，这才是港片巅峰",
-                        "video_tag": "video_movie",
-                        "tag": {
-                            "is_original": "true"
-                        },
-                        "play_count": 10449,
-                        "comment_count": 8,
-                        "duration": 787,
-                        "publish_time": 1694163816,
-                        "user_info": {
-                            "avatar_url": "https://p26-passport.byteacctimg.com/img/user-avatar/b6b67e3a8db336bb86c49f4af1e1dc8f~300x300.image",
-                            "name": "木卫四talk",
-                            "user_id": "54908952807",
-                            "user_auth_info": "{\"auth_info\":\"优质影视领域创作者\",\"auth_type\":\"0\",\"other_auth\":{\"interest\":\"优质影视领域创作者\"}}",
-                            "author_desc": "镜头中的世界，电影里的人生。我是木卫四，和你聊聊电影的一切。",
-                            "user_is_verified": true
-                        },
-                        "cover_image_url": "https://p26-sign.bdxiguaimg.com/tos-cn-i-0004/ootYcOzjEfAFItCfSAhCA4AAAPX6tRt6kCsDgN~tplv-pk90l89vgd-crop-center:864:486.jpeg?appId=3586\u0026channelId=94349555027\u0026customType=custom%2Fnone\u0026from=103_large_image_list\u0026imageType=video1609\u0026isImmersiveScene=0\u0026is_stream=1\u0026logId=202309142328096BA55A9EFE01EE8CC65E\u0026requestFrom=103\u0026x-expires=1726241289\u0026x-signature=VdAVLZDsFjqDZrglvyc6OpzcYcQ%3D"
-                    }
+                    "key": 0,
+                    "id": "tong-cheng-video",
+                    "type": "video",
+                    "avatar_url": "http:\/\/imgsrc.baidu.com\/forum\/eWH%3D640%2C360\/sign=265d1891f11f4134f25d7873132ba5e6\/4e4a20a4462309f7101128607e0e0cf3d7cad642.jpg", "title": "\u5927\u7237\u53d1\u73b0\u77f3\u5934\u4e0a\u6709\u5947\u602a\u51f8\u8d77\uff0c\u6572\u5f00\u540e\u5927\u7237\u7b80\u76f4\u4e50\u75af\u4e86\uff01\u6211\u90fd\u60ca\u4e86\uff01",
+                    "origin_video_url": "http:\/\/tb-video.bdstatic.com\/videocp\/12045395_f9f87b84aaf4ff1fee62742f2d39687f.mp4",
+                    "video_url": "https://media.w3.org/2010/05/sintel/trailer.mp4",
+                    "thumbnail_url": "http:\/\/imgsrc.baidu.com\/forum\/eWH%3D640%2C360\/sign=265d1891f11f4134f25d7873132ba5e6\/4e4a20a4462309f7101128607e0e0cf3d7cad642.jpg"
                 },
                 {
-                    "key": "7276039122513297980",
-                    "cell_type": 303,
-                    "max_time": "1694705236",
-                    "data": {
-                        "log_pb": "{\"author_id\":\"5743591977\",\"category_name\":\"xg_video_m_feed\",\"enter_from\":\"\",\"group_id\":\"7276039122513297980\",\"group_source\":\"2\",\"impr_id\":\"202309142328096BA55A9EFE01EE8CC65E\",\"impr_source\":\"\",\"impr_type\":\"channel\",\"is_following\":\"0\",\"is_revisit\":\"0\",\"item_type\":\"1\",\"list_type\":\"1\",\"recommend_type\":\"recommend\"}",
-                        "behot_time": "1694705236",
-                        "group_id": "7276039122513297980",
-                        "video_id": "v02004g10000cjsqmgrc77u4gch90bk0",
-                        "title": "“你没有父母吗”保洁阿姨被年轻同事当众辱骂，路人看不下去了",
-                        "video_tag": "news",
-                        "tag": {
-                            "is_original": "true"
-                        },
-                        "play_count": 20278,
-                        "comment_count": 77,
-                        "duration": 368,
-                        "publish_time": 1694143680,
-                        "user_info": {
-                            "avatar_url": "https://p6-passport.byteacctimg.com/img/mosaic-legacy/4e7b00019b3a1a5a8cbf~300x300.image",
-                            "name": "大树君",
-                            "user_id": "5743591977",
-                            "user_auth_info": "{\"auth_info\":\"知名社会实验和街头恶搞节目\",\"auth_type\":\"0\",\"other_auth\":{\"interest\":\"\"}}",
-                            "author_desc": "记录平凡人的不平凡！",
-                            "user_is_verified": true
-                        },
-                        "cover_image_url": "https://p26-sign.bdxiguaimg.com/tos-cn-i-0004/osEvAreezeDAMAaAEJDnWqbdIAUWA6CvBE5l1j~tplv-pk90l89vgd-crop-center:864:486.jpeg?appId=3586\u0026channelId=94349555027\u0026customType=custom%2Fnone\u0026from=103_large_image_list\u0026imageType=video1609\u0026isImmersiveScene=0\u0026is_stream=1\u0026logId=202309142328096BA55A9EFE01EE8CC65E\u0026requestFrom=103\u0026x-expires=1726241289\u0026x-signature=UEWheAmmIcaLniIQPUtJYFok1%2BE%3D"
-                    }
-                },
-                {
-                    "key": "7268971118059815485",
-                    "cell_type": 303,
-                    "max_time": "1694705184",
-                    "data": {
-                        "log_pb": "{\"author_id\":\"82385616767\",\"category_name\":\"xg_video_m_feed\",\"enter_from\":\"\",\"group_id\":\"7268971118059815485\",\"group_source\":\"2\",\"impr_id\":\"202309142328096BA55A9EFE01EE8CC65E\",\"impr_source\":\"\",\"impr_type\":\"channel\",\"is_following\":\"0\",\"is_revisit\":\"0\",\"item_type\":\"1\",\"list_type\":\"1\",\"recommend_type\":\"recommend\"}",
-                        "behot_time": "1694705184",
-                        "group_id": "7268971118059815485",
-                        "video_id": "v02004g10000cjgu50fog65nfejc16l0",
-                        "title": "43岁，年营收3个亿，却“放下”尊严，直播间跳舞卖衣服！#程前",
-                        "video_tag": "news",
-                        "tag": {
-                            "is_original": "true"
-                        },
-                        "play_count": 33674,
-                        "comment_count": 40,
-                        "duration": 901,
-                        "publish_time": 1692439224,
-                        "user_info": {
-                            "avatar_url": "https://p26-passport.byteacctimg.com/img/user-avatar/77d12244b2f645fde1ac26cdfaabdc82~300x300.image",
-                            "name": "程前朋友圈",
-                            "user_id": "82385616767",
-                            "user_auth_info": "{\"auth_info\":\"优质生活领域创作者\",\"auth_type\":\"0\",\"other_auth\":{\"interest\":\"优质生活领域创作者\"}}",
-                            "author_desc": "抖音商业创业类知识博主\n和更多创业者链接\n正在做一个影响创业者的创业者\n✈️专注商业采访",
-                            "user_is_verified": true
-                        },
-                        "cover_image_url": "https://p26-sign.bdxiguaimg.com/tos-cn-i-dy/c04d02a1d0504defa54d12f6f0c316e8~tplv-pk90l89vgd-crop-center:864:486.jpeg?appId=3586\u0026channelId=94349555027\u0026customType=custom%2Fnone\u0026from=103_large_image_list\u0026imageType=video1609\u0026isImmersiveScene=0\u0026is_stream=1\u0026logId=202309142328096BA55A9EFE01EE8CC65E\u0026requestFrom=103\u0026x-expires=1726241289\u0026x-signature=PlB5rrPobApZc2YPKLiN95ppo%2Fc%3D"
-                    }
-                },
-                {
-                    "key": "7277827895966302735",
-                    "cell_type": 303,
-                    "max_time": "1694705132",
-                    "data": {
-                        "log_pb": "{\"author_id\":\"6825122220\",\"category_name\":\"xg_video_m_feed\",\"enter_from\":\"\",\"group_id\":\"7277827895966302735\",\"group_source\":\"2\",\"impr_id\":\"202309142328096BA55A9EFE01EE8CC65E\",\"impr_source\":\"\",\"impr_type\":\"channel\",\"is_following\":\"0\",\"is_revisit\":\"0\",\"item_type\":\"1\",\"list_type\":\"1\",\"recommend_type\":\"recommend\"}",
-                        "behot_time": "1694705132",
-                        "group_id": "7277827895966302735",
-                        "video_id": "v03004g10000ck005njc77uc29hiaaa0",
-                        "title": "日本津山事件，少年杀光村中30人，原因你绝对猜不到",
-                        "video_tag": "",
-                        "tag": {
-                            "is_original": "true"
-                        },
-                        "play_count": 6954,
-                        "comment_count": 4,
-                        "duration": 1033,
-                        "publish_time": 1694501353,
-                        "user_info": {
-                            "avatar_url": "https://p3-passport.byteacctimg.com/img/user-avatar/694fdffed4d495d19626079c48ee2aae~300x300.image",
-                            "name": "宋宋Talking",
-                            "user_id": "6825122220",
-                            "user_auth_info": "",
-                            "author_desc": "历史/奇闻/人物，内容原创，请勿转载",
-                            "user_is_verified": false
-                        },
-                        "cover_image_url": "https://p6-sign.bdxiguaimg.com/tos-cn-i-0004/oIhIQBIAIAilAxzjBQNEfjABAKEIXAI5AAgyBA~tplv-pk90l89vgd-crop-center:864:486.jpeg?appId=3586\u0026channelId=94349555027\u0026customType=custom%2Fnone\u0026from=103_large_image_list\u0026imageType=video1609\u0026isImmersiveScene=0\u0026is_stream=1\u0026logId=202309142328096BA55A9EFE01EE8CC65E\u0026requestFrom=103\u0026x-expires=1726241289\u0026x-signature=kI4lPSee6OfuD6VCugSH2iuYhWw%3D"
-                    }
+                    "key": 1,
+                    "id": "tong-cheng-video",
+                    "type": "video",
+                    "avatar_url": "http:\/\/imgsrc.baidu.com\/forum\/eWH%3D640%2C360\/sign=265d1891f11f4134f25d7873132ba5e6\/4e4a20a4462309f7101128607e0e0cf3d7cad642.jpg",
+                    "title": "\u201c\u6d41\u6d6a\u6c49\u201d\u5728\u5546\u573a\u4e5e\u8ba8\uff0c\u6380\u5f00\u4ed6\u7684\u5e3d\u5b50\uff0c\u9732\u51fa\u771f\u5bb9\u540e\uff0c\u6240\u6709\u4eba\u50bb\u773c\u4e86",
+                    "origin_video_url": "http:\/\/tb-video.bdstatic.com\/videocp\/16514218_b3883a9f1e041a181bda58804e0a5192.mp4",
+                    "video_url": "https://www.apple.com.cn/105/media/cn/airpods-pro/2022/d2deeb8e-83eb-48ea-9721-f567cf0fffa8/films/under-the-spell/airpods-pro-under-the-spell-tpl-cn-2022_16x9.m3u8",
+                    "thumbnail_url": "http:\/\/imgsrc.baidu.com\/forum\/eWH%3D640%2C360\/sign=5215f006ffdeb48fe903dcd3c62b0a05\/9f2f070828381f3046cbe7cea5014c086f06f083.jpg"
                 }
             ],
             currentIndex: 0, // 当前播放的视频索引
@@ -320,13 +223,15 @@
                 // });
             },
             attach(cid) {
+                console.log("this.videos[cid].video_url",  this.videos[cid].video_url)
                 // 前端接收到cid, 通知Native同层渲染，调用insertContainer方法，传入滚动视图参数和容器标识
                 let message = {
                     cid: cid,
                     eventType: 'insertContainer',
                     info: {
                         type: 'video',
-                        url: 'http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400'
+                        id: 'video',
+                        video_url: this.videos[cid].video_url
                     }
                 };
                 window.webkit.messageHandlers.bridge.postMessage(JSON.stringify(message))

@@ -7,27 +7,43 @@
 import UIKit
 import AVFoundation
 import AVKit
+import SnapKit
 
 class AVPlayerView: ContainerHookView {
     // AVPlayer 相关属性
-    private var player: AVPlayer?
+    var player: AVPlayer?
     
-    private var playerLayer: AVPlayerLayer?
+    var playerLayer: AVPlayerLayer?
+    
+    private var animationTransitioning: FullScreenAnimated?
+    
+    private var fullScreenViewController: FullScreenViewController?
     
     var isFullScreen = false
     
+    private var originFream: CGRect = .zero
+    
     // 控件元素
     private var playButton: UIButton!
+    
     private var fullScreenButton: UIButton!
+    
+    var contentView: UIView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        originFream = frame
+        contentView = UIView()
+        addSubview(contentView)
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
         
         // 初始化 AVPlayer
         player = AVPlayer()
         playerLayer = AVPlayerLayer(player: player)
-        playerLayer?.frame = self.bounds;
-        layer.addSublayer(playerLayer!)
+        contentView.layer.addSublayer(playerLayer!)
+        
         
         // 创建播放按钮
         playButton = UIButton(type: .system)
@@ -35,16 +51,38 @@ class AVPlayerView: ContainerHookView {
         playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         
         // 添加控件到视图
-        addSubview(playButton)
-        playButton.frame = CGRect.init(x: (self.bounds.width - 100) / 2, y: (self.bounds.height - 100) / 2, width: 100, height: 100)
+        contentView.addSubview(playButton)
+        playButton.snp.makeConstraints { make in
+            make.center.equalTo(self)
+            make.width.height.equalTo(100)
+        }
         
         fullScreenButton = UIButton(type: .system)
         fullScreenButton.setTitle("全屏", for: .normal)
         fullScreenButton.addTarget(self, action: #selector(fullScreenButtonTapped), for: .touchUpInside)
-        fullScreenButton.frame = CGRect.init(x: (self.bounds.width - 100), y: (self.bounds.height - 100), width: 100, height: 100)
-        addSubview(fullScreenButton)
+        contentView.addSubview(fullScreenButton)
+        fullScreenButton.snp.makeConstraints { make in
+            make.bottom.equalTo(self).offset(-20)
+            make.right.equalTo(self).offset(-20)
+            make.width.height.equalTo(100)
+        }
         
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(orientationDidChange), name: UIDevice.orientationDidChangeNotification, object: nil)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        playerLayer?.frame = self.bounds
+    }
+    
+    @objc func orientationDidChange() {
+        let orientation = UIDevice.current.orientation
+        //
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
+        print("播放器--------deinit")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -65,9 +103,26 @@ class AVPlayerView: ContainerHookView {
     @objc private func fullScreenButtonTapped() {
         isFullScreen = !isFullScreen
         if (isFullScreen) {
-            
+            guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else { return }
+            animationTransitioning = FullScreenAnimated.init(_playerView: self)
+            fullScreenViewController = FullScreenViewController()
+            fullScreenViewController?.transitioningDelegate = self
+            fullScreenViewController?.modalPresentationStyle = .fullScreen
+            rootViewController.present(fullScreenViewController!, animated: true, completion: {
+                 UIViewController.attemptRotationToDeviceOrientation()
+            })
         } else {
             
+            self.setNeedsLayout()
+            self.layoutSubviews()
+            animationTransitioning?.playerView!.snp.updateConstraints { make in
+                make.center.equalToSuperview()
+                make.width.equalTo(originFream.width)
+                make.height.equalTo(originFream.height)
+            }
+            self.transform = .init(rotationAngle: 0)
+            fullScreenViewController?.dismiss(animated: false)
+            fullScreenViewController = nil
         }
     }
     
@@ -77,58 +132,26 @@ class AVPlayerView: ContainerHookView {
             return
         }
         let playerItem = AVPlayerItem(url: url)
+        player?.replaceCurrentItem(with: nil)
         player?.replaceCurrentItem(with: playerItem)
         player?.play()
         playButton.setTitle("Pause", for: .normal)
     }
     
+    func destroy() {
+        player?.replaceCurrentItem(with: nil)
+    }
+    
 }
 
 
-
-extension NSObject {
-    // 获取最顶层的控制器
-    @objc static func applicationTopVC() -> UIViewController? {
-        var window: UIWindow? = UIApplication.shared.windows[0]
-        if window?.windowLevel != UIWindow.Level.normal {
-            let windows = UIApplication.shared.windows
-            for tmpWin: UIWindow in windows {
-                if tmpWin.windowLevel == UIWindow.Level.normal {
-                    window = tmpWin
-                    break
-                }
-            }
-        }
-        return self.topViewControllerWithRootViewController(rootViewController: window?.rootViewController)
+extension AVPlayerView: UIViewControllerTransitioningDelegate {
+    
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return animationTransitioning
     }
     
-    static func topViewControllerWithRootViewController(rootViewController: UIViewController?) -> UIViewController? {
-        if rootViewController == nil {
-            print("❌❌❌❌❌❌无根控制器❌❌❌❌❌❌")
-            return nil
-        }
-        if let vc = rootViewController as? UITabBarController {
-            if vc.viewControllers != nil {
-                return topViewControllerWithRootViewController(rootViewController: vc.selectedViewController)
-            } else {
-                return vc
-            }
-        } else if let vc = rootViewController as? UINavigationController {
-            if vc.viewControllers.count > 0 {
-                return topViewControllerWithRootViewController(rootViewController: vc.visibleViewController)
-            } else {
-                return vc
-            }
-        } else if let vc = rootViewController as? UISplitViewController {
-            if vc.viewControllers.count > 0 {
-                return topViewControllerWithRootViewController(rootViewController: vc.viewControllers.last)
-            } else {
-                return vc
-            }
-        } else if let vc = rootViewController?.presentedViewController {
-            return topViewControllerWithRootViewController(rootViewController: vc)
-        } else {
-            return rootViewController
-        }
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return animationTransitioning
     }
 }

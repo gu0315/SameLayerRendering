@@ -8,15 +8,14 @@
 import UIKit
 import AVKit
 
-class FullscreenViewController: UIViewController {
+class FullScreenViewController: UIViewController {
 
-    let playerLayer = AVPlayerLayer()
+    
 
     override func viewDidLoad() {
        super.viewDidLoad()
        
-       playerLayer.frame = view.bounds
-       view.layer.insertSublayer(playerLayer, at: 0)
+       
      }
 
     /*
@@ -32,7 +31,7 @@ class FullscreenViewController: UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
       super.viewWillTransition(to: size, with: coordinator)
       
-      playerLayer.frame = view.bounds
+  
     }
 
 }

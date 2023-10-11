@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6CC55AC665FFFBB765864F93 /* Pods_SameLayerRendering.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24E5063411A5709F84F3A120 /* Pods_SameLayerRendering.framework */; };
 		E66E64F42AAF041900FDEC58 /* JSBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66E64F32AAF041900FDEC58 /* JSBridge.swift */; };
 		E66E64F62AB039C500FDEC58 /* DispatchQueue+Once.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66E64F52AB039C500FDEC58 /* DispatchQueue+Once.swift */; };
 		E69242972AD3DA41006D6DCD /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69242962AD3DA41006D6DCD /* VideoPlayer.swift */; };
-		E69242A32AD40477006D6DCD /* FullscreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69242A22AD40477006D6DCD /* FullscreenViewController.swift */; };
+		E69242A32AD40477006D6DCD /* FullScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69242A22AD40477006D6DCD /* FullScreenViewController.swift */; };
+		E69242A62AD542DE006D6DCD /* FullScreenAnimated.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69242A52AD542DE006D6DCD /* FullScreenAnimated.swift */; };
 		E6BC8E512AA07173005427B6 /* SameLayerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BC8E502AA07173005427B6 /* SameLayerDelegate.swift */; };
 		E6E9DA042A9C92DE00CC2A3D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA032A9C92DE00CC2A3D /* AppDelegate.swift */; };
 		E6E9DA062A9C92DE00CC2A3D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA052A9C92DE00CC2A3D /* SceneDelegate.swift */; };
@@ -25,11 +27,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		24E5063411A5709F84F3A120 /* Pods_SameLayerRendering.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SameLayerRendering.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		684DAD5898EECC99FFE169EC /* Pods-SameLayerRendering.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SameLayerRendering.release.xcconfig"; path = "Target Support Files/Pods-SameLayerRendering/Pods-SameLayerRendering.release.xcconfig"; sourceTree = "<group>"; };
+		9DDC724D339EDD6C56C29730 /* Pods-SameLayerRendering.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SameLayerRendering.debug.xcconfig"; path = "Target Support Files/Pods-SameLayerRendering/Pods-SameLayerRendering.debug.xcconfig"; sourceTree = "<group>"; };
 		E66E64F32AAF041900FDEC58 /* JSBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSBridge.swift; sourceTree = "<group>"; };
 		E66E64F52AB039C500FDEC58 /* DispatchQueue+Once.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Once.swift"; sourceTree = "<group>"; };
 		E69242962AD3DA41006D6DCD /* VideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayer.swift; sourceTree = "<group>"; };
 		E69242982AD40313006D6DCD /* SameLayerRendering-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SameLayerRendering-Bridging-Header.h"; sourceTree = "<group>"; };
-		E69242A22AD40477006D6DCD /* FullscreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullscreenViewController.swift; sourceTree = "<group>"; };
+		E69242A22AD40477006D6DCD /* FullScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewController.swift; sourceTree = "<group>"; };
+		E69242A52AD542DE006D6DCD /* FullScreenAnimated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenAnimated.swift; sourceTree = "<group>"; };
 		E6BC8E502AA07173005427B6 /* SameLayerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SameLayerDelegate.swift; sourceTree = "<group>"; };
 		E6E9DA002A9C92DE00CC2A3D /* SameLayerRendering.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SameLayerRendering.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6E9DA032A9C92DE00CC2A3D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -50,17 +56,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6CC55AC665FFFBB765864F93 /* Pods_SameLayerRendering.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0DA1F1816822625ADBDDEE1B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9DDC724D339EDD6C56C29730 /* Pods-SameLayerRendering.debug.xcconfig */,
+				684DAD5898EECC99FFE169EC /* Pods-SameLayerRendering.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		59A621CCDEEC4163A18E43FB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				24E5063411A5709F84F3A120 /* Pods_SameLayerRendering.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E6E9D9F72A9C92DE00CC2A3D = {
 			isa = PBXGroup;
 			children = (
 				E6E9DA022A9C92DE00CC2A3D /* SameLayerRendering */,
 				E6E9DA012A9C92DE00CC2A3D /* Products */,
+				0DA1F1816822625ADBDDEE1B /* Pods */,
+				59A621CCDEEC4163A18E43FB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -89,9 +116,10 @@
 				E6E9DA1C2A9CEB7000CC2A3D /* ContainerHookView.swift */,
 				E6BC8E502AA07173005427B6 /* SameLayerDelegate.swift */,
 				E66E64F52AB039C500FDEC58 /* DispatchQueue+Once.swift */,
-				E69242962AD3DA41006D6DCD /* VideoPlayer.swift */,
 				E69242982AD40313006D6DCD /* SameLayerRendering-Bridging-Header.h */,
-				E69242A22AD40477006D6DCD /* FullscreenViewController.swift */,
+				E69242962AD3DA41006D6DCD /* VideoPlayer.swift */,
+				E69242A52AD542DE006D6DCD /* FullScreenAnimated.swift */,
+				E69242A22AD40477006D6DCD /* FullScreenViewController.swift */,
 			);
 			path = SameLayerRendering;
 			sourceTree = "<group>";
@@ -103,9 +131,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E6E9DA142A9C92E000CC2A3D /* Build configuration list for PBXNativeTarget "SameLayerRendering" */;
 			buildPhases = (
+				DAE6498279CED0EC13BF8A28 /* [CP] Check Pods Manifest.lock */,
 				E6E9D9FC2A9C92DE00CC2A3D /* Sources */,
 				E6E9D9FD2A9C92DE00CC2A3D /* Frameworks */,
 				E6E9D9FE2A9C92DE00CC2A3D /* Resources */,
+				DA90DA41A9FEB89740DE1262 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -164,6 +194,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		DA90DA41A9FEB89740DE1262 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SameLayerRendering/Pods-SameLayerRendering-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SameLayerRendering/Pods-SameLayerRendering-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SameLayerRendering/Pods-SameLayerRendering-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DAE6498279CED0EC13BF8A28 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SameLayerRendering-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		E6E9D9FC2A9C92DE00CC2A3D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -174,8 +246,9 @@
 				E6E9DA1B2A9CD34700CC2A3D /* WebViewController.swift in Sources */,
 				E6E9DA1D2A9CEB7000CC2A3D /* ContainerHookView.swift in Sources */,
 				E6E9DA182A9C963500CC2A3D /* WebView.swift in Sources */,
-				E69242A32AD40477006D6DCD /* FullscreenViewController.swift in Sources */,
+				E69242A32AD40477006D6DCD /* FullScreenViewController.swift in Sources */,
 				E66E64F62AB039C500FDEC58 /* DispatchQueue+Once.swift in Sources */,
+				E69242A62AD542DE006D6DCD /* FullScreenAnimated.swift in Sources */,
 				E69242972AD3DA41006D6DCD /* VideoPlayer.swift in Sources */,
 				E6E9DA042A9C92DE00CC2A3D /* AppDelegate.swift in Sources */,
 				E6E9DA062A9C92DE00CC2A3D /* SceneDelegate.swift in Sources */,
@@ -321,6 +394,7 @@
 		};
 		E6E9DA152A9C92E000CC2A3D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9DDC724D339EDD6C56C29730 /* Pods-SameLayerRendering.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -353,6 +427,7 @@
 		};
 		E6E9DA162A9C92E000CC2A3D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 684DAD5898EECC99FFE169EC /* Pods-SameLayerRendering.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

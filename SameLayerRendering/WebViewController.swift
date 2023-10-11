@@ -115,7 +115,6 @@ extension WebViewController: SameLayerDelegate {
                     subview.removeFromSuperview()
                 }
             }
-            print("视图已从窗口中移除")
         }
     }
 }
