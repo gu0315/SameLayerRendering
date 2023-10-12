@@ -191,6 +191,7 @@ extension WebView  {
     ///  插入
     /// - Parameter containerId: 容器ID
     func insertContainer(containerId: String, info: [String: String]) {
+        // print("insertContainer-\(containerId)")
         var container = tongcengContainers[containerId]
         if (container == nil) {
             container = isScrollViewFoundById(containerId, rootView: self.scrollView)
@@ -201,7 +202,11 @@ extension WebView  {
             }
             if (tongcengViews[vid] != nil)  {
                 guard let playerView: AVPlayerView = tongcengViews[vid] as? AVPlayerView else { return }
-                playerView.setVideoURL(url)
+                if (playerView.videoUrl == url) {
+                    playerView.play()
+                } else {
+                    playerView.setVideoURL(url)
+                }
                 container!.addSubview(playerView)
                 tongcengViews[vid] = playerView
             } else {

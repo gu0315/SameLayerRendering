@@ -21,6 +21,8 @@ class AVPlayerView: ContainerHookView {
     
     var isFullScreen = false
     
+    var videoUrl = ""
+    
     private var originFream: CGRect = .zero
     
     // 控件元素
@@ -28,21 +30,14 @@ class AVPlayerView: ContainerHookView {
     
     private var fullScreenButton: UIButton!
     
-    var contentView: UIView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         originFream = frame
-        contentView = UIView()
-        addSubview(contentView)
-        contentView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        
         // 初始化 AVPlayer
         player = AVPlayer()
         playerLayer = AVPlayerLayer(player: player)
-        contentView.layer.addSublayer(playerLayer!)
+        self.layer.addSublayer(playerLayer!)
         
         
         // 创建播放按钮
@@ -51,7 +46,7 @@ class AVPlayerView: ContainerHookView {
         playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         
         // 添加控件到视图
-        contentView.addSubview(playButton)
+        self.addSubview(playButton)
         playButton.snp.makeConstraints { make in
             make.center.equalTo(self)
             make.width.height.equalTo(100)
@@ -60,7 +55,7 @@ class AVPlayerView: ContainerHookView {
         fullScreenButton = UIButton(type: .system)
         fullScreenButton.setTitle("全屏", for: .normal)
         fullScreenButton.addTarget(self, action: #selector(fullScreenButtonTapped), for: .touchUpInside)
-        contentView.addSubview(fullScreenButton)
+        self.addSubview(fullScreenButton)
         fullScreenButton.snp.makeConstraints { make in
             make.bottom.equalTo(self).offset(-20)
             make.right.equalTo(self).offset(-20)
@@ -81,7 +76,7 @@ class AVPlayerView: ContainerHookView {
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
+        NotificationCenter.default.removeObserver(self)
         print("播放器--------deinit")
     }
     
@@ -126,8 +121,14 @@ class AVPlayerView: ContainerHookView {
         }
     }
     
+    func play() {
+        player?.play()
+        playButton.setTitle("Pause", for: .normal)
+    }
+    
     // 设置视频URL并准备播放
     func setVideoURL(_ url: String) {
+        videoUrl = url
         guard let url = URL.init(string: url) else {
             return
         }
@@ -136,12 +137,18 @@ class AVPlayerView: ContainerHookView {
         player?.replaceCurrentItem(with: playerItem)
         player?.play()
         playButton.setTitle("Pause", for: .normal)
+        NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying), name: .AVPlayerItemDidPlayToEndTime, object: playerItem)
+               
     }
+    
+    @objc func playerDidFinishPlaying() {
+           player?.seek(to: .zero)
+           player?.play()
+       }
     
     func destroy() {
         player?.replaceCurrentItem(with: nil)
     }
-    
 }
 
 
