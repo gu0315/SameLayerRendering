@@ -191,15 +191,18 @@ extension WebView  {
     ///  插入
     /// - Parameter containerId: 容器ID
     func insertContainer(containerId: String, info: [String: String]) {
-        // print("insertContainer-\(containerId)")
+         print("插入-insertContainer-\(containerId)")
         var container = tongcengContainers[containerId]
         if (container == nil) {
             container = isScrollViewFoundById(containerId, rootView: self.scrollView)
         }
-        if let url: String = info["video_url"], info["type"] == "video" {
+        if info["type"] == "video", let url: String = info["video_url"] { // 视频
             guard let vid: String = info["id"] else {
                 return
             }
+            //Discussion
+            //This method establishes a strong reference to view and sets its next responder to the receiver, which is its new superview.
+            //Views can have only one superview. If view already has a superview and that view is not the receiver, this method removes the previous superview before making the receiver its new superview.
             if (tongcengViews[vid] != nil)  {
                 guard let playerView: AVPlayerView = tongcengViews[vid] as? AVPlayerView else { return }
                 if (playerView.videoUrl == url) {
@@ -215,6 +218,8 @@ extension WebView  {
                 container!.addSubview(playerView)
                 tongcengViews[vid] = playerView
             }
+        } else if info["type"] == "input" { // 
+            
         }
     }
     

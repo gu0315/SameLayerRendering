@@ -69,7 +69,6 @@
 				9DDC724D339EDD6C56C29730 /* Pods-SameLayerRendering.debug.xcconfig */,
 				684DAD5898EECC99FFE169EC /* Pods-SameLayerRendering.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -79,6 +78,32 @@
 				24E5063411A5709F84F3A120 /* Pods_SameLayerRendering.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E6848ABB2ADFBBA500D275CE /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				E6848ABD2ADFBBD100D275CE /* Input */,
+				E6848ABC2ADFBBC200D275CE /* Video */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
+		E6848ABC2ADFBBC200D275CE /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				E69242962AD3DA41006D6DCD /* VideoPlayer.swift */,
+				E69242A52AD542DE006D6DCD /* FullScreenAnimated.swift */,
+				E69242A22AD40477006D6DCD /* FullScreenViewController.swift */,
+			);
+			path = Video;
+			sourceTree = "<group>";
+		};
+		E6848ABD2ADFBBD100D275CE /* Input */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Input;
 			sourceTree = "<group>";
 		};
 		E6E9D9F72A9C92DE00CC2A3D = {
@@ -102,6 +127,7 @@
 		E6E9DA022A9C92DE00CC2A3D /* SameLayerRendering */ = {
 			isa = PBXGroup;
 			children = (
+				E6848ABB2ADFBBA500D275CE /* Component */,
 				E6E9DA032A9C92DE00CC2A3D /* AppDelegate.swift */,
 				E6E9DA052A9C92DE00CC2A3D /* SceneDelegate.swift */,
 				E6E9DA072A9C92DE00CC2A3D /* ViewController.swift */,
@@ -117,9 +143,6 @@
 				E6BC8E502AA07173005427B6 /* SameLayerDelegate.swift */,
 				E66E64F52AB039C500FDEC58 /* DispatchQueue+Once.swift */,
 				E69242982AD40313006D6DCD /* SameLayerRendering-Bridging-Header.h */,
-				E69242962AD3DA41006D6DCD /* VideoPlayer.swift */,
-				E69242A52AD542DE006D6DCD /* FullScreenAnimated.swift */,
-				E69242A22AD40477006D6DCD /* FullScreenViewController.swift */,
 			);
 			path = SameLayerRendering;
 			sourceTree = "<group>";
