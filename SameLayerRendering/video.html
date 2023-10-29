@@ -242,7 +242,24 @@
             window.attach = this.attach;
         },
         mounted() {
-            //
+            setTimeout(() => {
+                // 模拟更新回流
+                this.$nextTick(() => {
+                    const eleVideo = document.querySelector(".video");
+                    eleVideo.style = { height: '200px' };
+
+                    // TODO 获取cid
+                    let message = {
+                        cid: '',
+                        eventType: 'updateContainer',
+                        info: {
+                            type: 'video',
+                            id: 'video',
+                        }
+                    };
+                    window.webkit.messageHandlers.bridge.postMessage(JSON.stringify(message))
+                });
+            }, 5000)
         }
     },);
 </script>
