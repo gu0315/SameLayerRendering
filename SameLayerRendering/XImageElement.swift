@@ -20,8 +20,6 @@ class XImageElement: XSLBaseElement {
     override init() {
         super.init()
         self.containerView.addSubview(imageView)
-        
-        print("init----XImageElement")
     }
     
     @objc override func elementConnected() {
@@ -32,7 +30,7 @@ class XImageElement: XSLBaseElement {
         super.elementRendered()
     }
 
-    @objc override func elementName() -> String {
+    @objc override class func elementName() -> String {
         return "hybrid-image"
     }
     
@@ -54,7 +52,6 @@ class XImageElement: XSLBaseElement {
     }
     
     @objc func xsl__src(_ args: Dictionary<String, Any>) {
-        print(args)
         guard let urlString = args["newValue"] as? String else { return }
         self.src = urlString
         self.imageView.backgroundColor = .red
@@ -65,7 +62,7 @@ class XImageElement: XSLBaseElement {
                     // 在主线程更新UI
                     DispatchQueue.main.async {
                         self.imageView.image = image
-                        print("src----imageView")
+                        print("设置图片")
                     }
                 }
             }

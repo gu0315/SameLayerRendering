@@ -19,7 +19,6 @@ class XSLBaseElement: NSObject {
     
     override init() {
         super.init()
-        print("init----XSLBaseElement")
     }
     
     var webView: WKWebView?
@@ -38,12 +37,12 @@ class XSLBaseElement: NSObject {
     
     private var xslStyle: Dictionary<String, String> = [:]
     
-    static let xslBaseElementJsKey = "xslBaseElementJsKey"
+    static var xslBaseElementJsKey = "xslBaseElementJsKey"
     
-    @objc func jsClass() -> String {
-        guard let js: String = objc_getAssociatedObject(self, XSLBaseElement.xslBaseElementJsKey) as? String else {
-            let jsClass = createJSClass()
-            objc_setAssociatedObject(self, XSLBaseElement.xslBaseElementJsKey, jsClass, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+    @objc class func  jsClass() -> String {
+        guard let js: String = objc_getAssociatedObject(self, &XSLBaseElement.xslBaseElementJsKey) as? String else {
+            let jsClass = self.createJSClass()
+            objc_setAssociatedObject(self, &XSLBaseElement.xslBaseElementJsKey, jsClass, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             return jsClass
         }
         return js
@@ -61,9 +60,9 @@ class XSLBaseElement: NSObject {
     func setClassName(_ name: String) {
         class_name = name
     }
-   
-   @objc func createJSClass() -> String {
-        let elementName = self.elementName()
+
+    @objc class func createJSClass() -> String {
+        let elementName = elementName()
         if elementName.isEmpty { return "" }
         if ((XSLManager.sharedSLManager.jsMap[elementName]) != nil) {
             return XSLManager.sharedSLManager.jsMap[elementName]!
@@ -81,11 +80,12 @@ class XSLBaseElement: NSObject {
         var functions = [String]()
         var observers = ["style", "xsl_style", "class", "hidden", "hybrid_xsl_id"]
         var count: UInt32 = 0
-       guard let methodList = class_copyMethodList(self.classForCoder, &count) else { return js }
+        guard let methodList = class_copyMethodList(self, &count) else {
+            return js
+        }
         for i in 0..<Int(count) {
             let method = methodList[i]
             let methodStr = NSStringFromSelector(method_getName(method))
-            print(methodStr)
             if methodStr.hasPrefix("xsl__") {
                 var observerVal = String(methodStr.suffix(methodStr.count - 5))
                 if (observerVal.last == ":") {
@@ -117,8 +117,7 @@ class XSLBaseElement: NSObject {
 
     }
     
-    
-    func generateFunctions(_ functions: [String]) -> String {
+    @objc class func generateFunctions(_ functions: [String]) -> String {
         var functionStr = ""
         functions.forEach { functionName in
             functionStr += """
@@ -185,7 +184,7 @@ class XSLBaseElement: NSObject {
         xslStyle = stylesMap
     }
 
-    @objc func elementName() -> String {
+    @objc class func elementName() -> String {
         return ""
     }
     
@@ -214,7 +213,7 @@ class XSLBaseElement: NSObject {
         return false
     }
     
-    func getSnakeCaseFromCamelCase(_ oriStr: String) -> String {
+    @objc class func getSnakeCaseFromCamelCase(_ oriStr: String) -> String {
         var str = oriStr
         while let upperRange = str.rangeOfCharacter(from: .uppercaseLetters) {
             let startIndex = upperRange.lowerBound
@@ -227,7 +226,7 @@ class XSLBaseElement: NSObject {
     }
     
     ///  判断是否还存在大写字母
-    func isExistUppercaseString(in str: String) -> String? {
+    @objc class func isExistUppercaseString(in str: String) -> String? {
         for char in str {
             if char.isUppercase {
                 return String(char)

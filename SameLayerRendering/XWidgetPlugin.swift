@@ -14,7 +14,7 @@ class XWidgetPlugin: NSObject {
         setXslIdMapDic(dic: params, jsBridgeCallback: jsBridgeCallback)
         
         let selectorString = "\(action)WithElementIdWithTheId:params:jsBridgeCallback:"
-        print(selectorString)
+        print("-------->", selectorString, "\n", params)
 //        var count: UInt32 = 0
 //        guard let methodList = class_copyMethodList(self.classForCoder, &count) else { return true }
 //        for i in 0..<Int(count) {
@@ -92,7 +92,6 @@ class XWidgetPlugin: NSObject {
     }
 
     @objc func changeXslWithElementId(theId: String, params: [String: Any], jsBridgeCallback: BridgeCallBack) {
-        print("------")
         if let name = params["methodName"] as? String, let element = jsBridgeCallback.message?.webView?.xslElementMap?[theId] as? XSLBaseElement {
             if name == "style" {
                 element.setStyleString(params["newValue"] as? String ?? "")
@@ -151,7 +150,6 @@ class XWidgetPlugin: NSObject {
     }
 
     @objc func setXslIdMapDic(dic: [String: Any], jsBridgeCallback: BridgeCallBack) {
-   
         var tempDic: Dictionary<String, String> = [:]
         guard  let hybridXslId = dic["hybrid_xsl_id"] as? String,
                let xslId = dic["xsl_id"] as? String else { return }

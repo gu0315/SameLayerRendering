@@ -336,8 +336,7 @@ extension WKWebView {
     func addUserScript() {
         XSLManager.sharedSLManager.elementsClassMap.forEach { (key: String, cls: AnyClass) in
             let sel: Selector = Selector.init(("jsClass"))
-            guard let _obj = cls as? NSObject.Type else { return }
-            let obj = _obj.init()
+            guard let obj = cls as? NSObject.Type else { return }
             guard obj.responds(to: sel) else { return }
             if  let jsClass = obj.perform(sel)?.takeUnretainedValue() as? String {
                 let script = WKUserScript(source: jsClass, injectionTime: .atDocumentStart, forMainFrameOnly: false)
