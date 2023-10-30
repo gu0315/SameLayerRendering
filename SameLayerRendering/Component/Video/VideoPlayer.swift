@@ -39,7 +39,6 @@ class AVPlayerView: ContainerHookView {
         playerLayer = AVPlayerLayer(player: player)
         self.layer.addSublayer(playerLayer!)
         
-        
         // 创建播放按钮
         playButton = UIButton(type: .system)
         playButton.setTitle("Play", for: .normal)
@@ -71,7 +70,7 @@ class AVPlayerView: ContainerHookView {
     }
     
     @objc func orientationDidChange() {
-        let orientation = UIDevice.current.orientation
+        // let orientation = UIDevice.current.orientation
         //
     }
     

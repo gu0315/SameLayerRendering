@@ -208,9 +208,9 @@ class XSLBaseElement: NSObject {
         return true
     }
     
-    // 原生同层渲染组件是否响应事件，默认关闭
+    // 原生同层渲染组件是否响应事件，默认打开
     @objc func nativeElementInteraction() -> Bool {
-        return false
+        return true
     }
     
     @objc class func getSnakeCaseFromCamelCase(_ oriStr: String) -> String {

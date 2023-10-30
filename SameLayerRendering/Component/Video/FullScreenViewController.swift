@@ -14,8 +14,7 @@ class FullScreenViewController: UIViewController {
     override func viewDidLoad() {
        super.viewDidLoad()
         self.view.backgroundColor = .black
-       
-     }
+    }
 
     /*
     // MARK: - Navigation

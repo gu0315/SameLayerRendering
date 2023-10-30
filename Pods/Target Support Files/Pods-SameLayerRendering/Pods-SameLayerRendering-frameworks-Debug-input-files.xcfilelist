@@ -1,2 +1,3 @@
 ${PODS_ROOT}/Target Support Files/Pods-SameLayerRendering/Pods-SameLayerRendering-frameworks.sh
+${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework
 ${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework

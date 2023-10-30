@@ -14,6 +14,7 @@
 		E69242A32AD40477006D6DCD /* FullScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69242A22AD40477006D6DCD /* FullScreenViewController.swift */; };
 		E69242A62AD542DE006D6DCD /* FullScreenAnimated.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69242A52AD542DE006D6DCD /* FullScreenAnimated.swift */; };
 		E6B7B3242AEEB01600BCF985 /* BridgeCallBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B7B3232AEEB01600BCF985 /* BridgeCallBack.swift */; };
+		E6B7B3272AEF888B00BCF985 /* XVideoElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B7B3262AEF888B00BCF985 /* XVideoElement.swift */; };
 		E6BA0CCF2AE9FF110039E90E /* XSLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BA0CCE2AE9FF110039E90E /* XSLManager.swift */; };
 		E6BA0CD12AEA054F0039E90E /* XSLBaseElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BA0CD02AEA054F0039E90E /* XSLBaseElement.swift */; };
 		E6BA0CD32AEA05950039E90E /* XImageElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BA0CD22AEA05950039E90E /* XImageElement.swift */; };
@@ -43,6 +44,7 @@
 		E69242A22AD40477006D6DCD /* FullScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewController.swift; sourceTree = "<group>"; };
 		E69242A52AD542DE006D6DCD /* FullScreenAnimated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenAnimated.swift; sourceTree = "<group>"; };
 		E6B7B3232AEEB01600BCF985 /* BridgeCallBack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeCallBack.swift; sourceTree = "<group>"; };
+		E6B7B3262AEF888B00BCF985 /* XVideoElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XVideoElement.swift; sourceTree = "<group>"; };
 		E6BA0CCE2AE9FF110039E90E /* XSLManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XSLManager.swift; sourceTree = "<group>"; };
 		E6BA0CD02AEA054F0039E90E /* XSLBaseElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XSLBaseElement.swift; sourceTree = "<group>"; };
 		E6BA0CD22AEA05950039E90E /* XImageElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XImageElement.swift; sourceTree = "<group>"; };
@@ -95,7 +97,7 @@
 		E6848ABB2ADFBBA500D275CE /* Component */ = {
 			isa = PBXGroup;
 			children = (
-				E6848ABD2ADFBBD100D275CE /* Input */,
+				E6B7B3252AEF7C9B00BCF985 /* Image */,
 				E6848ABC2ADFBBC200D275CE /* Video */,
 			);
 			path = Component;
@@ -104,6 +106,7 @@
 		E6848ABC2ADFBBC200D275CE /* Video */ = {
 			isa = PBXGroup;
 			children = (
+				E6B7B3262AEF888B00BCF985 /* XVideoElement.swift */,
 				E69242962AD3DA41006D6DCD /* VideoPlayer.swift */,
 				E69242A52AD542DE006D6DCD /* FullScreenAnimated.swift */,
 				E69242A22AD40477006D6DCD /* FullScreenViewController.swift */,
@@ -111,11 +114,12 @@
 			path = Video;
 			sourceTree = "<group>";
 		};
-		E6848ABD2ADFBBD100D275CE /* Input */ = {
+		E6B7B3252AEF7C9B00BCF985 /* Image */ = {
 			isa = PBXGroup;
 			children = (
+				E6BA0CD22AEA05950039E90E /* XImageElement.swift */,
 			);
-			path = Input;
+			path = Image;
 			sourceTree = "<group>";
 		};
 		E6E9D9F72A9C92DE00CC2A3D = {
@@ -143,24 +147,23 @@
 				E6E9DA032A9C92DE00CC2A3D /* AppDelegate.swift */,
 				E6E9DA052A9C92DE00CC2A3D /* SceneDelegate.swift */,
 				E6E9DA072A9C92DE00CC2A3D /* ViewController.swift */,
+				E6E9DA1A2A9CD34700CC2A3D /* WebViewController.swift */,
 				E6E9DA092A9C92DE00CC2A3D /* Main.storyboard */,
 				E6E9DA0C2A9C92E000CC2A3D /* Assets.xcassets */,
 				E6E9DA0E2A9C92E000CC2A3D /* LaunchScreen.storyboard */,
 				E6E9DA112A9C92E000CC2A3D /* Info.plist */,
 				E6E9DA192A9CD15300CC2A3D /* video.html */,
+				E6BA0CDA2AED25DE0039E90E /* img.html */,
 				E66E64F32AAF041900FDEC58 /* JSBridgeManager.swift */,
 				E6B7B3232AEEB01600BCF985 /* BridgeCallBack.swift */,
-				E6E9DA1A2A9CD34700CC2A3D /* WebViewController.swift */,
-				E6E9DA1C2A9CEB7000CC2A3D /* ContainerHookView.swift */,
 				E6BA0CCE2AE9FF110039E90E /* XSLManager.swift */,
 				E6BA0CD02AEA054F0039E90E /* XSLBaseElement.swift */,
-				E6BA0CD22AEA05950039E90E /* XImageElement.swift */,
 				E6BA0CD62AEA30FE0039E90E /* XWidgetPlugin.swift */,
 				E6BA0CD82AECF0E70039E90E /* hybrid_hook_xsl_js.swift */,
+				E6E9DA1C2A9CEB7000CC2A3D /* ContainerHookView.swift */,
 				E66E64F52AB039C500FDEC58 /* DispatchQueue+Once.swift */,
 				E6BC8E502AA07173005427B6 /* HybridXSLRegisterClassProtocol.swift */,
 				E69242982AD40313006D6DCD /* SameLayerRendering-Bridging-Header.h */,
-				E6BA0CDA2AED25DE0039E90E /* img.html */,
 			);
 			path = SameLayerRendering;
 			sourceTree = "<group>";
@@ -177,6 +180,7 @@
 				E6E9D9FD2A9C92DE00CC2A3D /* Frameworks */,
 				E6E9D9FE2A9C92DE00CC2A3D /* Resources */,
 				DA90DA41A9FEB89740DE1262 /* [CP] Embed Pods Frameworks */,
+				E8C1C6E68035C07F7BCD5D09 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -276,6 +280,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		E8C1C6E68035C07F7BCD5D09 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SameLayerRendering/Pods-SameLayerRendering-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SameLayerRendering/Pods-SameLayerRendering-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SameLayerRendering/Pods-SameLayerRendering-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -300,6 +321,7 @@
 				E6E9DA062A9C92DE00CC2A3D /* SceneDelegate.swift in Sources */,
 				E6BC8E512AA07173005427B6 /* HybridXSLRegisterClassProtocol.swift in Sources */,
 				E6BA0CCF2AE9FF110039E90E /* XSLManager.swift in Sources */,
+				E6B7B3272AEF888B00BCF985 /* XVideoElement.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

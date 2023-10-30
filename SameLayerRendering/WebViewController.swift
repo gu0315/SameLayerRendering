@@ -16,10 +16,12 @@ class WebViewController: UIViewController, UIScrollViewDelegate, WKNavigationDel
     
     var jsBridge: JSBridgeManager?
     
+    var path = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        self.title = "同层渲染"
+        self.title = path
         self.edgesForExtendedLayout = []
         initWebView()
     }
@@ -33,7 +35,7 @@ class WebViewController: UIViewController, UIScrollViewDelegate, WKNavigationDel
         self.view.addSubview(webView)
         self.jsBridge = JSBridgeManager.init(webView) //JDBridgeManager.bridge(for: webView)
         XSLManager.sharedSLManager.initSLManagerWithWebView(webView)
-        self.webView.loadFileURL(Bundle.main.url(forResource: "img", withExtension: "html")!, allowingReadAccessTo: Bundle.main.resourceURL!)
+        self.webView.loadFileURL(Bundle.main.url(forResource: path, withExtension: "html")!, allowingReadAccessTo: Bundle.main.resourceURL!)
     }
 
     deinit {

@@ -4,5 +4,8 @@ use_frameworks!
 
 target 'SameLayerRendering' do
     pod 'SnapKit', '~> 5.6.0'
+    pod 'ZFPlayer'
+    pod 'ZFPlayer/ControlView'
+    pod 'ZFPlayer/AVPlayer'
     pod 'SDWebImage'
 end

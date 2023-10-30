@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class XImageElement: XSLBaseElement {
     
@@ -53,20 +54,10 @@ class XImageElement: XSLBaseElement {
     
     @objc func xsl__src(_ args: Dictionary<String, Any>) {
         guard let urlString = args["newValue"] as? String else { return }
+        if (self.src == urlString) { return }
         self.src = urlString
-        self.imageView.backgroundColor = .red
-        self.containerView.backgroundColor = .yellow
         if let imageURL = URL(string: self.src) {
-            let task = URLSession.shared.dataTask(with: imageURL) { (data, response, error) in
-                if error == nil, let data = data, let image = UIImage(data: data) {
-                    // 在主线程更新UI
-                    DispatchQueue.main.async {
-                        self.imageView.image = image
-                        print("设置图片")
-                    }
-                }
-            }
-            task.resume()
+            self.imageView.sd_setImage(with: imageURL)
         }
     }
 }

@@ -8,6 +8,8 @@
 import UIKit
 import WebKit
 
+import ZFPlayer
+
 class ViewController: UIViewController {
    
     lazy var tableVie: UITableView = {
@@ -16,11 +18,11 @@ class ViewController: UIViewController {
         return tableVie
     }()
     
-    var data = ["非同屏渲染", "同屏渲染"]
+    var data = [(name: "图片", path: "img"), (name: "视频", path: "video")]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        self.title = "同层渲染Demo"
         self.view.addSubview(tableVie)
         tableVie.delegate = self
         tableVie.dataSource = self
@@ -31,6 +33,7 @@ class ViewController: UIViewController {
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = WebViewController()
+        vc.path = data[indexPath.row].path
         self.navigationController?.pushViewController(vc, animated: false)
     }
     
@@ -40,9 +43,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = data[indexPath.row]
+        cell.textLabel?.text = data[indexPath.row].name
         return cell
     }
-    
 }
 
