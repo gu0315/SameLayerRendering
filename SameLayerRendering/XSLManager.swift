@@ -160,14 +160,14 @@ class XSLManager: NSObject {
             var oldImp: IMP? = nil
             typealias type = @convention(block) (UIScrollView, Selector) -> Void
             let blockImplementation: type = { obj, sel in
-                typealias ClosureType = @convention(c) (UIScrollView, Selector) -> Void
-                let oldMethod: ClosureType = unsafeBitCast(oldImp, to: ClosureType.self)
-                oldMethod(obj, oldSel)
-                let element: XSLBaseElement? = objc_getAssociatedObject(obj.superview, &AssociatedKeys.hybridXSLElementKey) as? XSLBaseElement
+                let element: XSLBaseElement? = objc_getAssociatedObject(obj.superview!, &AssociatedKeys.hybridXSLElementKey) as? XSLBaseElement
                 if (element != nil) {
                     element!.isAddToSuper = false
                     element!.removeFromSuperView()
                 }
+                typealias ClosureType = @convention(c) (UIScrollView, Selector) -> Void
+                let oldMethod: ClosureType = unsafeBitCast(oldImp, to: ClosureType.self)
+                oldMethod(obj, oldSel)
             }
             self.imp(old: &oldImp, cls: cls, sel: oldSel, imp: blockImplementation)
         }
