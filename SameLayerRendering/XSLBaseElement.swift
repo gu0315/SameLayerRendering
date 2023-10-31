@@ -21,9 +21,9 @@ class XSLBaseElement: NSObject {
         super.init()
     }
     
-    var webView: WKWebView?
+    weak var webView: WKWebView?
     
-    var weakWKChildScrollView: UIView?
+    weak var weakWKChildScrollView: UIView?
     
     var rendering = false
     

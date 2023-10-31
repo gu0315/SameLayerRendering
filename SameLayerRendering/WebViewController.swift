@@ -14,7 +14,7 @@ var XPlayer = "XPlayer"
 
 class WebViewController: UIViewController, UIScrollViewDelegate, WKNavigationDelegate, WKUIDelegate {
     
-    @objc var webView: WKWebView!
+    @objc var webView: XSLWebView!
     
     var jsBridge: JSBridgeManager?
     
@@ -29,7 +29,7 @@ class WebViewController: UIViewController, UIScrollViewDelegate, WKNavigationDel
     }
     
     func initWebView() {
-        webView = WKWebView.init(frame: self.view.bounds)
+        webView = XSLWebView.init(frame: self.view.bounds)
         webView.navigationDelegate = self
         webView.uiDelegate = self
         webView.backgroundColor = UIColor.clear.withAlphaComponent(0)
@@ -38,13 +38,21 @@ class WebViewController: UIViewController, UIScrollViewDelegate, WKNavigationDel
         self.jsBridge = JSBridgeManager.init(webView)
         XSLManager.sharedSLManager.initSLManagerWithWebView(webView)
         self.webView.loadFileURL(Bundle.main.url(forResource: path, withExtension: "html")!, allowingReadAccessTo: Bundle.main.resourceURL!)
-        
-        
-        
     }
 
     deinit {
-        
+        print("WebViewController销毁")
+        if #available(iOS 14.0, *) {
+            self.webView.configuration.userContentController.removeAllScriptMessageHandlers()
+        } else {
+            // Fallback on earlier versions
+        }
+        self.webView.configuration.userContentController.removeAllUserScripts()
+        self.webView.stopLoading()
+        self.webView.uiDelegate = nil
+        self.webView.navigationDelegate = nil
+        self.webView.removeFromSuperview()
+        self.jsBridge = nil
     }
 }
 

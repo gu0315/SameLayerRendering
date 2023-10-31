@@ -8,9 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		6CC55AC665FFFBB765864F93 /* Pods_SameLayerRendering.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24E5063411A5709F84F3A120 /* Pods_SameLayerRendering.framework */; };
+		E61D26652AF0F23A00F6E933 /* XSLWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61D26642AF0F23A00F6E933 /* XSLWebView.swift */; };
 		E66E64F42AAF041900FDEC58 /* JSBridgeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66E64F32AAF041900FDEC58 /* JSBridgeManager.swift */; };
 		E66E64F62AB039C500FDEC58 /* DispatchQueue+Once.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66E64F52AB039C500FDEC58 /* DispatchQueue+Once.swift */; };
-		E6B7B3242AEEB01600BCF985 /* BridgeCallBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B7B3232AEEB01600BCF985 /* BridgeCallBack.swift */; };
+		E6B7B3242AEEB01600BCF985 /* JSBridgeCallBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B7B3232AEEB01600BCF985 /* JSBridgeCallBack.swift */; };
 		E6B7B3272AEF888B00BCF985 /* XVideoElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B7B3262AEF888B00BCF985 /* XVideoElement.swift */; };
 		E6BA0CCF2AE9FF110039E90E /* XSLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BA0CCE2AE9FF110039E90E /* XSLManager.swift */; };
 		E6BA0CD12AEA054F0039E90E /* XSLBaseElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BA0CD02AEA054F0039E90E /* XSLBaseElement.swift */; };
@@ -33,10 +34,11 @@
 		24E5063411A5709F84F3A120 /* Pods_SameLayerRendering.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SameLayerRendering.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		684DAD5898EECC99FFE169EC /* Pods-SameLayerRendering.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SameLayerRendering.release.xcconfig"; path = "Target Support Files/Pods-SameLayerRendering/Pods-SameLayerRendering.release.xcconfig"; sourceTree = "<group>"; };
 		9DDC724D339EDD6C56C29730 /* Pods-SameLayerRendering.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SameLayerRendering.debug.xcconfig"; path = "Target Support Files/Pods-SameLayerRendering/Pods-SameLayerRendering.debug.xcconfig"; sourceTree = "<group>"; };
+		E61D26642AF0F23A00F6E933 /* XSLWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XSLWebView.swift; sourceTree = "<group>"; };
 		E66E64F32AAF041900FDEC58 /* JSBridgeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSBridgeManager.swift; sourceTree = "<group>"; };
 		E66E64F52AB039C500FDEC58 /* DispatchQueue+Once.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Once.swift"; sourceTree = "<group>"; };
 		E69242982AD40313006D6DCD /* SameLayerRendering-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SameLayerRendering-Bridging-Header.h"; sourceTree = "<group>"; };
-		E6B7B3232AEEB01600BCF985 /* BridgeCallBack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeCallBack.swift; sourceTree = "<group>"; };
+		E6B7B3232AEEB01600BCF985 /* JSBridgeCallBack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSBridgeCallBack.swift; sourceTree = "<group>"; };
 		E6B7B3262AEF888B00BCF985 /* XVideoElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XVideoElement.swift; sourceTree = "<group>"; };
 		E6BA0CCE2AE9FF110039E90E /* XSLManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XSLManager.swift; sourceTree = "<group>"; };
 		E6BA0CD02AEA054F0039E90E /* XSLBaseElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XSLBaseElement.swift; sourceTree = "<group>"; };
@@ -143,8 +145,9 @@
 				E6E9DA112A9C92E000CC2A3D /* Info.plist */,
 				E6E9DA192A9CD15300CC2A3D /* video.html */,
 				E6BA0CDA2AED25DE0039E90E /* img.html */,
+				E61D26642AF0F23A00F6E933 /* XSLWebView.swift */,
+				E6B7B3232AEEB01600BCF985 /* JSBridgeCallBack.swift */,
 				E66E64F32AAF041900FDEC58 /* JSBridgeManager.swift */,
-				E6B7B3232AEEB01600BCF985 /* BridgeCallBack.swift */,
 				E6BA0CCE2AE9FF110039E90E /* XSLManager.swift */,
 				E6BA0CD02AEA054F0039E90E /* XSLBaseElement.swift */,
 				E6BA0CD62AEA30FE0039E90E /* XWidgetPlugin.swift */,
@@ -293,7 +296,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6BA0CD32AEA05950039E90E /* XImageElement.swift in Sources */,
-				E6B7B3242AEEB01600BCF985 /* BridgeCallBack.swift in Sources */,
+				E6B7B3242AEEB01600BCF985 /* JSBridgeCallBack.swift in Sources */,
 				E6E9DA082A9C92DE00CC2A3D /* ViewController.swift in Sources */,
 				E66E64F42AAF041900FDEC58 /* JSBridgeManager.swift in Sources */,
 				E6E9DA1B2A9CD34700CC2A3D /* WebViewController.swift in Sources */,
@@ -304,6 +307,7 @@
 				E6E9DA042A9C92DE00CC2A3D /* AppDelegate.swift in Sources */,
 				E6BA0CD72AEA30FE0039E90E /* XWidgetPlugin.swift in Sources */,
 				E6E9DA062A9C92DE00CC2A3D /* SceneDelegate.swift in Sources */,
+				E61D26652AF0F23A00F6E933 /* XSLWebView.swift in Sources */,
 				E6BA0CCF2AE9FF110039E90E /* XSLManager.swift in Sources */,
 				E6B7B3272AEF888B00BCF985 /* XVideoElement.swift in Sources */,
 			);

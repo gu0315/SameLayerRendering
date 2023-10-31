@@ -9,35 +9,43 @@ import UIKit
 
 class XWidgetPlugin: NSObject {
     
+    required override init() {
+        super.init()
+    }
+    
     @discardableResult
-    @objc func execute(action: String, params: [String: Any], jsBridgeCallback: BridgeCallBack) -> Bool {
+    @objc func execute(action: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) -> Bool {
         setXslIdMapDic(dic: params, jsBridgeCallback: jsBridgeCallback)
-        
         let selectorString = "\(action)WithElementIdWithTheId:params:jsBridgeCallback:"
-        //print("-------->", selectorString, "\n", params)
-        /*var count: UInt32 = 0
-        guard let methodList = class_copyMethodList(self.classForCoder, &count) else { return true }
-        for i in 0..<Int(count) {
-            let method = methodList[i]
-            let methodStr = NSStringFromSelector(method_getName(method))
-            print(methodStr)
-        }*/
         if responds(to: Selector(selectorString)) {
             let selector = Selector(selectorString)
             if let method = class_getInstanceMethod(type(of: self), selector) {
-                typealias Function = @convention(c) (AnyObject, Selector, String, [String: Any], BridgeCallBack) -> Void
+                typealias Function = @convention(c) (AnyObject, Selector, String, [String: Any], JSBridgeCallBack) -> Void
                 let function = unsafeBitCast(method_getImplementation(method), to: Function.self)
-                guard let theId = params["xsl_id"] as? String else { return true }
+                
+                guard let theId = params["xsl_id"] as? String else {
+                    self.inValidBridgeCallBack(jsBridgeCallback: jsBridgeCallback, message: "not found plugin")
+                    return false
+                }
                 function(self, selector, theId, params, jsBridgeCallback)
             }
         } else {
-            guard let theId = params["xsl_id"] as? String else { return true }
+            guard let theId = params["xsl_id"] as? String else {
+                self.inValidBridgeCallBack(jsBridgeCallback: jsBridgeCallback, message: "not found plugin")
+                return false
+            }
             invokeXslNativeMethodWithElementId(theId: theId, params: params, jsBridgeCallback: jsBridgeCallback)
         }
         return true
     }
     
-    @objc func addXslWithElementId(theId: String, params: [String: Any], jsBridgeCallback: BridgeCallBack) {
+    @discardableResult
+    func inValidBridgeCallBack(jsBridgeCallback: JSBridgeCallBack, message: String) -> Bool {
+        // TODO
+        return false
+    }
+    
+    @objc func addXslWithElementId(theId: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) {
         guard let element = jsBridgeCallback.message?.webView?.xslElementMap?[theId] as? XSLBaseElement else {
             self.createXslWithElementId(theId: theId, params: params, jsBridgeCallback: jsBridgeCallback)
             if let v = jsBridgeCallback.message?.webView?.xslElementMap?[theId] as? XSLBaseElement {
@@ -48,7 +56,7 @@ class XWidgetPlugin: NSObject {
         element.elementConnected()
     }
 
-    @objc func createXslWithElementId(theId: String, params: [String: Any], jsBridgeCallback: BridgeCallBack) {
+    @objc func createXslWithElementId(theId: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) {
         guard let element = XSLManager.sharedSLManager
             .elementsClassMap[theId.trimmingCharacters(in: CharacterSet.decimalDigits)] as? XSLBaseElement.Type else {
             return
@@ -58,23 +66,22 @@ class XWidgetPlugin: NSObject {
         if (jsBridgeCallback.message?.webView != nil) {
             v.setWebView((jsBridgeCallback.message?.webView)!)
         }
-        var tempDic = jsBridgeCallback.message?.webView?.xslElementMap
-        tempDic?[theId] = v
+        var tempDic: Dictionary<String, AnyObject> = jsBridgeCallback.message?.webView?.xslElementMap ?? [:]
+        tempDic[theId] = v
         jsBridgeCallback.message?.webView?.xslElementMap = tempDic
     }
 
-    @objc func invokeXslNativeMethodWithElementId(theId: String, params: [String: Any], jsBridgeCallback: BridgeCallBack) {
+    @objc func invokeXslNativeMethodWithElementId(theId: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) {
         var theId = theId
         var methodName = params["methodName"] as? String
         var argsParams = params["args"]
         if let hybridXslId = params["hybrid_xsl_id"] as? String {
-            if let xslIdMap = jsBridgeCallback.message?.webView?.xslIdMap, let xslId = xslIdMap[hybridXslId] as? String {
+            if let xslIdMap = jsBridgeCallback.message?.webView?.xslIdMap, let xslId = xslIdMap[hybridXslId] {
                 theId = xslId
                 methodName = params["functionName"] as? String
                 argsParams = params
             }
         }
-        
         if let element = jsBridgeCallback.message?.webView?.xslElementMap?[theId] as? XSLBaseElement {
             let selectorCallback = NSSelectorFromString("xsl_callback_\(methodName ?? ""):")
             let selector = NSSelectorFromString("xsl_\(methodName ?? ""):")
@@ -87,14 +94,14 @@ class XWidgetPlugin: NSObject {
                 typealias ClosureType = @convention(c) (XSLBaseElement, Selector, Any) -> Void
                 let oldMethod: ClosureType = unsafeBitCast(class_getMethodImplementation(type(of: element), selector), to: ClosureType.self)
                 oldMethod(element, selector, argsParams ?? "")
-//                if let onSuccess = jsBridgeCallback.onSuccess {
-//                    onSuccess(argsParams)
-//                }
+                if let onSuccess = jsBridgeCallback.onSuccess {
+                    onSuccess(argsParams)
+                }
             }
         }
     }
 
-    @objc func changeXslWithElementId(theId: String, params: [String: Any], jsBridgeCallback: BridgeCallBack) {
+    @objc func changeXslWithElementId(theId: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) {
         if let name = params["methodName"] as? String, let element = jsBridgeCallback.message?.webView?.xslElementMap?[theId] as? XSLBaseElement {
             if name == "style" {
                 element.setStyleString(params["newValue"] as? String ?? "")
@@ -123,13 +130,13 @@ class XWidgetPlugin: NSObject {
                     let oldMethod: ClosureType = unsafeBitCast(class_getMethodImplementation(type(of: element), sel), to: ClosureType.self)
                     oldMethod(element, sel, params)
                 }
-//                if let callbackName = params["callbackName"] as? String {
-//                    // 属性 函数事件
-//                    let selCallback = NSSelectorFromString("xsl__\(name):callback:")
-//                    if element.responds(to: selCallback) {
-//                        element.perform(selCallback, with: params["args"], with: jsBridgeCallback)
-//                    }
-//                }
+                if params["callbackName"] is String {
+                    // 属性函数事件
+                    let selCallback = NSSelectorFromString("xsl__\(name):callback:")
+                    if element.responds(to: selCallback) {
+                        element.perform(selCallback, with: params["args"], with: jsBridgeCallback)
+                    }
+                }
             }
         }
     }
@@ -146,13 +153,13 @@ class XWidgetPlugin: NSObject {
         return str
     }
 
-    @objc func removeXslWithElementId(theId: String, params: [String: Any], jsBridgeCallback: BridgeCallBack) {
+    @objc func removeXslWithElementId(theId: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) {
         var tempDic = jsBridgeCallback.message?.webView?.xslElementMap
         tempDic?[theId] = nil
         jsBridgeCallback.message?.webView?.xslElementMap = tempDic
     }
 
-    @objc func setXslIdMapDic(dic: [String: Any], jsBridgeCallback: BridgeCallBack) {
+    @objc func setXslIdMapDic(dic: [String: Any], jsBridgeCallback: JSBridgeCallBack) {
         var tempDic: Dictionary<String, String> = [:]
         guard  let hybridXslId = dic["hybrid_xsl_id"] as? String,
                let xslId = dic["xsl_id"] as? String else { return }

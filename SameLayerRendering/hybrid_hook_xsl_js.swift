@@ -15,8 +15,8 @@ func hybridHookXSLJS() -> String {
         messageToNative(params) {
             params['xsl_id'] = this.lowerClassName();
             params['hybrid_xsl_id'] = this.hybrid_xsl_id;
+            console.log(params)
             if (window.XWebView && window.XWebView.callNative) {
-                console.log(params)
                 window.XWebView && window.XWebView.callNative('XWidgetPlugin', params['methodType'], params, params['callbackName'], params['callbackId']);
             }
         }
@@ -68,8 +68,11 @@ func hybridHookXSLJS() -> String {
         }
         connectedCallback() {
             this.className = this.finalClassName();
+            let attributes = {};
+            Object.assign(attributes, ...[...this.attributes].map(attr => ({ [attr.name]: attr.value })));
             this.messageToNative({
-                'methodType': 'addXsl'
+                'methodType': 'addXsl',
+                ...attributes
             })
         }
         
