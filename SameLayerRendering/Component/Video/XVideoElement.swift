@@ -62,7 +62,7 @@ class XVideoElement: XSLBaseElement {
         super.init()
         
         self.containerView.addSubview(playBtn)
-        self.containerView.viewDidDisappear = {
+        self.containerView.viewDidRemoveWindow = {
             self.manager.stop()
             self.manager.assetURL = nil
         }
@@ -110,10 +110,6 @@ class XVideoElement: XSLBaseElement {
         if let videoURL = URL(string: self.src) {
             player.assetURL = videoURL
         }
-    }
-    
-    deinit {
-        
     }
 }
 

@@ -12,7 +12,7 @@ public class ContainerHookView: UIView {
     
     var nativeElementInteractionEnabled = false
     
-    var viewDidDisappear: () -> Void = { }
+    var viewDidRemoveWindow: () -> Void = { }
     
     public override func conforms(to aProtocol: Protocol) -> Bool {
         if NSStringFromProtocol(aProtocol) == "WKNativelyInteractible" {
@@ -25,7 +25,9 @@ public class ContainerHookView: UIView {
   
     public override func didMoveToWindow() {
         super.didMoveToWindow()
-        viewDidDisappear()
+        if (self.window == nil) {
+            viewDidRemoveWindow()
+        }
     }
     
     // 源码

@@ -7,7 +7,7 @@
 
 import UIKit
 import WebKit
-
+import ZFPlayer
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,7 +19,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-   
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        if window is ZFLandscapeWindow {
+            return [.landscape]
+        }
+        return .portrait
+    }
 
     // MARK: UISceneSession Lifecycle
 
