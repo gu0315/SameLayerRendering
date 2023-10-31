@@ -18,7 +18,7 @@ class XImageElement: XSLBaseElement {
         return view
     }()
 
-    override init() {
+    required init() {
         super.init()
         self.containerView.addSubview(imageView)
     }

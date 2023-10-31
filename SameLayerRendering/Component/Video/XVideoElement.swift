@@ -38,6 +38,7 @@ class XVideoElement: XSLBaseElement {
         player.containerView = containerView
         player.controlView = controlView
         manager.stop()
+        print(self.src)
         if let videoURL = URL(string: self.src) {
             player.assetURL = videoURL
         }
@@ -58,9 +59,8 @@ class XVideoElement: XSLBaseElement {
     
     private lazy var controlView = ZFPlayerControlView()
     
-    override init() {
+    required init() {
         super.init()
-        
         self.containerView.addSubview(playBtn)
         self.containerView.viewDidRemoveWindow = {
             self.manager.stop()
@@ -107,9 +107,6 @@ class XVideoElement: XSLBaseElement {
         guard let urlString = args["newValue"] as? String else { return }
         if (self.src == urlString) { return }
         self.src = urlString
-        if let videoURL = URL(string: self.src) {
-            player.assetURL = videoURL
-        }
     }
 }
 

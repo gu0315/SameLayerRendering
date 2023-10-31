@@ -17,7 +17,7 @@ import Foundation
 //eg:添加带callback属性 func xsl__url(args: Dictionary, callback: BridgeCallBack) {}
 class XSLBaseElement: NSObject {
     
-    override init() {
+    required override init() {
         super.init()
     }
     

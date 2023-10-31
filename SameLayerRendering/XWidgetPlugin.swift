@@ -14,14 +14,14 @@ class XWidgetPlugin: NSObject {
         setXslIdMapDic(dic: params, jsBridgeCallback: jsBridgeCallback)
         
         let selectorString = "\(action)WithElementIdWithTheId:params:jsBridgeCallback:"
-        print("-------->", selectorString, "\n", params)
-//        var count: UInt32 = 0
-//        guard let methodList = class_copyMethodList(self.classForCoder, &count) else { return true }
-//        for i in 0..<Int(count) {
-//            let method = methodList[i]
-//            let methodStr = NSStringFromSelector(method_getName(method))
-//            print(methodStr)
-//        }
+        //print("-------->", selectorString, "\n", params)
+        /*var count: UInt32 = 0
+        guard let methodList = class_copyMethodList(self.classForCoder, &count) else { return true }
+        for i in 0..<Int(count) {
+            let method = methodList[i]
+            let methodStr = NSStringFromSelector(method_getName(method))
+            print(methodStr)
+        }*/
         if responds(to: Selector(selectorString)) {
             let selector = Selector(selectorString)
             if let method = class_getInstanceMethod(type(of: self), selector) {
@@ -50,10 +50,10 @@ class XWidgetPlugin: NSObject {
 
     @objc func createXslWithElementId(theId: String, params: [String: Any], jsBridgeCallback: BridgeCallBack) {
         guard let element = XSLManager.sharedSLManager
-            .elementsClassMap[theId.trimmingCharacters(in: CharacterSet.decimalDigits)] as? NSObject.Type else {
+            .elementsClassMap[theId.trimmingCharacters(in: CharacterSet.decimalDigits)] as? XSLBaseElement.Type else {
             return
         }
-        guard let v = element.init() as? XSLBaseElement else { return }
+        let v = element.init()
         v.setClassName(theId)
         if (jsBridgeCallback.message?.webView != nil) {
             v.setWebView((jsBridgeCallback.message?.webView)!)
