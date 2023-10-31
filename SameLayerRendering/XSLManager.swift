@@ -9,7 +9,6 @@ import UIKit
 import WebKit
 import ObjectiveC
 
-
 struct AssociatedKeys  {
     // 用于设置WKCompositingView关联的Native组件
     static var hybridXSLElementKey = "hybridXSLElementKey"
@@ -49,6 +48,7 @@ class XSLManager: NSObject {
         // swift 不支持__attribute动态化，可以考虑objc_copyClassList匹配协议找到支持的组件, 这里考虑到组件少性能问题，手动配置
         // self.readXslRegisteredElement()
         elementsClassMap = ["hybrid-image": XImageElement.self, "hybrid-video": XVideoElement.self]
+        
     }
     
     /*private func readXslRegisteredElement() {
@@ -278,6 +278,7 @@ extension WKWebView {
             handleWKContentGestures()
             isFinishHandleWKContentGesture = true
         }
+        
         /*let cls: AnyClass = NSClassFromString("WKChildScrollView")!
         if let childScrollView = hitView, childScrollView.isKind(of: cls) {
             var hitView: UIView?

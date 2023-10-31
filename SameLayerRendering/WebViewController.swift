@@ -10,9 +10,11 @@ import WebKit
 import AVFoundation
 
 
+var XPlayer = "XPlayer"
+
 class WebViewController: UIViewController, UIScrollViewDelegate, WKNavigationDelegate, WKUIDelegate {
     
-    @objc dynamic var webView: WKWebView!
+    @objc var webView: WKWebView!
     
     var jsBridge: JSBridgeManager?
     
@@ -33,9 +35,12 @@ class WebViewController: UIViewController, UIScrollViewDelegate, WKNavigationDel
         webView.backgroundColor = UIColor.clear.withAlphaComponent(0)
         webView.configuration.mediaTypesRequiringUserActionForPlayback = []
         self.view.addSubview(webView)
-        self.jsBridge = JSBridgeManager.init(webView) //JDBridgeManager.bridge(for: webView)
+        self.jsBridge = JSBridgeManager.init(webView)
         XSLManager.sharedSLManager.initSLManagerWithWebView(webView)
         self.webView.loadFileURL(Bundle.main.url(forResource: path, withExtension: "html")!, allowingReadAccessTo: Bundle.main.resourceURL!)
+        
+        
+        
     }
 
     deinit {

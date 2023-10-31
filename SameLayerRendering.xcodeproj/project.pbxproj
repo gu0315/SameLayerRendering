@@ -10,9 +10,6 @@
 		6CC55AC665FFFBB765864F93 /* Pods_SameLayerRendering.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24E5063411A5709F84F3A120 /* Pods_SameLayerRendering.framework */; };
 		E66E64F42AAF041900FDEC58 /* JSBridgeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66E64F32AAF041900FDEC58 /* JSBridgeManager.swift */; };
 		E66E64F62AB039C500FDEC58 /* DispatchQueue+Once.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66E64F52AB039C500FDEC58 /* DispatchQueue+Once.swift */; };
-		E69242972AD3DA41006D6DCD /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69242962AD3DA41006D6DCD /* VideoPlayer.swift */; };
-		E69242A32AD40477006D6DCD /* FullScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69242A22AD40477006D6DCD /* FullScreenViewController.swift */; };
-		E69242A62AD542DE006D6DCD /* FullScreenAnimated.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69242A52AD542DE006D6DCD /* FullScreenAnimated.swift */; };
 		E6B7B3242AEEB01600BCF985 /* BridgeCallBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B7B3232AEEB01600BCF985 /* BridgeCallBack.swift */; };
 		E6B7B3272AEF888B00BCF985 /* XVideoElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B7B3262AEF888B00BCF985 /* XVideoElement.swift */; };
 		E6BA0CCF2AE9FF110039E90E /* XSLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BA0CCE2AE9FF110039E90E /* XSLManager.swift */; };
@@ -21,7 +18,6 @@
 		E6BA0CD72AEA30FE0039E90E /* XWidgetPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BA0CD62AEA30FE0039E90E /* XWidgetPlugin.swift */; };
 		E6BA0CD92AECF0E70039E90E /* hybrid_hook_xsl_js.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BA0CD82AECF0E70039E90E /* hybrid_hook_xsl_js.swift */; };
 		E6BA0CDB2AED25DE0039E90E /* img.html in Resources */ = {isa = PBXBuildFile; fileRef = E6BA0CDA2AED25DE0039E90E /* img.html */; };
-		E6BC8E512AA07173005427B6 /* HybridXSLRegisterClassProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BC8E502AA07173005427B6 /* HybridXSLRegisterClassProtocol.swift */; };
 		E6E9DA042A9C92DE00CC2A3D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA032A9C92DE00CC2A3D /* AppDelegate.swift */; };
 		E6E9DA062A9C92DE00CC2A3D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA052A9C92DE00CC2A3D /* SceneDelegate.swift */; };
 		E6E9DA082A9C92DE00CC2A3D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA072A9C92DE00CC2A3D /* ViewController.swift */; };
@@ -39,10 +35,7 @@
 		9DDC724D339EDD6C56C29730 /* Pods-SameLayerRendering.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SameLayerRendering.debug.xcconfig"; path = "Target Support Files/Pods-SameLayerRendering/Pods-SameLayerRendering.debug.xcconfig"; sourceTree = "<group>"; };
 		E66E64F32AAF041900FDEC58 /* JSBridgeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSBridgeManager.swift; sourceTree = "<group>"; };
 		E66E64F52AB039C500FDEC58 /* DispatchQueue+Once.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Once.swift"; sourceTree = "<group>"; };
-		E69242962AD3DA41006D6DCD /* VideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayer.swift; sourceTree = "<group>"; };
 		E69242982AD40313006D6DCD /* SameLayerRendering-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SameLayerRendering-Bridging-Header.h"; sourceTree = "<group>"; };
-		E69242A22AD40477006D6DCD /* FullScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewController.swift; sourceTree = "<group>"; };
-		E69242A52AD542DE006D6DCD /* FullScreenAnimated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenAnimated.swift; sourceTree = "<group>"; };
 		E6B7B3232AEEB01600BCF985 /* BridgeCallBack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeCallBack.swift; sourceTree = "<group>"; };
 		E6B7B3262AEF888B00BCF985 /* XVideoElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XVideoElement.swift; sourceTree = "<group>"; };
 		E6BA0CCE2AE9FF110039E90E /* XSLManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XSLManager.swift; sourceTree = "<group>"; };
@@ -51,7 +44,6 @@
 		E6BA0CD62AEA30FE0039E90E /* XWidgetPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XWidgetPlugin.swift; sourceTree = "<group>"; };
 		E6BA0CD82AECF0E70039E90E /* hybrid_hook_xsl_js.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hybrid_hook_xsl_js.swift; sourceTree = "<group>"; };
 		E6BA0CDA2AED25DE0039E90E /* img.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = img.html; sourceTree = "<group>"; };
-		E6BC8E502AA07173005427B6 /* HybridXSLRegisterClassProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HybridXSLRegisterClassProtocol.swift; sourceTree = "<group>"; };
 		E6E9DA002A9C92DE00CC2A3D /* SameLayerRendering.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SameLayerRendering.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6E9DA032A9C92DE00CC2A3D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E6E9DA052A9C92DE00CC2A3D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -107,9 +99,6 @@
 			isa = PBXGroup;
 			children = (
 				E6B7B3262AEF888B00BCF985 /* XVideoElement.swift */,
-				E69242962AD3DA41006D6DCD /* VideoPlayer.swift */,
-				E69242A52AD542DE006D6DCD /* FullScreenAnimated.swift */,
-				E69242A22AD40477006D6DCD /* FullScreenViewController.swift */,
 			);
 			path = Video;
 			sourceTree = "<group>";
@@ -162,7 +151,6 @@
 				E6BA0CD82AECF0E70039E90E /* hybrid_hook_xsl_js.swift */,
 				E6E9DA1C2A9CEB7000CC2A3D /* ContainerHookView.swift */,
 				E66E64F52AB039C500FDEC58 /* DispatchQueue+Once.swift */,
-				E6BC8E502AA07173005427B6 /* HybridXSLRegisterClassProtocol.swift */,
 				E69242982AD40313006D6DCD /* SameLayerRendering-Bridging-Header.h */,
 			);
 			path = SameLayerRendering;
@@ -310,16 +298,12 @@
 				E66E64F42AAF041900FDEC58 /* JSBridgeManager.swift in Sources */,
 				E6E9DA1B2A9CD34700CC2A3D /* WebViewController.swift in Sources */,
 				E6E9DA1D2A9CEB7000CC2A3D /* ContainerHookView.swift in Sources */,
-				E69242A32AD40477006D6DCD /* FullScreenViewController.swift in Sources */,
 				E6BA0CD12AEA054F0039E90E /* XSLBaseElement.swift in Sources */,
 				E66E64F62AB039C500FDEC58 /* DispatchQueue+Once.swift in Sources */,
-				E69242A62AD542DE006D6DCD /* FullScreenAnimated.swift in Sources */,
 				E6BA0CD92AECF0E70039E90E /* hybrid_hook_xsl_js.swift in Sources */,
-				E69242972AD3DA41006D6DCD /* VideoPlayer.swift in Sources */,
 				E6E9DA042A9C92DE00CC2A3D /* AppDelegate.swift in Sources */,
 				E6BA0CD72AEA30FE0039E90E /* XWidgetPlugin.swift in Sources */,
 				E6E9DA062A9C92DE00CC2A3D /* SceneDelegate.swift in Sources */,
-				E6BC8E512AA07173005427B6 /* HybridXSLRegisterClassProtocol.swift in Sources */,
 				E6BA0CCF2AE9FF110039E90E /* XSLManager.swift in Sources */,
 				E6B7B3272AEF888B00BCF985 /* XVideoElement.swift in Sources */,
 			);

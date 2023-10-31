@@ -55,6 +55,9 @@ class XWidgetPlugin: NSObject {
         }
         guard let v = element.init() as? XSLBaseElement else { return }
         v.setClassName(theId)
+        if (jsBridgeCallback.message?.webView != nil) {
+            v.setWebView((jsBridgeCallback.message?.webView)!)
+        }
         var tempDic = jsBridgeCallback.message?.webView?.xslElementMap
         tempDic?[theId] = v
         jsBridgeCallback.message?.webView?.xslElementMap = tempDic

@@ -114,7 +114,6 @@ class XSLBaseElement: NSObject {
         // 将最终的 JavaScript 代码保存到 map 中
         XSLManager.sharedSLManager.jsMap[elementName] = js
         return js
-
     }
     
     @objc class func generateFunctions(_ functions: [String]) -> String {
@@ -203,7 +202,7 @@ class XSLBaseElement: NSObject {
     @objc func addToWKChildScrollView() {
         self.weakWKChildScrollView?.addSubview(self.containerView)
     }
-    
+
     class func isElementValid() -> Bool {
         return true
     }
