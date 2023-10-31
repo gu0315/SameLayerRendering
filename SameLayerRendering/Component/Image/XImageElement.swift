@@ -23,8 +23,8 @@ class XImageElement: XSLBaseElement {
         self.containerView.addSubview(imageView)
     }
     
-    @objc override func elementConnected() {
-        super.elementConnected()
+    @objc override func elementConnected(_ params: [String: Any]) {
+        super.elementConnected(params)
     }
     
     @objc override func elementRendered() {

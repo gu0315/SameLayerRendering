@@ -49,11 +49,11 @@ class XWidgetPlugin: NSObject {
         guard let element = jsBridgeCallback.message?.webView?.xslElementMap?[theId] as? XSLBaseElement else {
             self.createXslWithElementId(theId: theId, params: params, jsBridgeCallback: jsBridgeCallback)
             if let v = jsBridgeCallback.message?.webView?.xslElementMap?[theId] as? XSLBaseElement {
-                v.elementConnected()
+                v.elementConnected(params)
             }
             return
         }
-        element.elementConnected()
+        element.elementConnected(params)
     }
 
     @objc func createXslWithElementId(theId: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) {

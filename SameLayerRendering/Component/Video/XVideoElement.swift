@@ -13,6 +13,8 @@ class XVideoElement: XSLBaseElement {
     
     var src = ""
     
+    var configuration: [String: Any]  = [:]
+    
     static var ZFAVPlayerManagerKey = "ZFAVPlayerManagerKey"
     
     static var ZFPlayerControllerKey = "ZFPlayerControllerKey"
@@ -38,18 +40,17 @@ class XVideoElement: XSLBaseElement {
         player.containerView = containerView
         player.controlView = controlView
         manager.stop()
-        print(self.src)
         if let videoURL = URL(string: self.src) {
             player.assetURL = videoURL
+            controlView.showTitle("测试", coverURLString: "https://upload-images.jianshu.io/upload_images/635942-14593722fe3f0695.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240", fullScreenMode: .portrait)
         }
     }
     
     private lazy var player: ZFPlayerController = {
         guard let zPlayer: ZFPlayerController = objc_getAssociatedObject(webView!, &XVideoElement.ZFPlayerControllerKey) as? ZFPlayerController else {
-            let player: ZFPlayerController = ZFPlayerController.init(scrollView: webView!.scrollView, playerManager: manager, containerView: containerView)
+            let player: ZFPlayerController = ZFPlayerController.init(playerManager: manager, containerView: containerView)
             player.controlView = controlView
             player.shouldAutoPlay = false
-            player.isWWANAutoPlay = false
             player.playerDisapperaPercent = 1.0
             objc_setAssociatedObject(webView!, &XVideoElement.ZFPlayerControllerKey, player, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             return player
@@ -68,8 +69,11 @@ class XVideoElement: XSLBaseElement {
         }
     }
     
-    @objc override func elementConnected() {
-        super.elementConnected()
+    @objc override func elementConnected(_ params: [String: Any]) {
+        super.elementConnected(params)
+        configuration = params
+        let autoplay = params["autoplay"] as? Bool
+        print(params)
     }
     
     @objc override func elementRendered() {
@@ -107,6 +111,11 @@ class XVideoElement: XSLBaseElement {
         guard let urlString = args["newValue"] as? String else { return }
         if (self.src == urlString) { return }
         self.src = urlString
+        if let videoURL = URL(string: self.src) {
+            player.assetURL = videoURL
+    
+            self.controlView.showTitle("测试", coverURLString: "https://upload-images.jianshu.io/upload_images/635942-14593722fe3f0695.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240", fullScreenMode: .portrait)
+        }
     }
 }
 
