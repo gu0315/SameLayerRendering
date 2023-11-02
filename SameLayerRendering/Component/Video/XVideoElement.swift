@@ -7,7 +7,8 @@
 
 import UIKit
 import ZFPlayer
-
+import WebKit
+import KTVHTTPCache
 
 class XVideoElement: XSLBaseElement {
     
@@ -39,10 +40,14 @@ class XVideoElement: XSLBaseElement {
     @objc func play() {
         player.containerView = containerView
         player.controlView = controlView
-        manager.stop()
         if let videoURL = URL(string: self.src) {
-            player.assetURL = videoURL
-            controlView.showTitle("测试", coverURLString: "https://upload-images.jianshu.io/upload_images/635942-14593722fe3f0695.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240", fullScreenMode: .portrait)
+            if let proxyURL = KTVHTTPCache.proxyURL(withOriginalURL: videoURL) {
+                player.assetURL = proxyURL
+            } else {
+                player.assetURL = videoURL
+            }
+             //self.controlView.showTitle("测试", coverURLString: "https://upload-images.jianshu.io/upload_images/635942-14593722fe3f0695.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240", fullScreenMode: .portrait)
+            manager.play()
         }
     }
     
@@ -52,6 +57,12 @@ class XVideoElement: XSLBaseElement {
             player.controlView = controlView
             player.shouldAutoPlay = false
             player.playerDisapperaPercent = 1.0
+            player.disableGestureTypes = .pan
+            player.orientationWillChange = { _, isFullScreen in
+                if let appdelegate = UIApplication.shared.delegate as? AppDelegate {
+                    appdelegate.isAllowOrientationRotation = isFullScreen
+                }
+            }
             objc_setAssociatedObject(webView!, &XVideoElement.ZFPlayerControllerKey, player, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             return player
         }
@@ -69,11 +80,25 @@ class XVideoElement: XSLBaseElement {
         }
     }
     
+    func findWebView(in view: UIView?) -> WKWebView? {
+        if (self.webView != nil) {
+            return self.webView
+        }
+        guard let view = view else { return nil }
+        if let webView = view as? WKWebView {
+            return webView
+        }
+        // 递归查找父视图
+        return findWebView(in: view.superview)
+    }
+    
     @objc override func elementConnected(_ params: [String: Any]) {
         super.elementConnected(params)
         configuration = params
         let autoplay = params["autoplay"] as? Bool
-        print(params)
+        player.shouldAutoPlay = autoplay ?? false
+        
+        
     }
     
     @objc override func elementRendered() {
@@ -111,11 +136,16 @@ class XVideoElement: XSLBaseElement {
         guard let urlString = args["newValue"] as? String else { return }
         if (self.src == urlString) { return }
         self.src = urlString
-        if let videoURL = URL(string: self.src) {
-            player.assetURL = videoURL
-    
-            self.controlView.showTitle("测试", coverURLString: "https://upload-images.jianshu.io/upload_images/635942-14593722fe3f0695.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240", fullScreenMode: .portrait)
+        DispatchQueue.main.async {
+            if !KTVHTTPCache.proxyIsRunning() {
+                do {
+                    try KTVHTTPCache.proxyStart()
+                } catch {
+                    print("KTVHTTPCache Start failed: \(error)")
+                }
+            }
         }
     }
 }
+
 

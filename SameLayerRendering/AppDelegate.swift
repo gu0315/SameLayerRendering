@@ -8,13 +8,15 @@
 import UIKit
 import WebKit
 import ZFPlayer
-
+import KTVHTTPCache
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+    open var isAllowOrientationRotation: Bool = false
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        KTVHTTPCache.logSetRecordLogEnable(false)
+        KTVHTTPCache.cacheSetMaxCacheLength(1024 * 1024 * 1024)
         // Override point for customization after application launch.
         return true
     }
@@ -25,7 +27,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return .portrait
     }
-
     // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {

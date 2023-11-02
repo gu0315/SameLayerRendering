@@ -184,7 +184,7 @@ class XSLBaseElement: NSObject {
     }
 
     @objc class func elementName() -> String {
-        return ""
+        return String()
     }
     
     @objc func elementConnected(_ params: [String: Any]) {

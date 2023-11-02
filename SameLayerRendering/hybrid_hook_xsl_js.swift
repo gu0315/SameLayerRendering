@@ -26,14 +26,13 @@ func hybridHookXSLJS() -> String {
             }
             return this.x_className;
         }
-        
         finalClassName() {
             if (!this.final_className) {
                 this.final_className = this.lowerClassName() + ' ' + this.className;
             }
             return this.final_className;
         }
-        
+        //需要观察的属性
         static get observedAttributes() {
             return ['$obsevers'];
         }
@@ -62,10 +61,12 @@ func hybridHookXSLJS() -> String {
             var a = document.createElement('div');
             a.style.height = '102%';
             shadowroot.appendChild(a);
+            //通知Nativer创建
             this.messageToNative({
                 'methodType': 'createXsl'
             });
         }
+        //通知Nativer添加
         connectedCallback() {
             this.className = this.finalClassName();
             let attributes = {};
@@ -75,12 +76,13 @@ func hybridHookXSLJS() -> String {
                 ...attributes
             })
         }
-        
+        //通知Nativer移除
         disconnectedCallback() {
             this.messageToNative({
                 'methodType': 'removeXsl'
             })
         }
+        //attribute变化通知Native
         attributeChangedCallback(name, oldValue, newValue) {
             if (oldValue == newValue) {
                 return;

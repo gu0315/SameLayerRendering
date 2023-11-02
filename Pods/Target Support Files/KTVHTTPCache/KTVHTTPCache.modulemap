@@ -1,0 +1,6 @@
+framework module KTVHTTPCache {
+  umbrella header "KTVHTTPCache-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,4 +1,9 @@
 PODS:
+  - CocoaAsyncSocket (7.6.5)
+  - KTVCocoaHTTPServer (1.0.0):
+    - CocoaAsyncSocket
+  - KTVHTTPCache (2.0.1):
+    - KTVCocoaHTTPServer
   - SDWebImage (5.17.0):
     - SDWebImage/Core (= 5.17.0)
   - SDWebImage/Core (5.17.0)
@@ -12,6 +17,7 @@ PODS:
   - ZFPlayer/Core (4.1.4)
 
 DEPENDENCIES:
+  - KTVHTTPCache
   - SDWebImage
   - SnapKit (~> 5.6.0)
   - ZFPlayer
@@ -20,15 +26,21 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
+    - CocoaAsyncSocket
+    - KTVCocoaHTTPServer
+    - KTVHTTPCache
     - SDWebImage
     - SnapKit
     - ZFPlayer
 
 SPEC CHECKSUMS:
+  CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
+  KTVCocoaHTTPServer: df8d7b861e603ff8037e9b2138aca2563a6b768d
+  KTVHTTPCache: 588c3eb16f6bd1e6fde1e230dabfb7bd4e490a4d
   SDWebImage: 750adf017a315a280c60fde706ab1e552a3ae4e9
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   ZFPlayer: 5cf39e8d9f0c2394a014b0db4767b5b5a6bffe13
 
-PODFILE CHECKSUM: 3c65ea3f95effbd396f1da4639401361a5d5e7a7
+PODFILE CHECKSUM: 35c2937d75a37a23b41824848b3859cc35c513bd
 
 COCOAPODS: 1.11.3

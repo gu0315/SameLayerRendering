@@ -8,4 +8,5 @@ target 'SameLayerRendering' do
     pod 'ZFPlayer/ControlView'
     pod 'ZFPlayer/AVPlayer'
     pod 'SDWebImage'
+    pod 'KTVHTTPCache'
 end
