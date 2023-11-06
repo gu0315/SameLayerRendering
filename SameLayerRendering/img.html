@@ -8,12 +8,33 @@
                 </head>
     <body >
         <div>--    Nativie    --</div>
-        <hybrid-image src="https://img13.360buyimg.com/imagetools/jfs/t1/200115/2/19154/19223/61a9d5c7Ed6948b2f/d4c9dd3c9130edde.png" style="height: 100px; width: 100px; " mode="widthFix" border_radius=“8px”>
+        <hybrid-image
+            src="https://img13.360buyimg.com/imagetools/jfs/t1/200115/2/19154/19223/61a9d5c7Ed6948b2f/d4c9dd3c9130edde.png"
+            style="height: 100px; width: 100px; "
+            mode="widthFix"
+            bindTapImg="bindTapImg1"
+            border_radius=“8px”>
         </hybrid-image>
         
-        
+        <hybrid-image
+            src="https://img13.360buyimg.com/imagetools/jfs/t1/200115/2/19154/19223/61a9d5c7Ed6948b2f/d4c9dd3c9130edde.png"
+            style="height: 100px; width: 100px; "
+            mode="widthFix"
+            bindTapImg="bindTapImg2"
+            border_radius=“8px”>
+        </hybrid-image>
+
         <div>--    h5    --</div>
         <image src="https://img13.360buyimg.com/imagetools/jfs/t1/200115/2/19154/19223/61a9d5c7Ed6948b2f/d4c9dd3c9130edde.png" style="height: 100px; width: 100px; " mode="widthFix" border_radius=“8px”>
         </image>
     </body>
+    <script>
+        function bindTapImg1(e) {
+            console.log("--------点击第一个图片", e)
+        }
+        
+        function bindTapImg2(e) {
+            console.log("--------点击第二个图片", e)
+        }
+    </script>
 </html>

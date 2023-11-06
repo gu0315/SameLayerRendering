@@ -42,7 +42,6 @@ class WeakScriptMessageDelegate: NSObject, WKScriptMessageHandler {
     
     var bridgePluginMap: Dictionary<String, AnyObject> = [:]
     
-    
     init(delegate: WKScriptMessageHandler?) {
        self.delegate = delegate
     }

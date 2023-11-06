@@ -12,9 +12,14 @@ class XImageElement: XSLBaseElement {
     
     var src = ""
     
+    
+    
     lazy var imageView: UIImageView = {
         let view = UIImageView.init()
         view.contentMode = .scaleToFill
+        view.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer.init(target: self, action: #selector(bindTapImg))
+        view.addGestureRecognizer(tap)
         return view
     }()
 
@@ -23,14 +28,27 @@ class XImageElement: XSLBaseElement {
         self.containerView.addSubview(imageView)
     }
     
-    @objc override func elementConnected(_ params: [String: Any]) {
-        super.elementConnected(params)
+    @objc func bindTapImg() {
+        // 如何优雅的发送到H5的bindTapImg
+        print("点击图片")
+        guard let bindHandle = attributes["bindtapimg"] else {
+            return
+        }
+        let methodName = "\(bindHandle)()"
+        self.webView!.evaluateJavaScript(methodName) { (result, error) in
+            if let error = error {
+                print("JavaScript execution error: \(error.localizedDescription)")
+            } else {
+                print("JavaScript execution successful")
+            }
+        }
     }
     
-    @objc override func elementRendered() {
-        super.elementRendered()
+    @objc override func elementConnected(_ params: [String: Any]) {
+        super.elementConnected(params)
+        print(params)
     }
-
+    
     @objc override class func elementName() -> String {
         return "hybrid-image"
     }

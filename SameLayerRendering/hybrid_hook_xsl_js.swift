@@ -12,6 +12,7 @@ func hybridHookXSLJS() -> String {
 ;(function(){
     "use strict";
     class $ElementName extends HTMLElement {
+        //向Nativer发送消息
         messageToNative(params) {
             params['xsl_id'] = this.lowerClassName();
             params['hybrid_xsl_id'] = this.hybrid_xsl_id;
@@ -48,6 +49,14 @@ func hybridHookXSLJS() -> String {
             this.element_name = '$Element-Name';
             this.display_style = '';
             this.hybrid_xsl_id = '';
+            this.appendChild()
+            //通知Nativer创建
+            this.messageToNative({
+                'methodType': 'createXsl'
+            });
+        }
+        //同层渲染的关键
+        appendChild() {
             if (!$ElementName.isAddStyle) {
                 var style = document.createElement('style');
                 var xsl_style = `{ display:block; overflow:scroll; }`;
@@ -61,10 +70,6 @@ func hybridHookXSLJS() -> String {
             var a = document.createElement('div');
             a.style.height = '102%';
             shadowroot.appendChild(a);
-            //通知Nativer创建
-            this.messageToNative({
-                'methodType': 'createXsl'
-            });
         }
         //通知Nativer添加
         connectedCallback() {

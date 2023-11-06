@@ -9,12 +9,9 @@ import UIKit
 import WebKit
 import Foundation
 
-//方法名以xsl开头
-//eg:添加事件 func xsl_play(args: Dictionary) {}
-//eg:添加又返回值的事件 func xsl_callback_play(args: Dictionary) -> String {}
-//eg:带两个参数的 arg  & callback func xsl_callback_play(args: String,  callback: BridgeCallBack) -> String {}
-//eg:添加属性 func xsl__url(args: Dictionary) {}
-//eg:添加带callback属性 func xsl__url(args: Dictionary, callback: BridgeCallBack) {}
+//方法名必须以xsl开头
+//eg:添加事件 func xsl__play(_ args: Dictionary) {}
+//eg:添加带callback属性 func xsl__play(_ args: Dictionary, callback: BridgeCallBack) {}
 class XSLBaseElement: NSObject {
     
     required override init() {
@@ -30,6 +27,8 @@ class XSLBaseElement: NSObject {
     var isAddToSuper = false
     
     var class_name: String = ""
+    
+    var attributes: Dictionary<String, Any> = [:]
     
     private var _size: CGSize = .zero
     
@@ -78,6 +77,7 @@ class XSLBaseElement: NSObject {
         js = js.replacingOccurrences(of: "$Element-Name", with: elementName)
         // 获取类的方法列表
         var functions = [String]()
+        // 公共默认观察的属性
         var observers = ["style", "xsl_style", "class", "hidden", "hybrid_xsl_id"]
         var count: UInt32 = 0
         guard let methodList = class_copyMethodList(self, &count) else {
@@ -143,7 +143,6 @@ class XSLBaseElement: NSObject {
         containerView.frame = .init(x: 0, y: 0, width: size.width, height: size.height)
         if (size.height > 0 && !self.rendering) {
             rendering = true
-            elementRendered()
         }
     }
     
@@ -188,11 +187,7 @@ class XSLBaseElement: NSObject {
     }
     
     @objc func elementConnected(_ params: [String: Any]) {
-        
-    }
-    
-    @objc func elementRendered() {
-        
+        attributes = params
     }
     
     @objc func removeFromSuperView() {

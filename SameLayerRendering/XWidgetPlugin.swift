@@ -16,13 +16,16 @@ class XWidgetPlugin: NSObject {
     @discardableResult
     @objc func execute(action: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) -> Bool {
         setXslIdMapDic(dic: params, jsBridgeCallback: jsBridgeCallback)
+        //1.createXslWithElementId
+        //2.addXslWithElementId
+        //3.changeXslWithElementId
         let selectorString = "\(action)WithElementIdWithTheId:params:jsBridgeCallback:"
+        print(selectorString, params)
         if responds(to: Selector(selectorString)) {
             let selector = Selector(selectorString)
             if let method = class_getInstanceMethod(type(of: self), selector) {
                 typealias Function = @convention(c) (AnyObject, Selector, String, [String: Any], JSBridgeCallBack) -> Void
                 let function = unsafeBitCast(method_getImplementation(method), to: Function.self)
-                
                 guard let theId = params["xsl_id"] as? String else {
                     self.inValidBridgeCallBack(jsBridgeCallback: jsBridgeCallback, message: "not found plugin")
                     return false
@@ -41,7 +44,11 @@ class XWidgetPlugin: NSObject {
     
     @discardableResult
     func inValidBridgeCallBack(jsBridgeCallback: JSBridgeCallBack, message: String) -> Bool {
-        // TODO
+        if ((jsBridgeCallback.onFail) != nil) {
+            jsBridgeCallback.onFail!(NSError(domain: NSCocoaErrorDomain,
+                                            code: -2,
+                                            userInfo: [NSLocalizedDescriptionKey: message]))
+        }
         return false
     }
     
@@ -70,61 +77,19 @@ class XWidgetPlugin: NSObject {
         tempDic[theId] = v
         jsBridgeCallback.message?.webView?.xslElementMap = tempDic
     }
-
-    @objc func invokeXslNativeMethodWithElementId(theId: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) {
-        var theId = theId
-        var methodName = params["methodName"] as? String
-        var argsParams = params["args"]
-        if let hybridXslId = params["hybrid_xsl_id"] as? String {
-            if let xslIdMap = jsBridgeCallback.message?.webView?.xslIdMap, let xslId = xslIdMap[hybridXslId] {
-                theId = xslId
-                methodName = params["functionName"] as? String
-                argsParams = params
-            }
-        }
-        if let element = jsBridgeCallback.message?.webView?.xslElementMap?[theId] as? XSLBaseElement {
-            let selectorCallback = NSSelectorFromString("xsl_callback_\(methodName ?? ""):")
-            let selector = NSSelectorFromString("xsl_\(methodName ?? ""):")
-            let selectorCallbackArgs = NSSelectorFromString("xsl_callback_\(methodName ?? ""):callback:")
-            if element.responds(to: selectorCallback) {
-                element.perform(selectorCallback, with: argsParams, with: jsBridgeCallback)
-            } else if element.responds(to: selectorCallbackArgs) {
-                element.perform(selectorCallbackArgs, with: argsParams, with: jsBridgeCallback)
-            } else if element.responds(to: selector) {
-                typealias ClosureType = @convention(c) (XSLBaseElement, Selector, Any) -> Void
-                let oldMethod: ClosureType = unsafeBitCast(class_getMethodImplementation(type(of: element), selector), to: ClosureType.self)
-                oldMethod(element, selector, argsParams ?? "")
-                if let onSuccess = jsBridgeCallback.onSuccess {
-                    onSuccess(argsParams)
-                }
-            }
-        }
-    }
-
+    
+    // attributeChangedCallback属性变化通知Native
     @objc func changeXslWithElementId(theId: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) {
         if let name = params["methodName"] as? String, let element = jsBridgeCallback.message?.webView?.xslElementMap?[theId] as? XSLBaseElement {
-            if name == "style" {
+            switch name {
+            case "style":
                 element.setStyleString(params["newValue"] as? String ?? "")
-            } else if name == "xsl_style" {
+                break
+            case "xsl_style":
                 element.setXSLStyleString(params["newValue"] as? String ?? "")
-            } else {
-                var sel = NSSelectorFromString("xsl__\(name):")
-                if !element.responds(to: sel) {
-                    var newName = ""
-                    let nameArr = name.components(separatedBy: "-")
-                    if nameArr.count > 1 {
-                        newName = nameArr.joined(separator: "_")
-                        sel = NSSelectorFromString("xsl__\(newName):")
-                    }
-                }
-                if !element.responds(to: sel) {
-                    var newName = ""
-                    let nameArr = name.components(separatedBy: "_")
-                    if nameArr.count > 1 {
-                        newName = getCamelCaseFromSnakeCase(oriStr: name)
-                        sel = NSSelectorFromString("xsl__\(newName):")
-                    }
-                }
+                break
+            default:
+                let sel = NSSelectorFromString("xsl__\(name):")
                 if element.responds(to: sel) {
                     typealias ClosureType = @convention(c) (XSLBaseElement, Selector, Dictionary<String, Any>) -> Void
                     let oldMethod: ClosureType = unsafeBitCast(class_getMethodImplementation(type(of: element), sel), to: ClosureType.self)
@@ -137,20 +102,33 @@ class XWidgetPlugin: NSObject {
                         element.perform(selCallback, with: params["args"], with: jsBridgeCallback)
                     }
                 }
+                break
             }
         }
     }
-
-    @objc func getCamelCaseFromSnakeCase(oriStr: String) -> String {
-        var str = oriStr
-        while str.contains("_") {
-            if let range = str.range(of: "_") {
-                let index = str.index(range.lowerBound, offsetBy: 1)
-                let c = str[index].uppercased()
-                str.replaceSubrange(range, with: c)
+    
+    @objc func invokeXslNativeMethodWithElementId(theId: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) {
+        var theId = theId
+        guard var methodName = params["methodName"] as? String else {
+            return
+        }
+        var argsParams = params["args"]
+        if let hybridXslId = params["hybrid_xsl_id"] as? String {
+            if let xslIdMap = jsBridgeCallback.message?.webView?.xslIdMap, let xslId = xslIdMap[hybridXslId] {
+                theId = xslId
+                methodName = params["functionName"] as? String ?? ""
+                argsParams = params
             }
         }
-        return str
+        if let element = jsBridgeCallback.message?.webView?.xslElementMap?[theId] as? XSLBaseElement {
+            let selector = NSSelectorFromString("xsl__\(methodName):")
+            let selectorCallback = NSSelectorFromString("xsl__\(methodName):callback:")
+            if element.responds(to: selector) {
+                element.perform(selector, with: argsParams)
+            } else if element.responds(to: selectorCallback) {
+                element.perform(selectorCallback, with: argsParams, with: jsBridgeCallback)
+            }
+        }
     }
 
     @objc func removeXslWithElementId(theId: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) {

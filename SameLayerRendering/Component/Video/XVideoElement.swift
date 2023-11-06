@@ -97,12 +97,6 @@ class XVideoElement: XSLBaseElement {
         configuration = params
         let autoplay = params["autoplay"] as? Bool
         player.shouldAutoPlay = autoplay ?? false
-        
-        
-    }
-    
-    @objc override func elementRendered() {
-        super.elementRendered()
     }
     
     @objc override func removeFromSuperView() {
