@@ -38,7 +38,7 @@ class XSLBaseElement: NSObject {
     
     static var xslBaseElementJsKey = "xslBaseElementJsKey"
     
-    @objc class func  jsClass() -> String {
+    @objc class func jsClass() -> String {
         withUnsafePointer(to: &XSLBaseElement.xslBaseElementJsKey) { pointer in
             guard let js: String = objc_getAssociatedObject(self, pointer) as? String else {
                 let jsClass = self.createJSClass()

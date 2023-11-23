@@ -105,30 +105,8 @@ class XSLManager: NSObject {
         }
     }
 
-
     func hookWebview() {
-        if var cls: AnyClass = NSClassFromString("CALayer") {
-            if #available(iOS 15.0, *) {
-                cls = NSClassFromString("WKCompositingLayer")!
-            }
-            let oldSel = Selector(("setBounds:"))
-            var oldImp: IMP? = nil
-            typealias type = @convention(block) (CALayer, Selector, CGRect) -> Void
-            let blockImplementation: type = { obj, sel, frame in
-                typealias ClosureType = @convention(c) (CALayer, Selector, CGRect) -> Void
-                let oldMethod: ClosureType = unsafeBitCast(oldImp, to: ClosureType.self)
-                oldMethod(obj, oldSel, frame)
-                if let delegate = obj.delegate, delegate.isKind(of: NSClassFromString("WKCompositingView")!) {
-                    withUnsafePointer(to: &AssociatedKeys.hybridXSLElementKey) { pointer in
-                        let element: XSLBaseElement? = objc_getAssociatedObject(obj as Any, pointer) as? XSLBaseElement
-                        if (element != nil) {
-                            element!.setSize(frame.size)
-                        }
-                    }
-                }
-            }
-            self.imp(old: &oldImp, cls: cls, sel: oldSel, imp: blockImplementation)
-        }
+        // Hook setScrollEnabled
         if let cls: AnyClass = NSClassFromString("WKChildScrollView") {
             let oldSel = Selector(("setScrollEnabled:"))
             var oldImp: IMP? = nil
@@ -145,6 +123,7 @@ class XSLManager: NSObject {
             }
             self.imp(old: &oldImp, cls: cls, sel: oldSel, imp: blockImplementation)
         }
+        // Hook setContentSize
         if let cls: AnyClass = NSClassFromString("WKChildScrollView") {
             let oldSel = Selector(("setContentSize:"))
             var oldImp: IMP? = nil
@@ -154,24 +133,24 @@ class XSLManager: NSObject {
                 let oldMethod: ClosureType = unsafeBitCast(oldImp, to: ClosureType.self)
                 oldMethod(obj, oldSel, contentSize)
                 self.getBindElement(obj.superview, name: obj.superview?.layer.name)
+                print("Hook------setContentSize:", cls)
             }
             self.imp(old: &oldImp, cls: cls, sel: oldSel, imp: blockImplementation)
         }
+        // Hook removeFromSuperview
         if let cls: AnyClass = NSClassFromString("WKChildScrollView") {
             let oldSel = #selector(UIView.removeFromSuperview)
             var oldImp: IMP? = nil
             typealias type = @convention(block) (UIScrollView, Selector) -> Void
             let blockImplementation: type = { obj, sel in
-                withUnsafePointer(to: &AssociatedKeys.hybridXSLElementKey) { pointer in
-                    let element: XSLBaseElement? = objc_getAssociatedObject(obj.superview!, pointer) as? XSLBaseElement
-                    if (element != nil) {
-                        element!.isAddToSuper = false
-                        element!.removeFromSuperView()
-                    }
-                    typealias ClosureType = @convention(c) (UIScrollView, Selector) -> Void
-                    let oldMethod: ClosureType = unsafeBitCast(oldImp, to: ClosureType.self)
-                    oldMethod(obj, oldSel)
+                let element: XSLBaseElement? = objc_getAssociatedObject(obj.superview!, &AssociatedKeys.hybridXSLElementKey) as? XSLBaseElement
+                if (element != nil) {
+                    element!.isAddToSuper = false
+                    element!.removeFromSuperView()
                 }
+                typealias ClosureType = @convention(c) (UIScrollView, Selector) -> Void
+                let oldMethod: ClosureType = unsafeBitCast(oldImp, to: ClosureType.self)
+                oldMethod(obj, oldSel)
             }
             self.imp(old: &oldImp, cls: cls, sel: oldSel, imp: blockImplementation)
         }
@@ -208,9 +187,7 @@ class XSLManager: NSObject {
                     element = el
                     el.setWebView(webView)
                     el.setSize(view.frame.size)
-                    withUnsafePointer(to: &AssociatedKeys.hybridXSLElementKey) { pointer in
-                        objc_setAssociatedObject(view, pointer, el, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-                    }
+                    objc_setAssociatedObject(view, &AssociatedKeys.hybridXSLElementKey, el, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
                     break
                 }
             }
