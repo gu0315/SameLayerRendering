@@ -119,9 +119,11 @@ class XSLManager: NSObject {
                 let oldMethod: ClosureType = unsafeBitCast(oldImp, to: ClosureType.self)
                 oldMethod(obj, oldSel, frame)
                 if let delegate = obj.delegate, delegate.isKind(of: NSClassFromString("WKCompositingView")!) {
-                    let element: XSLBaseElement? = objc_getAssociatedObject(obj.delegate, &AssociatedKeys.hybridXSLElementKey) as? XSLBaseElement
-                    if (element != nil) {
-                        element!.setSize(frame.size)
+                    withUnsafePointer(to: &AssociatedKeys.hybridXSLElementKey) { pointer in
+                        let element: XSLBaseElement? = objc_getAssociatedObject(obj as Any, pointer) as? XSLBaseElement
+                        if (element != nil) {
+                            element!.setSize(frame.size)
+                        }
                     }
                 }
             }
@@ -160,14 +162,16 @@ class XSLManager: NSObject {
             var oldImp: IMP? = nil
             typealias type = @convention(block) (UIScrollView, Selector) -> Void
             let blockImplementation: type = { obj, sel in
-                let element: XSLBaseElement? = objc_getAssociatedObject(obj.superview!, &AssociatedKeys.hybridXSLElementKey) as? XSLBaseElement
-                if (element != nil) {
-                    element!.isAddToSuper = false
-                    element!.removeFromSuperView()
+                withUnsafePointer(to: &AssociatedKeys.hybridXSLElementKey) { pointer in
+                    let element: XSLBaseElement? = objc_getAssociatedObject(obj.superview!, pointer) as? XSLBaseElement
+                    if (element != nil) {
+                        element!.isAddToSuper = false
+                        element!.removeFromSuperView()
+                    }
+                    typealias ClosureType = @convention(c) (UIScrollView, Selector) -> Void
+                    let oldMethod: ClosureType = unsafeBitCast(oldImp, to: ClosureType.self)
+                    oldMethod(obj, oldSel)
                 }
-                typealias ClosureType = @convention(c) (UIScrollView, Selector) -> Void
-                let oldMethod: ClosureType = unsafeBitCast(oldImp, to: ClosureType.self)
-                oldMethod(obj, oldSel)
             }
             self.imp(old: &oldImp, cls: cls, sel: oldSel, imp: blockImplementation)
         }
@@ -179,7 +183,10 @@ class XSLManager: NSObject {
     func getBindElement(_ view: UIView? , name: String?) -> XSLBaseElement? {
         guard let name = name, let view = view else { return nil }
         if let wkCompositingViewType = NSClassFromString("WKCompositingView"), view.isKind(of: wkCompositingViewType), name.contains("class") {
-            var element: XSLBaseElement? = objc_getAssociatedObject(view, &AssociatedKeys.hybridXSLElementKey) as? XSLBaseElement
+            var element: XSLBaseElement?
+            withUnsafePointer(to: &AssociatedKeys.hybridXSLElementKey) { pointer in
+                element = objc_getAssociatedObject(view, pointer) as? XSLBaseElement
+            }
             if (element != nil) {
                 return element
             }
@@ -201,7 +208,9 @@ class XSLManager: NSObject {
                     element = el
                     el.setWebView(webView)
                     el.setSize(view.frame.size)
-                    objc_setAssociatedObject(view, &AssociatedKeys.hybridXSLElementKey, el, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                    withUnsafePointer(to: &AssociatedKeys.hybridXSLElementKey) { pointer in
+                        objc_setAssociatedObject(view, pointer, el, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                    }
                     break
                 }
             }
@@ -246,29 +255,42 @@ extension WKWebView {
     /// TODO hybrid_xsl_id：xsl_id
     var xslIdMap: Dictionary<String, String>? {
         get {
-            return objc_getAssociatedObject(self, &AssociatedKeys.hybridXSLIdMapKey) as? Dictionary
+            withUnsafePointer(to: &AssociatedKeys.hybridXSLIdMapKey) { pointer in
+                return objc_getAssociatedObject(self, pointer) as? Dictionary
+            }
         }
         set {
-            objc_setAssociatedObject(self, &AssociatedKeys.hybridXSLIdMapKey, newValue, .OBJC_ASSOCIATION_COPY)
+            withUnsafePointer(to: &AssociatedKeys.hybridXSLIdMapKey) { pointer in
+                objc_setAssociatedObject(self, pointer, newValue, .OBJC_ASSOCIATION_COPY)
+            }
         }
     }
     
     var isFinishHandleWKContentGesture: Bool? {
         get {
-            return objc_getAssociatedObject(self, &AssociatedKeys.hybridXSLDidFinishHandleWKContentGestureKey) as? Bool
+            withUnsafePointer(to: &AssociatedKeys.hybridXSLDidFinishHandleWKContentGestureKey) { pointer in
+                return objc_getAssociatedObject(self, pointer) as? Bool
+            }
         }
         set {
-            objc_setAssociatedObject(self, &AssociatedKeys.hybridXSLDidFinishHandleWKContentGestureKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
+            withUnsafePointer(to: &AssociatedKeys.hybridXSLDidFinishHandleWKContentGestureKey) { pointer in
+                objc_setAssociatedObject(self, pointer, newValue, .OBJC_ASSOCIATION_ASSIGN)
+            
+            }
         }
     }
     
     /// h5 Key: Native  h5标签映射到原生组件实例
     var xslElementMap: Dictionary<String, AnyObject>? {
         get {
-            return objc_getAssociatedObject(self, &AssociatedKeys.hybridXSLElementMapKey) as? Dictionary
+            withUnsafePointer(to: &AssociatedKeys.hybridXSLElementMapKey) { pointer in
+                return objc_getAssociatedObject(self, pointer) as? Dictionary
+            }
         }
         set {
-            objc_setAssociatedObject(self, &AssociatedKeys.hybridXSLElementMapKey, newValue, .OBJC_ASSOCIATION_COPY)
+            withUnsafePointer(to: &AssociatedKeys.hybridXSLElementMapKey) { pointer in
+                objc_setAssociatedObject(self, pointer, newValue, .OBJC_ASSOCIATION_COPY)
+            }
         }
     }
     
@@ -278,7 +300,6 @@ extension WKWebView {
             handleWKContentGestures()
             isFinishHandleWKContentGesture = true
         }
-        
         /*let cls: AnyClass = NSClassFromString("WKChildScrollView")!
         if let childScrollView = hitView, childScrollView.isKind(of: cls) {
             var hitView: UIView?

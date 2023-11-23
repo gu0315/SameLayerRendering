@@ -43,7 +43,7 @@ class WeakScriptMessageDelegate: NSObject, WKScriptMessageHandler {
     var bridgePluginMap: Dictionary<String, AnyObject> = [:]
     
     init(delegate: WKScriptMessageHandler?) {
-       self.delegate = delegate
+        self.delegate = delegate
     }
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {

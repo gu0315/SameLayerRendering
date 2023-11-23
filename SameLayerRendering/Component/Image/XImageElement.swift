@@ -12,8 +12,6 @@ class XImageElement: XSLBaseElement {
     
     var src = ""
     
-    
-    
     lazy var imageView: UIImageView = {
         let view = UIImageView.init()
         view.contentMode = .scaleToFill
@@ -29,8 +27,6 @@ class XImageElement: XSLBaseElement {
     }
     
     @objc func bindTapImg() {
-        // 如何优雅的发送到H5的bindTapImg
-        print("点击图片")
         guard let bindHandle = attributes["bindtapimg"] else {
             return
         }
@@ -46,7 +42,6 @@ class XImageElement: XSLBaseElement {
     
     @objc override func elementConnected(_ params: [String: Any]) {
         super.elementConnected(params)
-        print(params)
     }
     
     @objc override class func elementName() -> String {

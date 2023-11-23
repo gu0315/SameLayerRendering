@@ -55,6 +55,3 @@ class WebViewController: UIViewController, UIScrollViewDelegate, WKNavigationDel
         self.jsBridge = nil
     }
 }
-
-
-

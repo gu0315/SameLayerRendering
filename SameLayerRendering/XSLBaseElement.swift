@@ -39,12 +39,14 @@ class XSLBaseElement: NSObject {
     static var xslBaseElementJsKey = "xslBaseElementJsKey"
     
     @objc class func  jsClass() -> String {
-        guard let js: String = objc_getAssociatedObject(self, &XSLBaseElement.xslBaseElementJsKey) as? String else {
-            let jsClass = self.createJSClass()
-            objc_setAssociatedObject(self, &XSLBaseElement.xslBaseElementJsKey, jsClass, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            return jsClass
+        withUnsafePointer(to: &XSLBaseElement.xslBaseElementJsKey) { pointer in
+            guard let js: String = objc_getAssociatedObject(self, pointer) as? String else {
+                let jsClass = self.createJSClass()
+                objc_setAssociatedObject(self, pointer, jsClass, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                return jsClass
+            }
+            return js
         }
-        return js
     }
     
     lazy var containerView: ContainerHookView = {
