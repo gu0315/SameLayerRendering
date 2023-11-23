@@ -106,53 +106,58 @@ class XSLManager: NSObject {
     }
 
     func hookWebview() {
-        // Hook setScrollEnabled
-        if let cls: AnyClass = NSClassFromString("WKChildScrollView") {
-            let oldSel = Selector(("setScrollEnabled:"))
-            var oldImp: IMP? = nil
-            typealias type = @convention(block) (UIScrollView, Selector, Bool) -> Void
-            let blockImplementation: type = { obj, sel, isEnable in
-                typealias ClosureType = @convention(c) (UIScrollView, Selector, Bool) -> Void
-                let oldMethod: ClosureType = unsafeBitCast(oldImp, to: ClosureType.self)
-                let element: XSLBaseElement? =  self.getBindElement(obj.superview, name: obj.superview?.layer.name)
-                if (element != nil) {
-                    oldMethod(obj, oldSel, false)
-                } else{
-                    oldMethod(obj, oldSel, isEnable);
+        DispatchQueue.once(token: "XSLManager-HookWebview") {
+            // Hook setScrollEnabled
+            if let cls: AnyClass = NSClassFromString("WKChildScrollView") {
+                let oldSel = Selector(("setScrollEnabled:"))
+                var oldImp: IMP? = nil
+                typealias type = @convention(block) (UIScrollView, Selector, Bool) -> Void
+                let blockImplementation: type = { [weak self] obj, sel, isEnable in
+                    guard let self = self else { return }
+                    typealias ClosureType = @convention(c) (UIScrollView, Selector, Bool) -> Void
+                    let oldMethod: ClosureType = unsafeBitCast(oldImp, to: ClosureType.self)
+                    let element: XSLBaseElement? =  self.getBindElement(obj.superview, name: obj.superview?.layer.name)
+                    if (element != nil) {
+                        oldMethod(obj, oldSel, false)
+                    } else{
+                        oldMethod(obj, oldSel, isEnable);
+                    }
                 }
+                self.imp(old: &oldImp, cls: cls, sel: oldSel, imp: blockImplementation)
             }
-            self.imp(old: &oldImp, cls: cls, sel: oldSel, imp: blockImplementation)
-        }
-        // Hook setContentSize
-        if let cls: AnyClass = NSClassFromString("WKChildScrollView") {
-            let oldSel = Selector(("setContentSize:"))
-            var oldImp: IMP? = nil
-            typealias type = @convention(block) (UIScrollView, Selector, CGSize) -> Void
-            let blockImplementation: type = { obj, sel, contentSize in
-                typealias ClosureType = @convention(c) (UIScrollView, Selector, CGSize) -> Void
-                let oldMethod: ClosureType = unsafeBitCast(oldImp, to: ClosureType.self)
-                oldMethod(obj, oldSel, contentSize)
-                self.getBindElement(obj.superview, name: obj.superview?.layer.name)
-                print("Hook------setContentSize:", cls)
-            }
-            self.imp(old: &oldImp, cls: cls, sel: oldSel, imp: blockImplementation)
-        }
-        // Hook removeFromSuperview
-        if let cls: AnyClass = NSClassFromString("WKChildScrollView") {
-            let oldSel = #selector(UIView.removeFromSuperview)
-            var oldImp: IMP? = nil
-            typealias type = @convention(block) (UIScrollView, Selector) -> Void
-            let blockImplementation: type = { obj, sel in
-                let element: XSLBaseElement? = objc_getAssociatedObject(obj.superview!, &AssociatedKeys.hybridXSLElementKey) as? XSLBaseElement
-                if (element != nil) {
-                    element!.isAddToSuper = false
-                    element!.removeFromSuperView()
+            // Hook setContentSize
+            if let cls: AnyClass = NSClassFromString("WKChildScrollView") {
+                let oldSel = Selector(("setContentSize:"))
+                var oldImp: IMP? = nil
+                typealias type = @convention(block) (UIScrollView, Selector, CGSize) -> Void
+                let blockImplementation: type = { [weak self] obj, sel, contentSize in
+                    guard let self = self else { return }
+                    typealias ClosureType = @convention(c) (UIScrollView, Selector, CGSize) -> Void
+                    let oldMethod: ClosureType = unsafeBitCast(oldImp, to: ClosureType.self)
+                    oldMethod(obj, oldSel, contentSize)
+                    self.getBindElement(obj.superview, name: obj.superview?.layer.name)
+                    print("Hook------setContentSize:", cls)
                 }
-                typealias ClosureType = @convention(c) (UIScrollView, Selector) -> Void
-                let oldMethod: ClosureType = unsafeBitCast(oldImp, to: ClosureType.self)
-                oldMethod(obj, oldSel)
+                self.imp(old: &oldImp, cls: cls, sel: oldSel, imp: blockImplementation)
             }
-            self.imp(old: &oldImp, cls: cls, sel: oldSel, imp: blockImplementation)
+            // Hook removeFromSuperview
+            if let cls: AnyClass = NSClassFromString("WKChildScrollView") {
+                let oldSel = #selector(UIView.removeFromSuperview)
+                var oldImp: IMP? = nil
+                typealias type = @convention(block) (UIScrollView, Selector) -> Void
+                let blockImplementation: type = { obj, sel in
+                    let element: XSLBaseElement? = objc_getAssociatedObject(obj.superview!, &AssociatedKeys.hybridXSLElementKey) as? XSLBaseElement
+                    if (element != nil) {
+                        element!.isAddToSuper = false
+                        element!.removeFromSuperView()
+                    }
+                    typealias ClosureType = @convention(c) (UIScrollView, Selector) -> Void
+                    let oldMethod: ClosureType = unsafeBitCast(oldImp, to: ClosureType.self)
+                    oldMethod(obj, oldSel)
+                    
+                }
+                self.imp(old: &oldImp, cls: cls, sel: oldSel, imp: blockImplementation)
+            }
         }
     }
     
@@ -187,7 +192,9 @@ class XSLManager: NSObject {
                     element = el
                     el.setWebView(webView)
                     el.setSize(view.frame.size)
-                    objc_setAssociatedObject(view, &AssociatedKeys.hybridXSLElementKey, el, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                    withUnsafePointer(to: &AssociatedKeys.hybridXSLElementKey) { pointer in
+                        objc_setAssociatedObject(view, pointer, el, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                    }
                     break
                 }
             }

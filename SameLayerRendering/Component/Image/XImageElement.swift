@@ -73,4 +73,9 @@ class XImageElement: XSLBaseElement {
             self.imageView.sd_setImage(with: imageURL)
         }
     }
+    
+    deinit {
+        print("XImageElement销毁")
+    }
 }
+
