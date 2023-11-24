@@ -14,6 +14,13 @@ public class ContainerHookView: UIView {
     
     var viewDidRemoveWindow: () -> Void = { }
     
+    public override func didMoveToWindow() {
+        super.didMoveToWindow()
+        if (self.window == nil) {
+            viewDidRemoveWindow()
+        }
+    }
+    
     public override func conforms(to aProtocol: Protocol) -> Bool {
         if NSStringFromProtocol(aProtocol) == "WKNativelyInteractible" {
             return nativeElementInteractionEnabled
@@ -21,15 +28,6 @@ public class ContainerHookView: UIView {
         return super.conforms(to: aProtocol)
     }
     
-
-  
-    public override func didMoveToWindow() {
-        super.didMoveToWindow()
-        if (self.window == nil) {
-            viewDidRemoveWindow()
-        }
-    }
-
     // 源码
     /*@implementation UIView (WKHitTesting)
 

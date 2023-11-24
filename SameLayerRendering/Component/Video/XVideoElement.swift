@@ -21,75 +21,78 @@ class XVideoElement: XSLBaseElement {
     static var ZFPlayerControllerKey = "ZFPlayerControllerKey"
     
     private lazy var manager: ZFAVPlayerManager = {
-        guard let manager: ZFAVPlayerManager = objc_getAssociatedObject(webView!, &XVideoElement.ZFAVPlayerManagerKey) as? ZFAVPlayerManager else {
-            let m = ZFAVPlayerManager()
-            objc_setAssociatedObject(webView!, &XVideoElement.ZFAVPlayerManagerKey, m, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            return m
+        withUnsafePointer(to: &XVideoElement.ZFAVPlayerManagerKey) { pointer in
+            guard let manager: ZFAVPlayerManager = objc_getAssociatedObject(webView!, pointer) as? ZFAVPlayerManager else {
+                let m = ZFAVPlayerManager()
+                objc_setAssociatedObject(webView!, pointer, m, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                return m
+            }
+            return manager
         }
-        return manager
+    }()
+    
+    lazy var coverImg: UIImageView = {
+        let img = UIImageView.init()
+        return img
     }()
     
     lazy var playBtn: UIButton = {
         let btn = UIButton.init(frame: .init(x: 0, y: 0, width: 100, height: 50))
-        btn.backgroundColor = .red
-        btn.setTitle("play", for: .normal)
-        btn.addTarget(self, action: #selector(play), for: .touchUpInside)
+        btn.setImage(UIImage.init(named: "new_allPause_44x44_"), for: .normal)
+        btn.setImage(UIImage.init(named: "new_allPlay_44x44_"), for: .normal)
+        btn.addTarget(self, action: #selector(play(_ :)), for: .touchUpInside)
         return btn
     }()
     
-    @objc func play() {
+    @objc func play(_ btn: UIButton) {
         player.containerView = containerView
         player.controlView = controlView
-        if let videoURL = URL(string: self.src) {
-            if let proxyURL = KTVHTTPCache.proxyURL(withOriginalURL: videoURL) {
-                player.assetURL = proxyURL
-            } else {
-                player.assetURL = videoURL
+        btn.isSelected = !btn.isSelected
+        if (btn.isSelected) {
+            if let videoURL = URL(string: self.src) {
+                if let proxyURL = KTVHTTPCache.proxyURL(withOriginalURL: videoURL) {
+                    player.assetURL = proxyURL
+                } else {
+                    player.assetURL = videoURL
+                }
+                manager.play()
             }
-             //self.controlView.showTitle("测试", coverURLString: "https://upload-images.jianshu.io/upload_images/635942-14593722fe3f0695.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240", fullScreenMode: .portrait)
-            manager.play()
+        } else {
+            manager.pause()
         }
     }
     
     private lazy var player: ZFPlayerController = {
-        guard let zPlayer: ZFPlayerController = objc_getAssociatedObject(webView!, &XVideoElement.ZFPlayerControllerKey) as? ZFPlayerController else {
-            let player: ZFPlayerController = ZFPlayerController.init(playerManager: manager, containerView: containerView)
-            player.controlView = controlView
-            player.shouldAutoPlay = false
-            player.playerDisapperaPercent = 1.0
-            player.disableGestureTypes = .pan
-            player.orientationWillChange = { _, isFullScreen in
-                if let appdelegate = UIApplication.shared.delegate as? AppDelegate {
-                    appdelegate.isAllowOrientationRotation = isFullScreen
+        withUnsafePointer(to: &XVideoElement.ZFPlayerControllerKey) { pointer in
+            guard let zPlayer: ZFPlayerController = objc_getAssociatedObject(webView!, pointer) as? ZFPlayerController else {
+                let player: ZFPlayerController = ZFPlayerController.init(playerManager: manager, containerView: containerView)
+                player.controlView = controlView
+                player.shouldAutoPlay = false
+                player.playerDisapperaPercent = 1.0
+                player.disableGestureTypes = .pan
+                player.orientationWillChange = { _, isFullScreen in
+                    if let appdelegate = UIApplication.shared.delegate as? AppDelegate {
+                        appdelegate.isAllowOrientationRotation = isFullScreen
+                    }
                 }
+                objc_setAssociatedObject(webView!, pointer, player, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                return player
             }
-            objc_setAssociatedObject(webView!, &XVideoElement.ZFPlayerControllerKey, player, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            return player
+            return zPlayer
         }
-        return zPlayer
     }()
     
     private lazy var controlView = ZFPlayerControlView()
     
     required init() {
         super.init()
-        self.containerView.addSubview(playBtn)
-        self.containerView.viewDidRemoveWindow = {
+        self.containerView.addSubview(coverImg)
+        self.coverImg.addSubview(playBtn)
+        self.containerView.viewDidRemoveWindow = { [weak self]  in
+            guard let self = self else { return }
             self.manager.stop()
             self.manager.assetURL = nil
         }
-    }
-    
-    func findWebView(in view: UIView?) -> WKWebView? {
-        if (self.webView != nil) {
-            return self.webView
-        }
-        guard let view = view else { return nil }
-        if let webView = view as? WKWebView {
-            return webView
-        }
-        // 递归查找父视图
-        return findWebView(in: view.superview)
     }
     
     @objc override func elementConnected(_ params: [String: Any]) {
@@ -114,16 +117,13 @@ class XVideoElement: XSLBaseElement {
     @objc override func setSize(_ size: CGSize) {
         super.setSize(size)
         playBtn.center = containerView.center
+        coverImg.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
         controlView.layoutIfNeeded()
         controlView.setNeedsDisplay()
     }
     
     @objc override func setStyleString(_ style: String) {
         super.setStyleString(style)
-    }
-    
-    @objc override func setXSLStyleString(_ style: String) {
-        super.setXSLStyleString(style)
     }
     
     @objc func xsl__src(_ args: Dictionary<String, Any>) {
@@ -139,6 +139,10 @@ class XVideoElement: XSLBaseElement {
                 }
             }
         }
+    }
+    
+    deinit {
+        print("XVideoElement销毁")
     }
 }
 

@@ -6,21 +6,22 @@
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <title>同层渲染</title>
                 </head>
-    <body style="height: 100Vh;">
+    <body style="height: 100Vh; overflow: scroll;">
         <div>--    Nativie    --</div>
         <hybrid-video
               controls
               loop
               autoplay
               bindplay="bindplay"
-              src="http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400"
-              style="height: 250px; width: 350px;"></hybrid-video>
+              poster="https://mpimg.vdongchina.com/ww6e61e170a7e31160//eb82efa3d18fed0be375eeceaaf630232.mp4?vframe/jpg/offset/1"
+              src="https://mpimg.vdongchina.com/ww6e61e170a7e31160//eb82efa3d18fed0be375eeceaaf630232.mp4"
+              style="height: 250px; width: 100%;"></hybrid-video>
         <hybrid-video
               controls
               loop
               bindplay="bindplay"
               src="http://vjs.zencdn.net/v/oceans.mp4"
-              style="height: 250px; width: 350px;"></hybrid-video>
+              style="height: 250px; width: 100%;"></hybrid-video>
 
         <div>--    h5    --</div>
         <video
@@ -31,6 +32,7 @@
               width="350px"
               height="250px"
         ></video>
+        <div style="height: 64px;"></div>
     </body>
     <script>
         function bindplay(e) {

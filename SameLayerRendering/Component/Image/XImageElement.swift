@@ -61,10 +61,6 @@ class XImageElement: XSLBaseElement {
         super.setStyleString(style)
     }
     
-    @objc override func setXSLStyleString(_ style: String) {
-        super.setXSLStyleString(style)
-    }
-    
     @objc func xsl__src(_ args: Dictionary<String, Any>) {
         guard let urlString = args["newValue"] as? String else { return }
         if (self.src == urlString) { return }

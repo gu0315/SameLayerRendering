@@ -85,9 +85,6 @@ class XWidgetPlugin: NSObject {
             case "style":
                 element.setStyleString(params["newValue"] as? String ?? "")
                 break
-            case "xsl_style":
-                element.setXSLStyleString(params["newValue"] as? String ?? "")
-                break
             default:
                 let sel = NSSelectorFromString("xsl__\(name):")
                 if element.responds(to: sel) {

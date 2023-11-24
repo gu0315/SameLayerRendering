@@ -42,13 +42,11 @@ class XSLManager: NSObject {
         }
     }
     
-    
     private override init() {
         super.init()
         // swift 不支持__attribute动态化，可以考虑objc_copyClassList匹配协议找到支持的组件, 这里考虑到组件少性能问题，手动配置
         // self.readXslRegisteredElement()
         elementsClassMap = ["hybrid-image": XImageElement.self, "hybrid-video": XVideoElement.self]
-        
     }
     
     /*private func readXslRegisteredElement() {
@@ -284,20 +282,6 @@ extension WKWebView {
             handleWKContentGestures()
             isFinishHandleWKContentGesture = true
         }
-        /*let cls: AnyClass = NSClassFromString("WKChildScrollView")!
-        if let childScrollView = hitView, childScrollView.isKind(of: cls) {
-            var hitView: UIView?
-            for subview in childScrollView.subviews.reversed() {
-                let point = subview.convert(point, from: self)
-                if let hit = subview.hitTest(point, with: event) {
-                    hitView = hit
-                    break
-                }
-            }
-            if hitView != nil {
-                return hitView
-            }
-        }*/
         return hitView
     }
 

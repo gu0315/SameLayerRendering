@@ -8,7 +8,6 @@
 import UIKit
 import WebKit
 class XSLWebView: WKWebView {
-
     deinit {
         print("XSLWebView销毁")
     }

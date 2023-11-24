@@ -18,7 +18,19 @@ class XSLBaseElement: NSObject {
         super.init()
     }
     
-    weak var webView: WKWebView?
+    weak var webView: WKWebView? {
+        get {
+            if _webView == nil {
+                _webView = self.findWebView(in: self.containerView)
+            }
+            return _webView
+        }
+        set {
+            _webView = newValue
+        }
+    }
+    
+    private weak var _webView: WKWebView?
     
     weak var weakWKChildScrollView: UIView?
     
@@ -33,8 +45,6 @@ class XSLBaseElement: NSObject {
     private var _size: CGSize = .zero
     
     private var style: Dictionary<String, String> = [:]
-    
-    private var xslStyle: Dictionary<String, String> = [:]
     
     static var xslBaseElementJsKey = "xslBaseElementJsKey"
     
@@ -80,7 +90,7 @@ class XSLBaseElement: NSObject {
         // 获取类的方法列表
         var functions = [String]()
         // 公共默认观察的属性
-        var observers = ["style", "xsl_style", "class", "hidden", "hybrid_xsl_id"]
+        var observers = ["style", "class", "hidden", "hybrid_xsl_id"]
         var count: UInt32 = 0
         guard let methodList = class_copyMethodList(self, &count) else {
             return js
@@ -140,6 +150,17 @@ class XSLBaseElement: NSObject {
         webView = view
     }
     
+    func findWebView(in view: UIView?) -> WKWebView? {
+         if (self.webView != nil) {
+             return self.webView
+         }
+         guard let view = view else { return nil }
+         if let webView = view as? WKWebView {
+             return webView
+         }
+         return findWebView(in: view.superview)
+     }
+    
     @objc func setSize(_ size: CGSize) {
         _size = size
         containerView.frame = .init(x: 0, y: 0, width: size.width, height: size.height)
@@ -164,24 +185,6 @@ class XSLBaseElement: NSObject {
             }
         }
         self.style = stylesMap
-    }
-
-    @objc func setXSLStyleString(_ style: String) {
-        var stylesMap = [String: String]()
-        let styles = style.components(separatedBy: ";")
-        styles.forEach { stylePair in
-            let keyValues = stylePair.components(separatedBy: ":")
-            if keyValues.count > 1 {
-                let key = keyValues[0].trimmingCharacters(in: .whitespaces)
-                if !key.isEmpty {
-                    let value = keyValues[1].trimmingCharacters(in: .whitespaces)
-                    if !value.isEmpty {
-                        stylesMap[key] = value
-                    }
-                }
-            }
-        }
-        xslStyle = stylesMap
     }
 
     @objc class func elementName() -> String {
