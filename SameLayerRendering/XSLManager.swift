@@ -134,7 +134,6 @@ class XSLManager: NSObject {
                     let oldMethod: ClosureType = unsafeBitCast(oldImp, to: ClosureType.self)
                     oldMethod(obj, oldSel, contentSize)
                     self.getBindElement(obj.superview, name: obj.superview?.layer.name)
-                    print("Hook------setContentSize:", cls)
                 }
                 self.imp(old: &oldImp, cls: cls, sel: oldSel, imp: blockImplementation)
             }
@@ -281,6 +280,20 @@ extension WKWebView {
         if !(isFinishHandleWKContentGesture ?? false) {
             handleWKContentGestures()
             isFinishHandleWKContentGesture = true
+        }
+        let cls: AnyClass = NSClassFromString("WKChildScrollView")!
+        if let childScrollView = hitView, childScrollView.isKind(of: cls) {
+            var hitView: UIView?
+            for subview in childScrollView.subviews.reversed() {
+                let point = subview.convert(point, from: self)
+                if let hit = subview.hitTest(point, with: event) {
+                    hitView = hit
+                    break
+                }
+            }
+            if hitView != nil {
+                return hitView
+            }
         }
         return hitView
     }

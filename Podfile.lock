@@ -4,10 +4,14 @@ PODS:
     - CocoaAsyncSocket
   - KTVHTTPCache (2.0.1):
     - KTVCocoaHTTPServer
+  - NVActivityIndicatorView (5.1.1):
+    - NVActivityIndicatorView/Base (= 5.1.1)
+  - NVActivityIndicatorView/Base (5.1.1)
   - SDWebImage (5.17.0):
     - SDWebImage/Core (= 5.17.0)
   - SDWebImage/Core (5.17.0)
   - SnapKit (5.6.0)
+  - VIMediaCache (0.4)
   - ZFPlayer (4.1.4):
     - ZFPlayer/Core (= 4.1.4)
   - ZFPlayer/AVPlayer (4.1.4):
@@ -18,8 +22,10 @@ PODS:
 
 DEPENDENCIES:
   - KTVHTTPCache
+  - NVActivityIndicatorView
   - SDWebImage
   - SnapKit (~> 5.6.0)
+  - VIMediaCache
   - ZFPlayer
   - ZFPlayer/AVPlayer
   - ZFPlayer/ControlView
@@ -29,18 +35,22 @@ SPEC REPOS:
     - CocoaAsyncSocket
     - KTVCocoaHTTPServer
     - KTVHTTPCache
+    - NVActivityIndicatorView
     - SDWebImage
     - SnapKit
+    - VIMediaCache
     - ZFPlayer
 
 SPEC CHECKSUMS:
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   KTVCocoaHTTPServer: df8d7b861e603ff8037e9b2138aca2563a6b768d
   KTVHTTPCache: 588c3eb16f6bd1e6fde1e230dabfb7bd4e490a4d
+  NVActivityIndicatorView: 1f6c5687f1171810aa27a3296814dc2d7dec3667
   SDWebImage: 750adf017a315a280c60fde706ab1e552a3ae4e9
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
+  VIMediaCache: aa650f82cb114c68a343beb4e67416cf5eb2f3a2
   ZFPlayer: 5cf39e8d9f0c2394a014b0db4767b5b5a6bffe13
 
-PODFILE CHECKSUM: a2747e1a8afce589f59cf26d30ab7fdd46f523ea
+PODFILE CHECKSUM: 2e9eb8e82887569a513ff8b328388023ffd8b0a9
 
 COCOAPODS: 1.11.3

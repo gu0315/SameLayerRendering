@@ -33,22 +33,24 @@ class XVideoElement: XSLBaseElement {
     
     lazy var coverImg: UIImageView = {
         let img = UIImageView.init()
+        img.isUserInteractionEnabled = true
         return img
     }()
     
     lazy var playBtn: UIButton = {
         let btn = UIButton.init(frame: .init(x: 0, y: 0, width: 100, height: 50))
-        btn.setImage(UIImage.init(named: "new_allPause_44x44_"), for: .normal)
+        btn.setImage(UIImage.init(named: "new_allPause_44x44_"), for: .selected)
         btn.setImage(UIImage.init(named: "new_allPlay_44x44_"), for: .normal)
-        btn.addTarget(self, action: #selector(play(_ :)), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(playVideo), for: .touchUpInside)
         return btn
     }()
     
-    @objc func play(_ btn: UIButton) {
+    
+    @objc func playVideo() {
         player.containerView = containerView
         player.controlView = controlView
-        btn.isSelected = !btn.isSelected
-        if (btn.isSelected) {
+        playBtn.isSelected = !playBtn.isSelected
+        if (playBtn.isSelected) {
             if let videoURL = URL(string: self.src) {
                 if let proxyURL = KTVHTTPCache.proxyURL(withOriginalURL: videoURL) {
                     player.assetURL = proxyURL
@@ -86,6 +88,7 @@ class XVideoElement: XSLBaseElement {
     
     required init() {
         super.init()
+        print("--------init", self)
         self.containerView.addSubview(coverImg)
         self.coverImg.addSubview(playBtn)
         self.containerView.viewDidRemoveWindow = { [weak self]  in
@@ -100,6 +103,9 @@ class XVideoElement: XSLBaseElement {
         configuration = params
         let autoplay = params["autoplay"] as? Bool
         player.shouldAutoPlay = autoplay ?? false
+        if let poster = params["poster"] as? String {
+            coverImg.sd_setImage(with: URL(string: poster))
+        }
     }
     
     @objc override func removeFromSuperView() {
@@ -116,10 +122,10 @@ class XVideoElement: XSLBaseElement {
     
     @objc override func setSize(_ size: CGSize) {
         super.setSize(size)
-        playBtn.center = containerView.center
         coverImg.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-        controlView.layoutIfNeeded()
-        controlView.setNeedsDisplay()
+        playBtn.center = containerView.center
+        //controlView.layoutIfNeeded()
+       // controlView.setNeedsDisplay()
     }
     
     @objc override func setStyleString(_ style: String) {
