@@ -61,9 +61,6 @@ class XSLBaseElement: NSObject {
     
     lazy var containerView: ContainerHookView = {
         let view = ContainerHookView.init(frame: .zero)
-        if (responds(to: #selector(nativeElementInteraction))) {
-            view.nativeElementInteractionEnabled = nativeElementInteraction()
-        }
         view.isUserInteractionEnabled = true
         return view
     }()
@@ -204,11 +201,6 @@ class XSLBaseElement: NSObject {
     }
 
     class func isElementValid() -> Bool {
-        return true
-    }
-    
-    // 原生同层渲染组件是否响应事件，默认打开
-    @objc func nativeElementInteraction() -> Bool {
         return true
     }
     
