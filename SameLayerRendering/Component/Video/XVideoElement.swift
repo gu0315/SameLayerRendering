@@ -57,7 +57,7 @@ class XVideoElement: XSLBaseElement {
                 player.disableGestureTypes = .pan
                 player.orientationWillChange = { _, isFullScreen in
                     if let appdelegate = UIApplication.shared.delegate as? AppDelegate {
-                        appdelegate.isAllowOrientationRotation = isFullScreen
+                        appdelegate.allowOrentitaionRotation = isFullScreen
                     }
                 }
                 objc_setAssociatedObject(webView!, pointer, player, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
