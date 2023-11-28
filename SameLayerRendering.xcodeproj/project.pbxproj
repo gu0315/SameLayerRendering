@@ -19,6 +19,7 @@
 		E6BA0CD72AEA30FE0039E90E /* XWidgetPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BA0CD62AEA30FE0039E90E /* XWidgetPlugin.swift */; };
 		E6BA0CD92AECF0E70039E90E /* hybrid_hook_xsl_js.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BA0CD82AECF0E70039E90E /* hybrid_hook_xsl_js.swift */; };
 		E6BA0CDB2AED25DE0039E90E /* img.html in Resources */ = {isa = PBXBuildFile; fileRef = E6BA0CDA2AED25DE0039E90E /* img.html */; };
+		E6BA0E112B15BBD800BB2C0F /* XInputElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BA0E102B15BBD800BB2C0F /* XInputElement.swift */; };
 		E6E9DA042A9C92DE00CC2A3D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA032A9C92DE00CC2A3D /* AppDelegate.swift */; };
 		E6E9DA062A9C92DE00CC2A3D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA052A9C92DE00CC2A3D /* SceneDelegate.swift */; };
 		E6E9DA082A9C92DE00CC2A3D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA072A9C92DE00CC2A3D /* ViewController.swift */; };
@@ -46,6 +47,7 @@
 		E6BA0CD62AEA30FE0039E90E /* XWidgetPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XWidgetPlugin.swift; sourceTree = "<group>"; };
 		E6BA0CD82AECF0E70039E90E /* hybrid_hook_xsl_js.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hybrid_hook_xsl_js.swift; sourceTree = "<group>"; };
 		E6BA0CDA2AED25DE0039E90E /* img.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = img.html; sourceTree = "<group>"; };
+		E6BA0E102B15BBD800BB2C0F /* XInputElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XInputElement.swift; sourceTree = "<group>"; };
 		E6E9DA002A9C92DE00CC2A3D /* SameLayerRendering.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SameLayerRendering.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6E9DA032A9C92DE00CC2A3D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E6E9DA052A9C92DE00CC2A3D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 		E6848ABB2ADFBBA500D275CE /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				E6BA0E0C2B15BB6D00BB2C0F /* Input */,
 				E6B7B3252AEF7C9B00BCF985 /* Image */,
 				E6848ABC2ADFBBC200D275CE /* Video */,
 			);
@@ -111,6 +114,14 @@
 				E6BA0CD22AEA05950039E90E /* XImageElement.swift */,
 			);
 			path = Image;
+			sourceTree = "<group>";
+		};
+		E6BA0E0C2B15BB6D00BB2C0F /* Input */ = {
+			isa = PBXGroup;
+			children = (
+				E6BA0E102B15BBD800BB2C0F /* XInputElement.swift */,
+			);
+			path = Input;
 			sourceTree = "<group>";
 		};
 		E6E9D9F72A9C92DE00CC2A3D = {
@@ -295,6 +306,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6BA0E112B15BBD800BB2C0F /* XInputElement.swift in Sources */,
 				E6BA0CD32AEA05950039E90E /* XImageElement.swift in Sources */,
 				E6B7B3242AEEB01600BCF985 /* JSBridgeCallBack.swift in Sources */,
 				E6E9DA082A9C92DE00CC2A3D /* ViewController.swift in Sources */,

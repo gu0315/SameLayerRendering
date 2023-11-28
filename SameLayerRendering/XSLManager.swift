@@ -46,7 +46,9 @@ class XSLManager: NSObject {
         super.init()
         // swift 不支持__attribute动态化，可以考虑objc_copyClassList匹配协议找到支持的组件, 这里考虑到组件少性能问题，手动配置
         // self.readXslRegisteredElement()
-        elementsClassMap = ["hybrid-image": XImageElement.self, "hybrid-video": XVideoElement.self]
+        elementsClassMap = ["hybrid-image": XImageElement.self, 
+                            "hybrid-video": XVideoElement.self,
+                            "hybrid-input": XInputElement.self]
     }
     
     /*private func readXslRegisteredElement() {

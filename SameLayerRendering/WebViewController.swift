@@ -34,6 +34,8 @@ class WebViewController: UIViewController, UIScrollViewDelegate, WKNavigationDel
         webView.uiDelegate = self
         webView.backgroundColor = UIColor.clear.withAlphaComponent(0)
         webView.configuration.mediaTypesRequiringUserActionForPlayback = []
+        webView.scrollView.contentInset = .init(top: 0, left: 0, bottom: 0, right: 0)
+        webView.scrollView.contentSize = CGSizeMake(self.view.bounds.size.width,self.view.bounds.size.height);
         self.view.addSubview(webView)
         self.jsBridge = JSBridgeManager.init(webView)
         XSLManager.sharedSLManager.initSLManagerWithWebView(webView)
