@@ -3,10 +3,14 @@
     <head>
         <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta
+                            name="viewport"
+                            content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width, minimal-ui
+                        />
                     <title>同层渲染</title>
                 </head>
-    <body style="height: 100Vh; overflow: scroll; margin:0;padding:0">
+    <body style="height: 100Vh; width: 100vw; overflow: scroll; margin:0;padding:0">
+        <div style="margin: 8px;">
         <div>--    Nativie    --</div>
         <div>
         <div>我是主标题</div>
@@ -45,8 +49,12 @@
               height="250px"
         ></video>
         </div>
-        <div style="height: 64px;"></div>
+        </div>
     </body>
+    <script src="https://cdn.bootcss.com/vConsole/3.3.4/vconsole.min.js"></script>
+    <script>
+        var vConsole = new VConsole();
+    </script>
     <script>
         function bindplay(e) {
             console.log("bindplay", e)

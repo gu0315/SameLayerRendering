@@ -44,7 +44,7 @@ class XSLManager: NSObject {
     
     private override init() {
         super.init()
-        // swift 不支持__attribute动态化，可以考虑objc_copyClassList匹配协议找到支持的组件, 这里考虑到组件少性能问题，手动配置
+        // swift 不支持__attribute动态化，可以考虑objc_copyClassList匹配协议找到支持的组件, 这里考虑到组件少，及获取objc_copyClassList性能问题，手动配置
         // self.readXslRegisteredElement()
         elementsClassMap = ["hybrid-image": XImageElement.self, 
                             "hybrid-video": XVideoElement.self,
@@ -82,6 +82,24 @@ class XSLManager: NSObject {
             XSLManager.sharedSLManager.hookWebview()
             wKWebView.addUserScript()
         }
+        // MARK: - 禁止点击文本交互，放大镜
+        if #available(iOS 14.5, *) {
+            wKWebView.configuration.preferences.isTextInteractionEnabled = false
+        } else {
+            let selectionScript = WKUserScript(source: """
+                        document.body.style.webkitTouchCallout='none';
+                        document.body.style.webkitUserSelect='none';
+                    """, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+            wKWebView.configuration.userContentController.addUserScript(selectionScript)
+        }
+        // MARK: - 禁止点击图片放大
+        let source = """
+              var style = document.createElement('style');
+              style.innerHTML = 'img { pointer-events: none; }';
+              document.head.appendChild(style);
+        """
+        let selectionScript = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+        wKWebView.configuration.userContentController.addUserScript(selectionScript)
     }
     
     func isHybridXslValid() -> Bool {
@@ -153,7 +171,6 @@ class XSLManager: NSObject {
                     typealias ClosureType = @convention(c) (UIScrollView, Selector) -> Void
                     let oldMethod: ClosureType = unsafeBitCast(oldImp, to: ClosureType.self)
                     oldMethod(obj, oldSel)
-                    
                 }
                 self.imp(old: &oldImp, cls: cls, sel: oldSel, imp: blockImplementation)
             }
@@ -199,7 +216,6 @@ class XSLManager: NSObject {
             }
             self.addElement(element: element, toSuperView: view.subviews.last!)
             return element
-            
         }
         return nil
     }

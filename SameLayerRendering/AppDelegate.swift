@@ -22,47 +22,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        var orientationMask: ZFInterfaceOrientationMask = .portrait
-        if #available(iOS 16.0, *) {
-            orientationMask = ZFLandscapeRotationManager_iOS16.supportedInterfaceOrientations(for: window)
-
-        }else if #available(iOS 15.0, *) {
-            orientationMask = ZFLandscapeRotationManager_iOS15.supportedInterfaceOrientations(for: window)
-
-        }else{
-            orientationMask = ZFLandscapeRotationManager.supportedInterfaceOrientations(for: window)
-        }
-        
-       if #available(iOS 16.0, *) {
-            if allowOrentitaionRotation {
-                return UIInterfaceOrientationMask.landscape
+        if window is ZFLandscapeWindow {
+            var orientationMask: ZFInterfaceOrientationMask = .portrait
+            if #available(iOS 16.0, *) {
+                orientationMask = ZFLandscapeRotationManager_iOS16.supportedInterfaceOrientations(for: window)
+            } else if #available(iOS 15.0, *) {
+                orientationMask = ZFLandscapeRotationManager_iOS15.supportedInterfaceOrientations(for: window)
             } else {
-                return UIInterfaceOrientationMask.portrait
+                orientationMask = ZFLandscapeRotationManager.supportedInterfaceOrientations(for: window)
             }
-        }else {
-            if orientationMask != [] {
-                if orientationMask == .portrait {
-                    return UIInterfaceOrientationMask.portrait
-                }else if orientationMask == .landscapeLeft {
-                    return UIInterfaceOrientationMask.landscapeLeft
-                }else if orientationMask == .landscapeRight {
-                    return UIInterfaceOrientationMask.landscapeRight
-                }else if orientationMask == .landscape {
-                    return UIInterfaceOrientationMask.landscape
-                }else if orientationMask == .portraitUpsideDown {
-                    return UIInterfaceOrientationMask.portraitUpsideDown
-                }else if orientationMask == .all {
-                    return UIInterfaceOrientationMask.all
-                }else if orientationMask == .allButUpsideDown {
-                    return UIInterfaceOrientationMask.allButUpsideDown
-                }else{
-                    return UIInterfaceOrientationMask.all
-                }
-
-            }else{
-                return UIInterfaceOrientationMask.portrait
+            if orientationMask != ZFInterfaceOrientationMask(rawValue: 0) {
+                return UIInterfaceOrientationMask(rawValue: orientationMask.rawValue)
             }
         }
+        if allowOrentitaionRotation {
+            return .allButUpsideDown
+        }
+        return .portrait
     }
     
     // MARK: UISceneSession Lifecycle

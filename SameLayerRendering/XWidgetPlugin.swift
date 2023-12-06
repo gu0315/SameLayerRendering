@@ -16,11 +16,8 @@ class XWidgetPlugin: NSObject {
     @discardableResult
     @objc func execute(action: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) -> Bool {
         setXslIdMapDic(dic: params, jsBridgeCallback: jsBridgeCallback)
-        //1.createXslWithElementId
-        //2.addXslWithElementId
-        //3.changeXslWithElementId
         let selectorString = "\(action)WithElementIdWithTheId:params:jsBridgeCallback:"
-        print(selectorString, params)
+        debugPrint(selectorString, params)
         if responds(to: Selector(selectorString)) {
             let selector = Selector(selectorString)
             if let method = class_getInstanceMethod(type(of: self), selector) {

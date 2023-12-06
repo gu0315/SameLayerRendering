@@ -14,6 +14,7 @@ class XInputElement: XSLBaseElement {
         textFied.adjustsFontSizeToFitWidth = true
         textFied.returnKeyType = .next
         textFied.backgroundColor = .darkGray
+        textFied.addTarget(self, action: #selector(onChange(_ :)), for: UIControl.Event.editingChanged)
         return textFied
     }()
 
@@ -48,7 +49,26 @@ class XInputElement: XSLBaseElement {
         input.text = text
     }
     
+    @objc func onChange(_ sender: UITextField) {
+        guard sender.text != nil else {
+            return
+        }
+        if sender.markedTextRange == nil {
+            if let bindHandle = attributes["bindonchange"] {
+                let methodName = "\(bindHandle)('\(sender.text?.description ?? "")');"
+                self.webView!.evaluateJavaScript(methodName) { (result, error) in
+                    if let error = error {
+                        print("JavaScript execution error: \(error.localizedDescription)")
+                    } else {
+                        print("JavaScript execution successful")
+                    }
+                }
+            }
+        }
+    }
+    
     deinit {
         print("XInputElement销毁")
     }
 }
+

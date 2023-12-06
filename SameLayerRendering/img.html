@@ -3,10 +3,14 @@
     <head>
         <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta
+                            name="viewport"
+                            content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width, minimal-ui/>
                     <title>同层渲染</title>
                 </head>
-    <body style="height: 100Vh; overflow: scroll; margin:0;padding:0">
+
+    <body style="height: 100Vh; width: 100vw; overflow: scroll; margin:0;padding:0">
+        <div style="margin: 8px;">
         <div>--    Nativie    --</div>
         <hybrid-image
             src="https://img13.360buyimg.com/imagetools/jfs/t1/200115/2/19154/19223/61a9d5c7Ed6948b2f/d4c9dd3c9130edde.png"
@@ -15,7 +19,7 @@
             bindTapImg="bindTapImg1"
             border_radius=“8px”>
         </hybrid-image>
-        
+
         <hybrid-image
             src="https://img13.360buyimg.com/imagetools/jfs/t1/200115/2/19154/19223/61a9d5c7Ed6948b2f/d4c9dd3c9130edde.png"
             style="height: 100px; width: 100px; "
@@ -23,24 +27,35 @@
             bindTapImg="bindTapImg2"
             border_radius=“8px”>
         </hybrid-image>
-        
+
         <hybrid-input
-            text="hello world"
-            style="height: 44px; width: 100vw;">
+            text="hello World"
+            bindOnChange="bindOnChange"
+            style="height: 44px; width: 100%;">
         </hybrid-input>
-        
 
         <div>--    h5    --</div>
         <image src="https://img13.360buyimg.com/imagetools/jfs/t1/200115/2/19154/19223/61a9d5c7Ed6948b2f/d4c9dd3c9130edde.png" style="height: 100px; width: 100px; " mode="widthFix" border_radius=“8px”>
         </image>
+        </div>
     </body>
+
+    <script src="https://cdn.bootcss.com/vConsole/3.3.4/vconsole.min.js"></script>
+    <script>
+        var vConsole = new VConsole();
+    </script>
+
     <script>
         function bindTapImg1(e) {
             console.log("--------点击第一个图片", e)
         }
-        
+
         function bindTapImg2(e) {
             console.log("--------点击第二个图片", e)
+        }
+
+        function bindOnChange(str) {
+            console.log("--------bindOnChange", str)
         }
     </script>
 </html>
