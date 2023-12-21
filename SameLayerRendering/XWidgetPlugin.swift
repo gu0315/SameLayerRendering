@@ -17,7 +17,7 @@ class XWidgetPlugin: NSObject {
     @objc func execute(action: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) -> Bool {
         setXslIdMapDic(dic: params, jsBridgeCallback: jsBridgeCallback)
         let selectorString = "\(action)WithElementIdWithTheId:params:jsBridgeCallback:"
-        debugPrint(selectorString, params)
+        debugPrint("同层渲染Web Components->生命周期回调", params["xsl_id"] ?? "", action)
         if responds(to: Selector(selectorString)) {
             let selector = Selector(selectorString)
             if let method = class_getInstanceMethod(type(of: self), selector) {

@@ -9,6 +9,7 @@ target 'SameLayerRendering' do
     pod 'ZFPlayer/AVPlayer'
     pod 'SDWebImage'
     pod 'KTVHTTPCache'
+    pod 'LookinServer', :configurations => ['Debug']
 end
 
 post_install do |installer|

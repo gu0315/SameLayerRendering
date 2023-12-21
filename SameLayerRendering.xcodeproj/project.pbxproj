@@ -20,6 +20,7 @@
 		E6BA0CD92AECF0E70039E90E /* hybrid_hook_xsl_js.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BA0CD82AECF0E70039E90E /* hybrid_hook_xsl_js.swift */; };
 		E6BA0CDB2AED25DE0039E90E /* img.html in Resources */ = {isa = PBXBuildFile; fileRef = E6BA0CDA2AED25DE0039E90E /* img.html */; };
 		E6BA0E112B15BBD800BB2C0F /* XInputElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BA0E102B15BBD800BB2C0F /* XInputElement.swift */; };
+		E6C5375D2B31836A00EFE373 /* OpenWebVPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C5375C2B31836A00EFE373 /* OpenWebVPlugin.swift */; };
 		E6E9DA042A9C92DE00CC2A3D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA032A9C92DE00CC2A3D /* AppDelegate.swift */; };
 		E6E9DA062A9C92DE00CC2A3D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA052A9C92DE00CC2A3D /* SceneDelegate.swift */; };
 		E6E9DA082A9C92DE00CC2A3D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E9DA072A9C92DE00CC2A3D /* ViewController.swift */; };
@@ -48,6 +49,7 @@
 		E6BA0CD82AECF0E70039E90E /* hybrid_hook_xsl_js.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hybrid_hook_xsl_js.swift; sourceTree = "<group>"; };
 		E6BA0CDA2AED25DE0039E90E /* img.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = img.html; sourceTree = "<group>"; };
 		E6BA0E102B15BBD800BB2C0F /* XInputElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XInputElement.swift; sourceTree = "<group>"; };
+		E6C5375C2B31836A00EFE373 /* OpenWebVPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWebVPlugin.swift; sourceTree = "<group>"; };
 		E6E9DA002A9C92DE00CC2A3D /* SameLayerRendering.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SameLayerRendering.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6E9DA032A9C92DE00CC2A3D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E6E9DA052A9C92DE00CC2A3D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 				E6BA0CCE2AE9FF110039E90E /* XSLManager.swift */,
 				E6BA0CD02AEA054F0039E90E /* XSLBaseElement.swift */,
 				E6BA0CD62AEA30FE0039E90E /* XWidgetPlugin.swift */,
+				E6C5375C2B31836A00EFE373 /* OpenWebVPlugin.swift */,
 				E6BA0CD82AECF0E70039E90E /* hybrid_hook_xsl_js.swift */,
 				E6E9DA1C2A9CEB7000CC2A3D /* ContainerHookView.swift */,
 				E66E64F52AB039C500FDEC58 /* DispatchQueue+Once.swift */,
@@ -315,6 +318,7 @@
 				E6E9DA1D2A9CEB7000CC2A3D /* ContainerHookView.swift in Sources */,
 				E6BA0CD12AEA054F0039E90E /* XSLBaseElement.swift in Sources */,
 				E66E64F62AB039C500FDEC58 /* DispatchQueue+Once.swift in Sources */,
+				E6C5375D2B31836A00EFE373 /* OpenWebVPlugin.swift in Sources */,
 				E6BA0CD92AECF0E70039E90E /* hybrid_hook_xsl_js.swift in Sources */,
 				E6E9DA042A9C92DE00CC2A3D /* AppDelegate.swift in Sources */,
 				E6BA0CD72AEA30FE0039E90E /* XWidgetPlugin.swift in Sources */,
@@ -477,7 +481,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -509,7 +513,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

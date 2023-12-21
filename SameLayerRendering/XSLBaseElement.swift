@@ -111,7 +111,6 @@ class XSLBaseElement: NSObject {
                 observerVal = observerVal.replacingOccurrences(of: ":callback", with: "")
                 observers.append(String(observerVal))
             } else if methodStr.hasPrefix("xsl_") {
-                // TODO
                 var rmXslStr = String(methodStr.suffix(methodStr.count - 4))
                 rmXslStr = rmXslStr.replacingOccurrences(of: ":", with: "__")
                 functions.append(String(rmXslStr))

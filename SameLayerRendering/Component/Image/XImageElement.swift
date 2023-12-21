@@ -30,8 +30,8 @@ class XImageElement: XSLBaseElement {
         guard let bindHandle = attributes["bindtapimg"] else {
             return
         }
-        let methodName = "\(bindHandle)()"
-        self.webView!.evaluateJavaScript(methodName) { (result, error) in
+        let methodName = "\(bindHandle)({'name': '\(src)'})"
+        self.webView?.evaluateJavaScript(methodName) { (result, error) in
             if let error = error {
                 print("JavaScript execution error: \(error.localizedDescription)")
             } else {

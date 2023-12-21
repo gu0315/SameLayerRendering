@@ -19,7 +19,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>NVActivityIndicatorView.xcscheme</key>
+		<key>LookinServer.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -35,11 +35,6 @@
 			<false/>
 		</dict>
 		<key>SnapKit.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>VIMediaCache.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

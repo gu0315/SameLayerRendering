@@ -23,7 +23,8 @@ class XSLManager: NSObject {
     
     /// 用于H5元素到Native的映射, key表示H5元素， value表示替换成Native组建
     var elementsClassMap: [String: AnyClass] = [:]
-    
+
+    ///  注入的Js WebComponent
     var jsMap:Dictionary<String, String> = [:]
     
     /// 客户端支持的h5组件
@@ -78,9 +79,10 @@ class XSLManager: NSObject {
         wKWebView.xslElementMap = [:]
         wKWebView.xslIdMap = [:]
         if (XSLManager.sharedSLManager.isHybridXslValid())  {
+            wKWebView.addUserScript()
             wKWebView.addElementAvailableUserScript()
             XSLManager.sharedSLManager.hookWebview()
-            wKWebView.addUserScript()
+            
         }
         // MARK: - 禁止点击文本交互，放大镜
         if #available(iOS 14.5, *) {
@@ -134,7 +136,7 @@ class XSLManager: NSObject {
                     guard let self = self else { return }
                     typealias ClosureType = @convention(c) (UIScrollView, Selector, Bool) -> Void
                     let oldMethod: ClosureType = unsafeBitCast(oldImp, to: ClosureType.self)
-                    let element: XSLBaseElement? =  self.getBindElement(obj.superview, name: obj.superview?.layer.name)
+                    let element: XSLBaseElement? = self.getBindElement(obj.superview, name: obj.superview?.layer.name)
                     if (element != nil) {
                         oldMethod(obj, oldSel, false)
                     } else{
@@ -163,10 +165,13 @@ class XSLManager: NSObject {
                 var oldImp: IMP? = nil
                 typealias type = @convention(block) (UIScrollView, Selector) -> Void
                 let blockImplementation: type = { obj, sel in
-                    let element: XSLBaseElement? = objc_getAssociatedObject(obj.superview!, &AssociatedKeys.hybridXSLElementKey) as? XSLBaseElement
-                    if (element != nil) {
-                        element!.isAddToSuper = false
-                        element!.removeFromSuperView()
+                    withUnsafePointer(to: &AssociatedKeys.hybridXSLElementKey) { ptr in
+                        let element: XSLBaseElement? = objc_getAssociatedObject(obj.superview!, ptr) as? XSLBaseElement
+                        if (element != nil) {
+                            print("同层渲染-element->remove", element!)
+                            element!.isAddToSuper = false
+                            element!.removeFromSuperView()
+                        }
                     }
                     typealias ClosureType = @convention(c) (UIScrollView, Selector) -> Void
                     let oldMethod: ClosureType = unsafeBitCast(oldImp, to: ClosureType.self)
@@ -195,14 +200,13 @@ class XSLManager: NSObject {
                 .trimmingCharacters(in: .init(charactersIn: "'")).components(separatedBy: " ") ?? []
             guard let webView: WKWebView = self.findWebView(in: view) else {
                 // ⚠️，此处要异步 🐷异步闭包在当前runloop完成之后排队等待运行🐷
-                print("==")
+                print("==wait==")
                 DispatchQueue.main.async {
                     self.getBindElement(view, name: name)
                 }
                 return nil
             }
             if (webView.xslElementMap == nil) { return nil }
-        
             for key in divClass {
                 if let el = webView.xslElementMap?[key] as? XSLBaseElement {
                     element = el
@@ -229,6 +233,7 @@ class XSLManager: NSObject {
             element!.weakWKChildScrollView = toSuperView
             element!.addToWKChildScrollView()
         }
+        print("同层渲染-element->add", element!)
     }
     
     func findWebView(in view: UIView?) -> WKWebView? {
@@ -236,7 +241,6 @@ class XSLManager: NSObject {
         if let webView = view as? WKWebView {
             return webView
         }
-        // 递归查找父视图
         return findWebView(in: view.superview)
     }
     
@@ -265,6 +269,7 @@ extension WKWebView {
         }
     }
     
+    /// hitTest拦截
     var isFinishHandleWKContentGesture: Bool? {
         get {
             withUnsafePointer(to: &AssociatedKeys.hybridXSLDidFinishHandleWKContentGestureKey) { pointer in
