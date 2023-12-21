@@ -27,16 +27,18 @@ class WebViewController: UIViewController, UIScrollViewDelegate, WKNavigationDel
     }
     
     func initWebView() {
-        webView = XSLWebView.init(frame: self.view.bounds)
+        let configuration = WKWebViewConfiguration()
+        // HTML5 videos play
+        configuration.mediaTypesRequiringUserActionForPlayback = []
+        configuration.allowsInlineMediaPlayback = true
+        
+        webView = XSLWebView.init(frame: self.view.bounds, configuration: configuration)
         webView.navigationDelegate = self
         webView.uiDelegate = self
         webView.backgroundColor = UIColor.clear.withAlphaComponent(0)
         
-        // HTML5 videos play
-        webView.configuration.mediaTypesRequiringUserActionForPlayback = []
-        webView.configuration.allowsInlineMediaPlayback = true
-        
         if #available(iOS 16.4, *) {
+            // 开启调试
             webView.isInspectable = true
         } else {
             // Fallback on earlier versions
@@ -44,8 +46,8 @@ class WebViewController: UIViewController, UIScrollViewDelegate, WKNavigationDel
         self.view.addSubview(webView)
         jsBridge = JSBridgeManager.init(webView)
         XSLManager.sharedSLManager.initSLManagerWithWebView(webView)
-        self.webView.loadFileURL(Bundle.main.url(forResource: path, withExtension: "html")!, allowingReadAccessTo: Bundle.main.resourceURL!)
-        //self.webView.load(URLRequest.init(url: .init(string: "http://192.168.1.101:8080/")!))
+        //self.webView.loadFileURL(Bundle.main.url(forResource: path, withExtension: "html")!, allowingReadAccessTo: Bundle.main.resourceURL!)
+        self.webView.load(URLRequest.init(url: .init(string: "http://172.18.40.82:8080/")!))
     }
     
    

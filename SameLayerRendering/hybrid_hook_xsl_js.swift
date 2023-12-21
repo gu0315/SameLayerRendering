@@ -25,12 +25,6 @@ func hybridHookXSLJS() -> String {
             }
             return this.x_className;
         }
-        finalClassName() {
-            if (!this.final_className) {
-                this.final_className = this.lowerClassName() + this.className;
-            }
-            return this.final_className;
-        }
         //需要观察的属性
         static get observedAttributes() {
             return ['$obsevers'];
@@ -43,9 +37,11 @@ func hybridHookXSLJS() -> String {
             }
             this.canUse = window.XWidget && window.XWidget.canIUse('$Element-Name');
             this.x_className = '';
-            this.final_className = '';
             this.element_name = '$Element-Name';
-            this.appendChild()
+            //💣💣💣巨坑, eg: 在Vue中如果有video标签，要加setTimeout，否则Native端拿到到name属性💣💣💣
+            setTimeout(() => {
+               this.appendChild()
+            }, 0)
             //通知Nativer创建
             this.messageToNative({
                 'methodType': 'createXsl'
@@ -69,7 +65,7 @@ func hybridHookXSLJS() -> String {
         }
         //通知Nativer添加
         connectedCallback() {
-            this.className = this.finalClassName();
+            this.className = this.lowerClassName();
             let attributes = {};
             Object.assign(attributes, ...[...this.attributes].map(attr => ({ [attr.name]: attr.value })));
             this.messageToNative({
