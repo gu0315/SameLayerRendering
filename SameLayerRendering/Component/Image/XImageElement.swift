@@ -14,7 +14,7 @@ class XImageElement: XSLBaseElement {
     
     lazy var imageView: UIImageView = {
         let view = UIImageView.init()
-        view.contentMode = .scaleToFill
+        view.contentMode = .scaleAspectFit
         view.isUserInteractionEnabled = true
         let tap = UITapGestureRecognizer.init(target: self, action: #selector(bindTapImg))
         view.addGestureRecognizer(tap)
@@ -42,6 +42,7 @@ class XImageElement: XSLBaseElement {
     
     @objc override func elementConnected(_ params: [String: Any]) {
         super.elementConnected(params)
+        // 更新
     }
     
     @objc override class func elementName() -> String {

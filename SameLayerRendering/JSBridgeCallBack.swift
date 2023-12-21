@@ -22,6 +22,7 @@ class JSBridgeCallBack: NSObject {
     
     var onFail: ((Any?) -> Void)?
     
+    // TODO: evaluateJavaScript
     func setMessage(_ message: WKScriptMessage) {
         self.message = message
         self.webview = message.webView;

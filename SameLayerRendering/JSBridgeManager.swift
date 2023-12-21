@@ -63,7 +63,9 @@ class WeakScriptMessageDelegate: NSObject, WKScriptMessageHandler {
         let pluginName = dict["plugin"] as? String ?? ""
         let method = dict["method"] as? String ?? dict["action"] as? String ?? ""
         let params = dict["params"] as? [String: Any] ?? [:]
-        let _ = dict["callbackName"] as? String ?? ""
+        
+        // TODO: callbackName暂未实现
+        _ = dict["callbackName"] as? String ?? ""
         let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
         let callback = JSBridgeCallBack.callback
         callback.message = message

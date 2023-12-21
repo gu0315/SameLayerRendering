@@ -15,7 +15,6 @@ func hybridHookXSLJS() -> String {
         //向Nativer发送消息
         messageToNative(params) {
             params['xsl_id'] = this.lowerClassName();
-            params['hybrid_xsl_id'] = this.hybrid_xsl_id;
             if (window.XWebView && window.XWebView.callNative) {
                 window.XWebView && window.XWebView.callNative('XWidgetPlugin', params['methodType'], params, params['callbackName'], params['callbackId']);
             }
@@ -46,8 +45,6 @@ func hybridHookXSLJS() -> String {
             this.x_className = '';
             this.final_className = '';
             this.element_name = '$Element-Name';
-            this.display_style = '';
-            this.hybrid_xsl_id = '';
             this.appendChild()
             //通知Nativer创建
             this.messageToNative({
@@ -93,16 +90,12 @@ func hybridHookXSLJS() -> String {
             }
             if (name == 'hidden') {
                 if (newValue != null) {
-                    this.display_style = this.style.display;
                     this.style.display = 'none';
                 } else {
-                    this.style.display = this.display_style;
+                    this.style.removeProperty('display');
                 }
                 return;
             } else if (name == 'class') {
-                return;
-            } else if (name == 'hybrid_xsl_id') {
-                this.hybrid_xsl_id = newValue;
                 return;
             }
             var params = {

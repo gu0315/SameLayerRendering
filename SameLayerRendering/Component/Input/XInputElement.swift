@@ -12,7 +12,8 @@ class XInputElement: XSLBaseElement {
     lazy var input: UITextField = {
         let textFied = UITextField.init()
         textFied.adjustsFontSizeToFitWidth = true
-        textFied.returnKeyType = .next
+        // 下一项
+        textFied.returnKeyType = .done
         textFied.backgroundColor = .darkGray
         textFied.addTarget(self, action: #selector(onChange(_ :)), for: UIControl.Event.editingChanged)
         return textFied

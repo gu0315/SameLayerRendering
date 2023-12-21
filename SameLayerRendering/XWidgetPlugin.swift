@@ -15,7 +15,6 @@ class XWidgetPlugin: NSObject {
     
     @discardableResult
     @objc func execute(action: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) -> Bool {
-        setXslIdMapDic(dic: params, jsBridgeCallback: jsBridgeCallback)
         let selectorString = "\(action)WithElementIdWithTheId:params:jsBridgeCallback:"
         debugPrint("同层渲染Web Components->生命周期回调", params["xsl_id"] ?? "", action)
         if responds(to: Selector(selectorString)) {
@@ -102,18 +101,11 @@ class XWidgetPlugin: NSObject {
     }
     
     @objc func invokeXslNativeMethodWithElementId(theId: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) {
-        var theId = theId
-        guard var methodName = params["methodName"] as? String else {
+        let theId = theId
+        guard let methodName = params["methodName"] as? String else {
             return
         }
-        var argsParams = params["args"]
-        if let hybridXslId = params["hybrid_xsl_id"] as? String {
-            if let xslIdMap = jsBridgeCallback.message?.webView?.xslIdMap, let xslId = xslIdMap[hybridXslId] {
-                theId = xslId
-                methodName = params["functionName"] as? String ?? ""
-                argsParams = params
-            }
-        }
+        let argsParams = params["args"]
         if let element = jsBridgeCallback.message?.webView?.xslElementMap?[theId] as? XSLBaseElement {
             let selector = NSSelectorFromString("xsl__\(methodName):")
             let selectorCallback = NSSelectorFromString("xsl__\(methodName):callback:")
@@ -129,14 +121,6 @@ class XWidgetPlugin: NSObject {
         var tempDic = jsBridgeCallback.message?.webView?.xslElementMap
         tempDic?[theId] = nil
         jsBridgeCallback.message?.webView?.xslElementMap = tempDic
-    }
-
-    @objc func setXslIdMapDic(dic: [String: Any], jsBridgeCallback: JSBridgeCallBack) {
-        var tempDic: Dictionary<String, String> = [:]
-        guard  let hybridXslId = dic["hybrid_xsl_id"] as? String,
-               let xslId = dic["xsl_id"] as? String else { return }
-        tempDic[hybridXslId] = xslId
-        jsBridgeCallback.message?.webView?.xslIdMap = tempDic 
     }
 }
 

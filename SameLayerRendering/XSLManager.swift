@@ -14,7 +14,6 @@ struct AssociatedKeys  {
     static var hybridXSLElementKey = "hybridXSLElementKey"
     static var hybridXSLElementMapKey = "hybridXSLElementMapKey"
     static var hybridXSLDidFinishHandleWKContentGestureKey = "hybridXSLDidFinishHandleWKContentGestureKey"
-    static var hybridXSLIdMapKey = "hybridXSLIdMapKey"
 }
 
 class XSLManager: NSObject {
@@ -77,7 +76,6 @@ class XSLManager: NSObject {
     
     public func initSLManagerWithWebView(_ wKWebView: WKWebView) {
         wKWebView.xslElementMap = [:]
-        wKWebView.xslIdMap = [:]
         if (XSLManager.sharedSLManager.isHybridXslValid())  {
             wKWebView.addUserScript()
             wKWebView.addElementAvailableUserScript()
@@ -225,15 +223,15 @@ class XSLManager: NSObject {
     }
 
     func addElement(element: XSLBaseElement?, toSuperView: UIView) {
-        if (element == nil) {
+        guard let element = element else {
             return
         }
-        if !element!.isAddToSuper && toSuperView.isKind(of: NSClassFromString("WKChildScrollView")!) {
-            element!.isAddToSuper = true
-            element!.weakWKChildScrollView = toSuperView
-            element!.addToWKChildScrollView()
+        if !element.isAddToSuper && toSuperView.isKind(of: NSClassFromString("WKChildScrollView")!) {
+            element.isAddToSuper = true
+            element.weakWKChildScrollView = toSuperView
+            element.addToWKChildScrollView()
         }
-        print("同层渲染-element->add", element!)
+        print("同层渲染-element->add", element)
     }
     
     func findWebView(in view: UIView?) -> WKWebView? {
@@ -255,19 +253,6 @@ class XSLManager: NSObject {
 
 
 extension WKWebView {
-    /// TODO hybrid_xsl_id：xsl_id
-    var xslIdMap: Dictionary<String, String>? {
-        get {
-            withUnsafePointer(to: &AssociatedKeys.hybridXSLIdMapKey) { pointer in
-                return objc_getAssociatedObject(self, pointer) as? Dictionary
-            }
-        }
-        set {
-            withUnsafePointer(to: &AssociatedKeys.hybridXSLIdMapKey) { pointer in
-                objc_setAssociatedObject(self, pointer, newValue, .OBJC_ASSOCIATION_COPY)
-            }
-        }
-    }
     
     /// hitTest拦截
     var isFinishHandleWKContentGesture: Bool? {
@@ -284,7 +269,7 @@ extension WKWebView {
         }
     }
     
-    /// h5 Key: Native  h5标签映射到原生组件实例
+    /// h5 Key: Native  h5标签映射到原生组件实例 eg: ["hybrid-image0":  XImageElement]
     var xslElementMap: Dictionary<String, AnyObject>? {
         get {
             withUnsafePointer(to: &AssociatedKeys.hybridXSLElementMapKey) { pointer in
@@ -343,7 +328,7 @@ extension WKWebView {
         }
     }
     
-    /// 添加脚本，方便H5查看那个元素支持同层
+    /// Web Components 是否支持同层
     func addElementAvailableUserScript() {
         var keyString = NSMutableString()
         for key in XSLManager.sharedSLManager.availableElementArrs {
@@ -372,7 +357,7 @@ extension WKWebView {
         self.configuration.userContentController.addUserScript(script)
     }
     
-    /// 核心方法，自动为每一个元素添加样式，为了渲染WKWebView
+    /// 核心方法，注入Web Components, 添加 overflow:scroll; -webkit-overflow-scrolling: touch;
     func addUserScript() {
         XSLManager.sharedSLManager.elementsClassMap.forEach { (key: String, cls: AnyClass) in
             let sel: Selector = Selector.init(("jsClass"))

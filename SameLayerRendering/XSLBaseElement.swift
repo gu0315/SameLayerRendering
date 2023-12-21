@@ -9,7 +9,7 @@ import UIKit
 import WebKit
 import Foundation
 
-//方法名必须以xsl开头
+//方法名必须以xsl__开头, observedAttributes变化通知Native做出变化
 //eg:添加事件 func xsl__play(_ args: Dictionary) {}
 //eg:添加带callback属性 func xsl__play(_ args: Dictionary, callback: BridgeCallBack) {}
 class XSLBaseElement: NSObject {
@@ -87,7 +87,7 @@ class XSLBaseElement: NSObject {
         // 获取类的方法列表
         var functions = [String]()
         // 公共默认观察的属性
-        var observers = ["style", "class", "hidden", "hybrid_xsl_id"]
+        var observers = ["style", "class", "hidden"]
         var count: UInt32 = 0
         guard let methodList = class_copyMethodList(self, &count) else {
             return js
@@ -110,10 +110,6 @@ class XSLBaseElement: NSObject {
                 }
                 observerVal = observerVal.replacingOccurrences(of: ":callback", with: "")
                 observers.append(String(observerVal))
-            } else if methodStr.hasPrefix("xsl_") {
-                var rmXslStr = String(methodStr.suffix(methodStr.count - 4))
-                rmXslStr = rmXslStr.replacingOccurrences(of: ":", with: "__")
-                functions.append(String(rmXslStr))
             }
         }
         // 替换 JavaScript 代码中的占位符
