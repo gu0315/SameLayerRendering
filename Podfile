@@ -7,9 +7,10 @@ target 'SameLayerRendering' do
     pod 'ZFPlayer'
     pod 'ZFPlayer/ControlView'
     pod 'ZFPlayer/AVPlayer'
-    pod 'SDWebImage'
     pod 'KTVHTTPCache'
+    pod 'SDWebImage'
     pod 'LookinServer', :configurations => ['Debug']
+    pod 'IQKeyboardManagerSwift'
 end
 
 post_install do |installer|

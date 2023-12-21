@@ -1,5 +1,6 @@
 PODS:
   - CocoaAsyncSocket (7.6.5)
+  - IQKeyboardManagerSwift (6.5.11)
   - KTVCocoaHTTPServer (1.0.0):
     - CocoaAsyncSocket
   - KTVHTTPCache (2.0.1):
@@ -20,6 +21,7 @@ PODS:
   - ZFPlayer/Core (4.1.4)
 
 DEPENDENCIES:
+  - IQKeyboardManagerSwift
   - KTVHTTPCache
   - LookinServer
   - SDWebImage
@@ -31,6 +33,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - CocoaAsyncSocket
+    - IQKeyboardManagerSwift
     - KTVCocoaHTTPServer
     - KTVHTTPCache
     - LookinServer
@@ -40,6 +43,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
+  IQKeyboardManagerSwift: c7955c0bdbf7b2eb29bb7daaa44e3d90f55a9a85
   KTVCocoaHTTPServer: df8d7b861e603ff8037e9b2138aca2563a6b768d
   KTVHTTPCache: 588c3eb16f6bd1e6fde1e230dabfb7bd4e490a4d
   LookinServer: 535f5d1ffd5823a3b0abaf97ba5c4108bd8cb5ea
@@ -47,6 +51,6 @@ SPEC CHECKSUMS:
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   ZFPlayer: 5cf39e8d9f0c2394a014b0db4767b5b5a6bffe13
 
-PODFILE CHECKSUM: 52e643d79a9eb934c48665534e14989d8efa4c1b
+PODFILE CHECKSUM: 9ccf52d5471b446245765d3734503f6d1aa560ca
 
 COCOAPODS: 1.11.3
