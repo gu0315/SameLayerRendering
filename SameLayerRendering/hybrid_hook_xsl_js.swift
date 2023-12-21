@@ -19,9 +19,11 @@ func hybridHookXSLJS() -> String {
                 window.XWebView && window.XWebView.callNative('XWidgetPlugin', params['methodType'], params, params['callbackName'], params['callbackId']);
             }
         }
+
+        //className->和Native映射
         $customfunction lowerClassName() {
             if (!this.x_className) {
-                this.x_className = '$Element-Name' + this.constructor.index++;
+                this.x_className = '$Element-Name' + $ElementName.index++;
             }
             return this.x_className;
         }
@@ -38,6 +40,7 @@ func hybridHookXSLJS() -> String {
             this.canUse = window.XWidget && window.XWidget.canIUse('$Element-Name');
             this.x_className = '';
             this.element_name = '$Element-Name';
+            this.last_display_style = '';
             //💣💣💣巨坑, eg: 在Vue中如果有video标签，要加setTimeout，否则Native端拿到到name属性💣💣💣
             setTimeout(() => {
                this.appendChild()
@@ -86,9 +89,10 @@ func hybridHookXSLJS() -> String {
             }
             if (name == 'hidden') {
                 if (newValue != null) {
+                    this.last_display_style = this.style.display;
                     this.style.display = 'none';
                 } else {
-                    this.style.removeProperty('display');
+                    this.style.display = this.last_display_style;
                 }
                 return;
             } else if (name == 'class') {

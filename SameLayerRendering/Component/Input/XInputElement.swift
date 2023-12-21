@@ -7,7 +7,7 @@
 
 import UIKit
 
-class XInputElement: XSLBaseElement {
+class XInputElement: XSLBaseElement, UITextFieldDelegate {
     
     lazy var input: UITextField = {
         let textFied = UITextField.init()
@@ -16,6 +16,7 @@ class XInputElement: XSLBaseElement {
         textFied.returnKeyType = .done
         textFied.backgroundColor = .darkGray
         textFied.addTarget(self, action: #selector(onChange(_ :)), for: UIControl.Event.editingChanged)
+        textFied.delegate = self
         return textFied
     }()
 
@@ -34,6 +35,10 @@ class XInputElement: XSLBaseElement {
     
     override class func isElementValid() -> Bool {
         return true
+    }
+    
+    @objc func inputEditingDidEnd() {
+        self.input.resignFirstResponder()
     }
     
     @objc override func setSize(_ size: CGSize) {
@@ -66,6 +71,13 @@ class XInputElement: XSLBaseElement {
                 }
             }
         }
+    }
+    
+    // UITextFieldDelegate方法
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        // 关闭键盘
+        textField.resignFirstResponder()
+        return true
     }
     
     deinit {

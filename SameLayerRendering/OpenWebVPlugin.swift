@@ -17,7 +17,6 @@ class OpenWebVPlugin: NSObject {
     func openWebViewWithUrl() {
         
     }
-    
 }
 
 extension NSObject {
