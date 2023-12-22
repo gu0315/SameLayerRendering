@@ -121,6 +121,16 @@ class XVideoElement: XSLBaseElement {
                         self.currentTime = _currentTime
                     }
                 }
+                if let bindHandle = attributes["bindplay"] {
+                    let methodName = "\(bindHandle)();"
+                    self.webView!.evaluateJavaScript(methodName) { (result, error) in
+                        if let error = error {
+                            print("JavaScript execution error: \(error.localizedDescription)")
+                        } else {
+                            print("JavaScript execution successful")
+                        }
+                    }
+                }
             }
         } else {
             player.currentPlayerManager.pause()
@@ -172,10 +182,6 @@ class XVideoElement: XSLBaseElement {
         super.setSize(size)
         coverImg.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
         playBtn.center = containerView.center
-    }
-    
-    @objc override func setStyleString(_ style: String) {
-        super.setStyleString(style)
     }
     
     @objc func xsl__src(_ args: Dictionary<String, Any>) {

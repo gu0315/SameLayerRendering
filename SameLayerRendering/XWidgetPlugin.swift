@@ -48,17 +48,7 @@ class XWidgetPlugin: NSObject {
         return false
     }
     
-    @objc func addXslWithElementId(theId: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) {
-        guard let element = jsBridgeCallback.message?.webView?.xslElementMap?[theId] as? XSLBaseElement else {
-            self.createXslWithElementId(theId: theId, params: params, jsBridgeCallback: jsBridgeCallback)
-            if let v = jsBridgeCallback.message?.webView?.xslElementMap?[theId] as? XSLBaseElement {
-                v.elementConnected(params)
-            }
-            return
-        }
-        element.elementConnected(params)
-    }
-
+    // MARK: - Web Components to constructor
     @objc func createXslWithElementId(theId: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) {
         guard let element = XSLManager.sharedSLManager
             .elementsClassMap[theId.trimmingCharacters(in: CharacterSet.decimalDigits)] as? XSLBaseElement.Type else {
@@ -74,12 +64,12 @@ class XWidgetPlugin: NSObject {
         jsBridgeCallback.message?.webView?.xslElementMap = tempDic
     }
     
-    // attributeChangedCallback属性变化通知Native
+    // MARK: - Web Components to attributeChangedCallback
     @objc func changeXslWithElementId(theId: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) {
         if let name = params["methodName"] as? String, let element = jsBridgeCallback.message?.webView?.xslElementMap?[theId] as? XSLBaseElement {
             switch name {
-            case "style":
-                element.setStyleString(params["newValue"] as? String ?? "")
+            case "class", "hidden":
+                // TODO: 暂不处理
                 break
             default:
                 let sel = NSSelectorFromString("xsl__\(name):")
@@ -100,6 +90,26 @@ class XWidgetPlugin: NSObject {
         }
     }
     
+    // MARK: - Web Components to connectedCallback
+    @objc func addXslWithElementId(theId: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) {
+        guard let element = jsBridgeCallback.message?.webView?.xslElementMap?[theId] as? XSLBaseElement else {
+            self.createXslWithElementId(theId: theId, params: params, jsBridgeCallback: jsBridgeCallback)
+            if let v = jsBridgeCallback.message?.webView?.xslElementMap?[theId] as? XSLBaseElement {
+                v.elementConnected(params)
+            }
+            return
+        }
+        element.elementConnected(params)
+    }
+    
+    // MARK: - Web Components to disconnectedCallback
+    @objc func removeXslWithElementId(theId: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) {
+        var tempDic = jsBridgeCallback.message?.webView?.xslElementMap
+        tempDic?[theId] = nil
+        jsBridgeCallback.message?.webView?.xslElementMap = tempDic
+    }
+    
+    // MARK: - Web Components 调用 Native组件具体发法
     @objc func invokeXslNativeMethodWithElementId(theId: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) {
         let theId = theId
         guard let methodName = params["methodName"] as? String else {
@@ -113,14 +123,10 @@ class XWidgetPlugin: NSObject {
                 element.perform(selector, with: argsParams)
             } else if element.responds(to: selectorCallback) {
                 element.perform(selectorCallback, with: argsParams, with: jsBridgeCallback)
+            } else {
+                print("暂未实现\(selector)和\(selectorCallback)方法,可能Web Components端调用错误")
             }
         }
-    }
-
-    @objc func removeXslWithElementId(theId: String, params: [String: Any], jsBridgeCallback: JSBridgeCallBack) {
-        var tempDic = jsBridgeCallback.message?.webView?.xslElementMap
-        tempDic?[theId] = nil
-        jsBridgeCallback.message?.webView?.xslElementMap = tempDic
     }
 }
 

@@ -45,42 +45,17 @@ class XSLManager: NSObject {
     private override init() {
         super.init()
         // swift 不支持__attribute动态化，可以考虑objc_copyClassList匹配协议找到支持的组件, 这里考虑到组件少，及获取objc_copyClassList性能问题，手动配置
-        // self.readXslRegisteredElement()
         elementsClassMap = ["hybrid-image": XImageElement.self, 
                             "hybrid-video": XVideoElement.self,
                             "hybrid-input": XInputElement.self]
     }
     
-    /*private func readXslRegisteredElement() {
-        if ((elementsClassMap.count) != 0) {
-            return
-        }
-        var count: UInt32 = 0
-        let classList = objc_copyClassList(&count)!
-        defer { free(UnsafeMutableRawPointer(classList)) }
-        let classes = UnsafeBufferPointer(start: classList, count: Int(count))
-        var tmpCache: Dictionary<String, AnyClass> = [:]
-        for cls in classes {
-            if (class_conformsToProtocol(cls, HybridXSLRegisterClassProtocol.self)) {
-                if cls.responds(to: Selector.init(("elementName"))) {
-                    guard let obj = cls as? NSObject.Type else { return }
-                    let elementName = obj.perform(Selector.init(("elementName")))?.takeUnretainedValue() as? String
-                    if (elementName != nil) {
-                        tmpCache[elementName!] = cls
-                    }
-                }
-            }
-        }
-        elementsClassMap = tmpCache
-    }*/
-    
     public func initSLManagerWithWebView(_ wKWebView: WKWebView) {
         wKWebView.xslElementMap = [:]
         if (XSLManager.sharedSLManager.isHybridXslValid())  {
-            wKWebView.addUserScript()
             wKWebView.addElementAvailableUserScript()
             XSLManager.sharedSLManager.hookWebview()
-            
+            wKWebView.addUserScript()
         }
         // MARK: - 禁止点击文本交互，放大镜
         if #available(iOS 14.5, *) {
@@ -153,7 +128,9 @@ class XSLManager: NSObject {
                     typealias ClosureType = @convention(c) (UIScrollView, Selector, CGSize) -> Void
                     let oldMethod: ClosureType = unsafeBitCast(oldImp, to: ClosureType.self)
                     oldMethod(obj, oldSel, contentSize)
-                    self.getBindElement(obj.superview, name: obj.superview?.layer.name)
+                    let element =  self.getBindElement(obj.superview, name: obj.superview?.layer.name)
+                    self.addElement(element: element, toSuperView: obj.superview?.subviews.last)
+                    // TODO: eg: Web Components设置了border-radius, obj.superview?.layer.name找不到对应的divClass,element为nil, 需要递归遍历, 此处遍历会不会有性能问题
                 }
                 self.imp(old: &oldImp, cls: cls, sel: oldSel, imp: blockImplementation)
             }
@@ -166,7 +143,7 @@ class XSLManager: NSObject {
                     withUnsafePointer(to: &AssociatedKeys.hybridXSLElementKey) { ptr in
                         let element: XSLBaseElement? = objc_getAssociatedObject(obj.superview!, ptr) as? XSLBaseElement
                         if (element != nil) {
-                            print("同层渲染-element->remove", element!)
+                            debugPrint("同层渲染-element->remove", element!)
                             element!.isAddToSuper = false
                             element!.removeFromSuperView()
                         }
@@ -180,7 +157,6 @@ class XSLManager: NSObject {
         }
     }
     
-    
     /// 核心方法，通过name查找视图
     @discardableResult
     func getBindElement(_ view: UIView? , name: String?) -> XSLBaseElement? {
@@ -193,12 +169,11 @@ class XSLManager: NSObject {
             if (element != nil) {
                 return element
             }
-            // 待优化 eg: name中包含‘
             let divClass: [String] = name.components(separatedBy: "class=").last?.components(separatedBy: "'")[1]
                 .trimmingCharacters(in: .init(charactersIn: "'")).components(separatedBy: " ") ?? []
             guard let webView: WKWebView = self.findWebView(in: view) else {
                 // ⚠️，此处要异步 🐷异步闭包在当前runloop完成之后排队等待运行🐷
-                print("==wait==")
+                debugPrint("==wait==")
                 DispatchQueue.main.async {
                     self.getBindElement(view, name: name)
                 }
@@ -216,22 +191,24 @@ class XSLManager: NSObject {
                     break
                 }
             }
-            self.addElement(element: element, toSuperView: view.subviews.last!)
             return element
         }
         return nil
     }
 
-    func addElement(element: XSLBaseElement?, toSuperView: UIView) {
-        guard let element = element else {
+    func addElement(element: XSLBaseElement?, toSuperView: UIView?) {
+        guard let element = element, let toSuperView = toSuperView else {
             return
         }
         if !element.isAddToSuper && toSuperView.isKind(of: NSClassFromString("WKChildScrollView")!) {
             element.isAddToSuper = true
             element.weakWKChildScrollView = toSuperView
             element.addToWKChildScrollView()
+        } else if (element.size.width != toSuperView.frame.size.width ||
+                   element.size.height != toSuperView.frame.size.height) {
+            element.setSize(toSuperView.frame.size)
         }
-        print("同层渲染-element->add", element)
+        debugPrint("同层渲染-element->add", element)
     }
     
     func findWebView(in view: UIView?) -> WKWebView? {
@@ -365,6 +342,7 @@ extension WKWebView {
             guard obj.responds(to: sel) else { return }
             if  let jsClass = obj.perform(sel)?.takeUnretainedValue() as? String {
                 let script = WKUserScript(source: jsClass, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+                print("script", script)
                 self.configuration.userContentController.addUserScript(script)
             }
         }

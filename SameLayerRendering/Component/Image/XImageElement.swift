@@ -42,7 +42,6 @@ class XImageElement: XSLBaseElement {
     
     @objc override func elementConnected(_ params: [String: Any]) {
         super.elementConnected(params)
-        // 更新
     }
     
     @objc override class func elementName() -> String {
@@ -56,10 +55,6 @@ class XImageElement: XSLBaseElement {
     @objc override func setSize(_ size: CGSize) {
         super.setSize(size)
         self.imageView.frame = CGRect.init(x: 0, y: 0, width: size.width, height: size.height)
-    }
-    
-    @objc override func setStyleString(_ style: String) {
-        super.setStyleString(style)
     }
     
     @objc func xsl__src(_ args: Dictionary<String, Any>) {

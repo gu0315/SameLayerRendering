@@ -46,10 +46,6 @@ class XInputElement: XSLBaseElement, UITextFieldDelegate {
         self.input.frame = CGRect.init(x: 0, y: 0, width: size.width, height: size.height)
     }
     
-    @objc override func setStyleString(_ style: String) {
-        super.setStyleString(style)
-    }
-    
     @objc func xsl__text(_ args: Dictionary<String, Any>) {
         guard let text = args["newValue"] as? String else { return }
         input.text = text

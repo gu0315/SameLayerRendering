@@ -9,7 +9,7 @@ import UIKit
 import WebKit
 import Foundation
 
-//方法名必须以xsl__开头, observedAttributes变化通知Native做出变化
+//方法名必须以xsl__开头, observedAttributes
 //eg:添加事件 func xsl__play(_ args: Dictionary) {}
 //eg:添加带callback属性 func xsl__play(_ args: Dictionary, callback: BridgeCallBack) {}
 class XSLBaseElement: NSObject {
@@ -42,9 +42,7 @@ class XSLBaseElement: NSObject {
     
     var attributes: Dictionary<String, Any> = [:]
     
-    private var _size: CGSize = .zero
-    
-    private var style: Dictionary<String, String> = [:]
+    var size: CGSize = .zero
     
     static var xslBaseElementJsKey = "xslBaseElementJsKey"
     
@@ -84,11 +82,10 @@ class XSLBaseElement: NSObject {
         }
         js = js.replacingOccurrences(of: "$ElementName", with: elementClassName)
         js = js.replacingOccurrences(of: "$Element-Name", with: elementName)
-        // 获取类的方法列表
-        var functions = [String]()
         // 公共默认观察的属性
-        var observers = ["style", "class", "hidden"]
+        var observers = ["class", "hidden"]
         var count: UInt32 = 0
+        // 获取类的方法列表
         guard let methodList = class_copyMethodList(self, &count) else {
             return js
         }
@@ -114,7 +111,6 @@ class XSLBaseElement: NSObject {
         }
         // 替换 JavaScript 代码中的占位符
         js = js.replacingOccurrences(of: "$obsevers", with: observers.joined(separator: "','"))
-        js = js.replacingOccurrences(of: "$customfunction", with: generateFunctions(functions))
         // 将最终的 JavaScript 代码保存到 map 中
         XSLManager.sharedSLManager.jsMap[elementName] = js
         return js
@@ -154,29 +150,11 @@ class XSLBaseElement: NSObject {
      }
     
     @objc func setSize(_ size: CGSize) {
-        _size = size
+        self.size = size
         containerView.frame = .init(x: 0, y: 0, width: size.width, height: size.height)
         if (size.height > 0 && !self.rendering) {
             rendering = true
         }
-    }
-    
-    @objc func setStyleString(_ style: String) {
-        var stylesMap = [String: String]()
-        let styles = style.components(separatedBy: ";")
-        styles.forEach { stylePair in
-            let keyValues = stylePair.components(separatedBy: ":")
-            if keyValues.count > 1 {
-                let key = keyValues[0].trimmingCharacters(in: .whitespaces)
-                if !key.isEmpty {
-                    let value = keyValues[1].trimmingCharacters(in: .whitespaces)
-                    if !value.isEmpty {
-                        stylesMap[key] = value
-                    }
-                }
-            }
-        }
-        self.style = stylesMap
     }
 
     @objc class func elementName() -> String {
