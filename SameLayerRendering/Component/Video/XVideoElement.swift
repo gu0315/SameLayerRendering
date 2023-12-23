@@ -198,6 +198,16 @@ class XVideoElement: XSLBaseElement {
             }
         }
     }
+    @objc func xsl__controls(_ args: Dictionary<String, Any>) {
+        
+    }
+    
+
+    
+    @objc func xsl__poster(_ args: Dictionary<String, Any>) {
+        guard let poster = args["newValue"] as? String else { return }
+        coverImg.sd_setImage(with: URL(string: poster))
+    }
     
     deinit {
         print("XVideoElement销毁")

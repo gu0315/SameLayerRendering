@@ -18,7 +18,7 @@ class WebViewController: UIViewController, UIScrollViewDelegate, WKNavigationDel
     
     var jsBridge: JSBridgeManager?
     
-    var path = ""
+    var path = "同层渲染"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +35,11 @@ class WebViewController: UIViewController, UIScrollViewDelegate, WKNavigationDel
         webView = XSLWebView.init(frame: self.view.bounds, configuration: configuration)
         webView.navigationDelegate = self
         webView.uiDelegate = self
+        //webView.scrollView.bounces = false
         webView.backgroundColor = UIColor.clear.withAlphaComponent(0)
+        
+        
+        //webView.configuration = 
         
         if #available(iOS 16.4, *) {
             // 开启调试
@@ -46,12 +50,12 @@ class WebViewController: UIViewController, UIScrollViewDelegate, WKNavigationDel
         self.view.addSubview(webView)
         jsBridge = JSBridgeManager.init(webView)
         XSLManager.sharedSLManager.initSLManagerWithWebView(webView)
-        //self.webView.loadFileURL(Bundle.main.url(forResource: path, withExtension: "html")!, allowingReadAccessTo: Bundle.main.resourceURL!)
-        self.webView.load(URLRequest.init(url: .init(string: "http://172.18.40.82:8080/")!))
+        self.webView.loadFileURL(Bundle.main.url(forResource: path, withExtension: "html")!, allowingReadAccessTo: Bundle.main.resourceURL!)
+        //self.webView.load(URLRequest.init(url: .init(string: "http://172.18.40.82:8080/")!))
     }
     
-   
-
+ 
+    
     deinit {
         print("WebViewController销毁")
         if #available(iOS 14.0, *) {

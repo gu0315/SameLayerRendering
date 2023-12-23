@@ -20,7 +20,7 @@ class XSLManager: NSObject {
     
     static public let sharedSLManager = XSLManager()
     
-    /// 用于H5元素到Native的映射, key表示H5元素， value表示替换成Native组建
+    /// 用于H5元素到Native的映射, key表示H5元素， value表示替换成Native组建 eg:"hybrid-image": XImageElement.self
     var elementsClassMap: [String: AnyClass] = [:]
 
     ///  注入的Js WebComponent
@@ -113,7 +113,7 @@ class XSLManager: NSObject {
                     if (element != nil) {
                         oldMethod(obj, oldSel, false)
                     } else{
-                        oldMethod(obj, oldSel, isEnable);
+                        oldMethod(obj, oldSel, obj.isScrollEnabled);
                     }
                 }
                 self.imp(old: &oldImp, cls: cls, sel: oldSel, imp: blockImplementation)
@@ -204,11 +204,12 @@ class XSLManager: NSObject {
             element.isAddToSuper = true
             element.weakWKChildScrollView = toSuperView
             element.addToWKChildScrollView()
+            debugPrint("同层渲染-element->add", element)
         } else if (element.size.width != toSuperView.frame.size.width ||
                    element.size.height != toSuperView.frame.size.height) {
             element.setSize(toSuperView.frame.size)
+            debugPrint("同层渲染-element->changeSize", element)
         }
-        debugPrint("同层渲染-element->add", element)
     }
     
     func findWebView(in view: UIView?) -> WKWebView? {
@@ -217,14 +218,6 @@ class XSLManager: NSObject {
             return webView
         }
         return findWebView(in: view.superview)
-    }
-    
-    override func copy() -> Any {
-        return self
-    }
-
-    override func mutableCopy() -> Any {
-        return self
     }
 }
 

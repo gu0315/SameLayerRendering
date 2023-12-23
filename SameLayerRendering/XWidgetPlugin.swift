@@ -74,9 +74,7 @@ class XWidgetPlugin: NSObject {
             default:
                 let sel = NSSelectorFromString("xsl__\(name):")
                 if element.responds(to: sel) {
-                    typealias ClosureType = @convention(c) (XSLBaseElement, Selector, Dictionary<String, Any>) -> Void
-                    let oldMethod: ClosureType = unsafeBitCast(class_getMethodImplementation(type(of: element), sel), to: ClosureType.self)
-                    oldMethod(element, sel, params)
+                   element.perform(sel, with: params)
                 }
                 if params["callbackName"] is String {
                     // 属性函数事件

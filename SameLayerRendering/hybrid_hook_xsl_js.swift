@@ -95,6 +95,9 @@ func hybridHookXSLJS() -> String {
                 ...attributes
             })
         }
+        adoptedCallback() {
+            // TODO:
+        }
         //通知Native移除
         disconnectedCallback() {
             this.messageToNative({
